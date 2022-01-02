@@ -1,0 +1,23 @@
+{
+  "name": "stolen-necklace",
+  "version": "0.2.2",
+  "scripts": {
+    "dev": "vite",
+    "expose": "vite --host --https",
+    "build": "vite build",
+    "serve": "vite preview",
+    "imprint": "node ./src/mjs/create-imprint.mjs"
+  },
+  "devDependencies": {
+    "rollup-plugin-dynamic-import-variables": "^1.1.0",
+    "@types/stats": "^0.16.30",
+    "@types/three": "^0.135.0",
+    "vite": "^2.7.6",
+    "vite-plugin-glsl": "^0.0.5"
+  },
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "html2canvas": "^1.3.2",
+    "three": "^0.134.0"
+  }
+}

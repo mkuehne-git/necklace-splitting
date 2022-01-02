@@ -1,0 +1,17 @@
+uniform int u_mode;
+uniform bool u_necklace_absolute;
+uniform bool u_necklace_discrete;
+uniform bool u_assert_boundary;
+uniform bool u_show_single_thiefs_region;
+uniform float u_epsilon;
+uniform float u_radius;
+uniform float u_radius_factor;
+uniform vec3 u_scaled_radius;
+uniform float u_offset_sphere_octant;
+uniform bool u_use_bad_on_sphere_check;
+uniform vec3 u_scale_color;
+uniform float u_alpha;
+uniform int u_count_0;
+uniform int u_count_1;
+uniform int u_input[MAX_JEWELS];
+uniform vec3 u_intersect;
