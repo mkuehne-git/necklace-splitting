@@ -16,6 +16,8 @@ If both jewel types are equally split between the two thiefs, each thief owns 0.
 ![Solving necklace-split](./src/images/necklace-relative.png)
 # Getting started
 ## Online
+View live on GitHub-Pages [https://mkuehne-git.github.io/temp/](https://mkuehne-git.github.io/temp/)
+
 ## Local Installation
 * Download this repository to your local machine and run
 
