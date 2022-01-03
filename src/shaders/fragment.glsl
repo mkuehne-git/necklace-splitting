@@ -217,9 +217,21 @@ bool isValidSphereData() {
     }
     return v_sphereData_valid != 0.0;
 }
-void main() {
+
+void fragColorWithIntersect(vec3 colorIn) {
     vec3 intersect = u_intersect / u_scaled_radius;
 
+    vec3 color = colorIn;
+    float dist = distance(v_pos, intersect);
+    float epsilon = 0.05;
+    if (dist < epsilon) {
+        float t = inter(0.0, epsilon, dist);
+        color = mix(vec3(1.0), color, t);
+    }
+    gl_FragColor = scale_color(color);
+}
+
+void main() {
     if (!isValidSphereData()) {
         gl_FragColor = scale_color(v_pos);
     }
@@ -228,33 +240,22 @@ void main() {
     if (u_mode == MODE_STOLEN_NECKLACE || u_mode == MODE_SHADER_LAMP) {
         if (isActiveRegion() && isOnSphere(v_sphereData_p, v_sphereData_octant, v_sphereData_valid)) {
             vec3 color = calculate_stolen_necklace(v_pos);
-            float dist = distance(v_pos, intersect);
-            float epsilon = 0.05;
-            if (dist < epsilon) {
-                float t = inter(0.0, epsilon, dist);
-                color = mix(vec3(1.0), color, t);
-            }
-            gl_FragColor = scale_color(color);
+            fragColorWithIntersect(color);
         }
         return;
     } else if (u_mode == MODE_SEGMENTS) {
         if (isActiveRegion()) {
             vec3 color = calculate_segment_distribution(v_pos);
-            float dist = distance(v_pos, intersect);
-            float epsilon = 0.05;
-            if (dist < epsilon) {
-                float t = inter(0.0, epsilon, dist);
-                color = mix(vec3(1.0), color, t);
-            }
-            gl_FragColor = scale_color(color);
+            fragColorWithIntersect(color);
         }
         return;
     } else if (u_mode == MODE_SPACE_COLOR) {
-        gl_FragColor = scale_color(v_pos);
+        fragColorWithIntersect(v_pos);
         return;
     } else if (u_mode == MODE_SINUSOID) {
         if (isValidSphereData()) {
-            gl_FragColor = scale_color(vec3(sin(M_PI*v_pos.x), sin(M_PI*v_pos.y), sin(M_PI*v_pos.z)));
+            vec3 color = vec3(sin(M_PI*v_pos.x), sin(M_PI*v_pos.y), sin(M_PI*v_pos.z));
+            fragColorWithIntersect(color);
         }
         return;
     } else {
