@@ -6,15 +6,31 @@ After watching the [3blue1brown](https://www.youtube.com/channel/UCYO_jab_esuFRV
 
 This is a standalone HTML-5/Javascript application that runs in the browser.
 
-Each point $(x,y,z)$ on the sphere denotes a necklace cut - see the white indicator, which splits the necklace in max three segments of length $(x²,y²,z²)$. The sign of each ordinate assigns the segment to either thief $A$ or $B$.
+Each point (x,y,z) on the sphere denotes a necklace cut - see the white indicator, which splits the necklace in max three segments of length (x²,y²,z²). The sign of each ordinate assigns the segment to either thief A or B.
 
-The coloring indicates how much thief $A$ owns per jewel type. The colors red and green are used to distinguish between the jewel types. Bright yellow (mix between red and green) for instance indicates that thief $A$ owns the majority of both jewel types.
+The coloring indicates how much one thief owns per jewel type. The colors red and green are used to distinguish between the jewel types. Bright yellow (mix between red and green) for instance indicates that one thief owns the majority of both jewel types.
 
 ## Solving the Necklace-Splitting
 If both jewel types are equally split between the two thiefs, each thief owns 0.5 per jewel type. The following image shows the distance to this target vector. The dark areas mark the target area. The blue spots in the lower right region of the sphere mark the best fit.
 
 ![Solving necklace-split](./src/images/necklace-relative.png)
+
+## Observing antipodal Points on Sphere
+In addition to the necklace-splitting sphere a few other show cases are provided. All of them color the sphere continously with two or three colors. To better recognize the antipodal points on the sphere it is sometimes useful to remove one color.
+
+## Special cases
+### All Jewels assigned to one Thief
+The sphere can be divided into eight octants. Two of them assign all jewels to one of the two thiefs. The following image shows the sphere where these un-interesting octants have been removed.
+![necklace-octants-removed](./src/images/necklace-octants.png)
+### Only one Jewel available
+In the case of only one jewels a fair split is only possible if continous splits are allowed. A fair split requires the line segments (x², y², z²) being equally distributed between the thiefs.
+![necklace-line-segements](./src/images/necklace-line-segments.png)
+
+The blue band indicates these areas.
+
+A similar scenario exists if the number of jewels is increased and the jewel types are randomly distributed (noise).
 # Getting started
+
 ## Online
 View live on GitHub-Pages [https://mkuehne-git.github.io/temp/](https://mkuehne-git.github.io/temp/)
 
@@ -26,8 +42,8 @@ View live on GitHub-Pages [https://mkuehne-git.github.io/temp/](https://mkuehne-
     $ npm ci
     $ npm run dev
     ```
-    ```
 
+    ```
     > stolen-necklace@0.1.0 expose
     > vite --host
 
