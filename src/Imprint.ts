@@ -3,18 +3,14 @@ import html2canvas from "html2canvas";
 import { Events } from "./Enums";
 
 const loadModule = async () => {
-  try {
-    return await import(/* @vite-ignore */ './imprint-gen')
-  } catch (e) {
-    return "Nothing";
-  }
-}
+  return await import(/* @vite-ignore */ "./imprint-gen");
+};
 
 const trailer = `<hr><p style="opacity: 1.0;">Dieses Impressum wurde erstellt durch <a href="https://www.impressum-generator.de" rel="nofollow">impressum-generator.de</a>.</p>`;
 const closeBtn = `<hr><div class="center" width=100%>
 <button id="hide-imprint" onclick="document.body.dispatchEvent(new Event('${Events.HIDE_IMPRINT.toString()}', { bubbles: true }))">Close</button></div>`;
 
-/** 
+/**
  * This class generates an imprint, if the file './imprint-gen.js' can be imported. The imprint will
  * be displayed as resizable image - instead of plain text. This is a little protection against
  * agents reading the HTML sourc.
@@ -24,7 +20,6 @@ class Imprint {
   private _div: HTMLDivElement;
   constructor() {
     window.addEventListener("resize", () => {
-      const imprintThis = this;
       if (this._div !== undefined) {
         this.hide();
         this.show();
@@ -36,7 +31,7 @@ class Imprint {
     document.body.addEventListener(Events.HIDE_IMPRINT.toString(), () => {
       this.hide();
     });
-    document.body.addEventListener("keydown", e => {
+    document.body.addEventListener("keydown", (e) => {
       if (e.key === "Esc" || e.key === "Escape") {
         this.hide();
       }
@@ -45,7 +40,7 @@ class Imprint {
   async isAvailable(): Promise<boolean> {
     const m = await loadModule();
     this._decryptedAES = m.decryptedAES;
-    return this._decryptedAES !== undefined;
+    return this._decryptedAES() !== undefined;
   }
   show() {
     this._div = document.createElement("div");

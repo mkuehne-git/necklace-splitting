@@ -1,10 +1,19 @@
 import CryptoJS from "crypto-js";
 import fs from 'fs';
 
-const rawdata = fs.readFileSync('./imprint.config.json');
-const config = JSON.parse(rawdata);
+const config = readConfig('./imprint.config.json');
+function readConfig(fname) {
+    try {
+        const data = fs.readFileSync(fname,
+            { encoding: 'utf8', flag: 'r' });
+        return JSON.parse(data);
+    } catch (err) {
+        console.log(`File: ${fname} not found, using default`);
+        return {};
+    }
+}
 
-const content = [
+const content = encrypted() !== undefined ? [
     'import CryptoJS from "crypto-js";',
     `const secret = "${secret()}";`,
     `const encrypted = "${encrypted()}";`,
@@ -12,15 +21,21 @@ const content = [
     '  return `${CryptoJS.AES.decrypt(encrypted, secret).toString(CryptoJS.enc.Utf8)}`;',
     '}',
     'export { decryptedAES };'
+] : [
+    'function decryptedAES() {',
+    '  return undefined;',
+    '}',
+    'export { decryptedAES };'
 ];
 function secret() {
     return "secret";
 }
+
 function encrypted() {
-    return CryptoJS.AES.encrypt(config.plainText.join("\n"), secret());
+    return config.plainText !== undefined ? CryptoJS.AES.encrypt(config.plainText.join("\n"), secret()) : undefined;
 }
 
-fs.writeFile(config.outFile != undefined?config.outFile:"imprint-gen.js", content.join("\n"), err => {
+fs.writeFile(config.outFile != undefined ? config.outFile : "src/imprint-gen.js", content.join("\n"), err => {
     if (err) {
         console.log(err);
     }
