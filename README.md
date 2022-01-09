@@ -41,15 +41,16 @@ View live on GitHub-Pages [https://mkuehne-git.github.io/temp/](https://mkuehne-
     ```bash
     $ npm install
     $ npm ci
+    $ npm run imprint
     $ npm run dev
     ```
 
     ```
-    > stolen-necklace@0.1.0 expose
+    > stolen-necklace@0.2.2 expose
     > vite --host
 
     
-      vite v2.6.13 dev server running at:
+      vite v2.7.10 dev server running at:
 
       > Local: http://localhost:3000/
       > Network: use `--host` to expose
