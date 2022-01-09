@@ -33,7 +33,7 @@ A similar scenario exists if the number of jewels is increased to infinity and t
 # Getting started
 
 ## Online
-View live on GitHub-Pages [https://mkuehne-git.github.io/temp/](https://mkuehne-git.github.io/temp/)
+View live on GitHub-Pages [https://mkuehne-git.github.io/necklace-splitting/](https://mkuehne-git.github.io/necklace-splitting/)
 
 ## Local Installation
 * Download this repository to your local machine and run

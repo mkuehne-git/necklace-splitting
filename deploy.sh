@@ -22,7 +22,7 @@ git commit -m 'deploy'
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-# Note: main refers to local branch, gh-pages to upstrem
-git push -f git@github.com:mkuehne-git/temp.git main:gh-pages
+# Note: deploy refers to local branch, gh-pages to upstrem
+git push -f git@github.com:mkuehne-git/necklace-splitting.git main:gh-pages
 
 cd -
