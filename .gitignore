@@ -107,4 +107,4 @@ dist
 imprint.config.json
 
 # Dynamic import, generated
-imprint-gen.ts
+imprint-gen.js
