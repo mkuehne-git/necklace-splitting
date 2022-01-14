@@ -33,6 +33,7 @@ const SETTINGS = {
   necklace: {
     number_of_jewels: 24,
     configuration: 13579652,
+    string: "",
     absolute_distribution: true,
     epsilon: 0.01,
     discrete: true,
@@ -83,7 +84,7 @@ class Settings {
     folderName,
     object,
     options,
-    onChange = (obj, prop, index) => { }
+    onChange = (obj, prop, index) => {}
   ) {
     // Create the folder
     const folder = parent.addFolder(folderName);
@@ -94,7 +95,7 @@ class Settings {
     parent,
     object,
     options,
-    onChange = (obj, prop, index) => { }
+    onChange = (obj, prop, index) => {}
   ) {
     const initial = object;
     object = {};
@@ -163,7 +164,11 @@ class Settings {
         1
       )
       .name("Configuration")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      .onChange(() => Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER));
+    necklaceFolder
+      .add(SETTINGS.necklace, "string")
+      .name("String")
+      .onChange(() => Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_STRING));
 
     necklaceFolder
       .add(SETTINGS.necklace, "absolute_distribution")
@@ -276,11 +281,10 @@ class Settings {
 
     this._captureFolder = this.gui.addFolder("Screen capture");
 
-
     // Configure imprint
     const imprint = new Imprint();
     const p = imprint.isAvailable();
-    p.then(available => {
+    p.then((available) => {
       if (available) {
         this.gui.add(SETTINGS, "imprint").name("Imprint");
       }

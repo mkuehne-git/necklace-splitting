@@ -13,6 +13,8 @@ enum NecklaceRender {
 
 enum Events {
   CREATE_SPHERE = "create-sphere",
+  SET_NECKLACE_CONFIGURATION_BY_NUMBER = "necklace-configuration-by-number",
+  SET_NECKLACE_CONFIGURATION_BY_STRING = "necklace-configuration-by-string",
   UPDATE_SPHERE_MATERIAL = "update-material",
   NECKLACE_CUT = "necklace-cut",
   UPDATE_VISIBLE = "update-visible",

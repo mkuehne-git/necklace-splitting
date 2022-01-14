@@ -31,8 +31,8 @@ class ScreenCapture {
   ) {
     this._fBeforeCapture = () => document.body;
     this._configureSettings(settings, options);
-    document.addEventListener("keypress", (e) => {
-      if (e.code === "KeyS") {
+    document.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && e.key === "#") {
         this.capture();
       }
     });

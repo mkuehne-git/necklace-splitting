@@ -32,7 +32,7 @@ function onThemeChange() {
   }
   document.body.classList.add(newThemeStyle);
 }
-
+Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
 sphere.render();
 
 const capture = new ScreenCapture(

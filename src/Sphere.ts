@@ -219,10 +219,6 @@ class Sphere extends NecklaceComponent {
    * @returns new instance of ShaderMaterial
    */
   createSphereMaterial() {
-    this.model.necklaceAsInt(
-      SETTINGS.necklace.configuration,
-      SETTINGS.necklace.number_of_jewels
-    );
     return new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
@@ -237,7 +233,7 @@ class Sphere extends NecklaceComponent {
   }
   get defines() {
     return {
-      MAX_JEWELS,
+      MAX_JEWELS: Math.max(1, this.model.necklace.length),
       MODE_STOLEN_NECKLACE: Showcase.STOLEN_NECKLACE,
       MODE_SEGMENTS: Showcase.SEGMENTS,
       MODE_SHADER_LAMP: Showcase.SHADER_LAMP,

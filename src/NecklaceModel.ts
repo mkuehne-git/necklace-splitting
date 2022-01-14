@@ -24,13 +24,28 @@ class NecklaceModel {
    */
   constructor() {
     this.initializeStatus(0);
+    window.addEventListener(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER, () =>
+      this.necklaceFromInt(
+        SETTINGS.necklace.configuration,
+        SETTINGS.necklace.number_of_jewels
+      )
+    );
+    window.addEventListener(Events.SET_NECKLACE_CONFIGURATION_BY_STRING, () =>
+      this.necklaceFromStr(SETTINGS.necklace.string)
+    );
   }
 
   get necklace(): number[] {
     return [...this._necklace];
   }
 
-  necklaceAsInt(necklaceAsInt: number, numberOfJewels: number): void {
+  /**
+   * Creates necklace configuration from number.
+   *
+   * @param {number} necklaceAsInt binary representation of number defines the necklace
+   * @param {number} numberOfJewels the total number of jewels, needed to fill leading zeroes
+   */
+  private necklaceFromInt(necklaceAsInt: number, numberOfJewels: number): void {
     this.initializeStatus(numberOfJewels);
     const strVector = necklaceAsInt.toString(2);
     // console.log(`necklaceAsInt: ${necklaceAsInt}, ${strVector}`);
@@ -47,6 +62,31 @@ class NecklaceModel {
         this._cnt.y += 1;
       }
     }
+    Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
+  }
+
+  private necklaceFromStr(necklaceAsStr: string): void {
+    this.initializeStatus(1);
+    this._necklace = [];
+    for (let i = 0; i < necklaceAsStr.length; i++) {
+      const necklaceAsInt = necklaceAsStr.charCodeAt(i);
+      const strVector = necklaceAsInt.toString(2);
+      // console.log(`necklaceAsInt: ${necklaceAsInt}, ${strVector}`);
+      if (necklaceAsInt != 0) {
+        for (const c of strVector) {
+          this._necklace.push(c === "0" ? 0 : 1);
+        }
+      }
+    }
+    for (const jewel of this._necklace) {
+      if (jewel === 0.0) {
+        this._cnt.x += 1;
+      } else {
+        this._cnt.y += 1;
+      }
+    }
+    console.log(`necklaceFromString: ${necklaceAsStr}: ${this._necklace} ${this._cnt.x},${this._cnt.y}`);
+    Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
   }
 
   /**
