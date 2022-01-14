@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.2.3
+* It is possible to enter necklace configuration as text
+* Screen capture now uses CTRL + #.
+
 ### v0.2.2
 * Fix difference between discrete and continous split.
 * Hide mouse pointer when hovering over sphere.
