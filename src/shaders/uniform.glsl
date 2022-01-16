@@ -2,6 +2,8 @@ uniform int u_mode;
 uniform bool u_necklace_absolute;
 uniform bool u_necklace_discrete;
 uniform bool u_assert_boundary;
+uniform bool u_show_solution_band;
+uniform bool u_show_solutions;
 uniform bool u_show_single_thiefs_region;
 uniform float u_epsilon;
 uniform float u_radius;

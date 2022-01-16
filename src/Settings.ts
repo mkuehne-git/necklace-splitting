@@ -34,6 +34,8 @@ const SETTINGS = {
     number_of_jewels: 24,
     configuration: 13579652,
     string: "",
+    show_solution_band: true,
+    show_solutions: true,
     absolute_distribution: true,
     epsilon: 0.01,
     discrete: true,
@@ -164,23 +166,41 @@ class Settings {
         1
       )
       .name("Configuration")
-      .onChange(() => Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER));
+      .onChange(() =>
+        Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER)
+      );
     necklaceFolder
       .add(SETTINGS.necklace, "string")
       .name("String")
-      .onChange(() => Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_STRING));
-
+      .onChange(() =>
+        Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_STRING)
+      );
     necklaceFolder
+      .add(SETTINGS.necklace, "discrete")
+      .name("Discrete")
+      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+    necklaceFolder
+      .add(SETTINGS.necklace, "show_solution_band")
+      .name("Solution Band")
+      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      console.error("Enable feature");
+    // necklaceFolder
+    //   .add(SETTINGS.necklace, "show_solutions")
+    //   .name("Solutions")
+    //   .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+
+// ORG
+    // necklaceFolder
+    //   .add(SETTINGS.necklace, "absolute_distribution")
+    //   .name("Absolute/Relative")
+    //   .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
+      necklaceFolder
       .add(SETTINGS.necklace, "absolute_distribution")
       .name("Absolute/Relative")
       .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
     necklaceFolder
       .add(SETTINGS.necklace, "epsilon", 0, 0.15)
       .name("epsilon")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-    necklaceFolder
-      .add(SETTINGS.necklace, "discrete")
-      .name("Discrete")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
 
     const viewFolder = this.gui.addFolder("View");

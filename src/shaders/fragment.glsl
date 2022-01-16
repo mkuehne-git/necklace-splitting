@@ -14,7 +14,7 @@ vec2 deltaTarget() {
     float y = u_count_1 != 0 ? 0.5 : 0.0;
     return vec2(x, y);
 }
-vec3 delta(vec2 thief_a, vec2 thief_b) {
+vec3 deltaColor(vec2 thief_a, vec2 thief_b) {
     vec2 target = deltaTarget();
     float dist_thief_a = distance(thief_a, target);
     float dist_thief_b = distance(thief_b, target);
@@ -22,6 +22,12 @@ vec3 delta(vec2 thief_a, vec2 thief_b) {
     return vec3(dist_thief_a, dist_thief_b, blue);
 }
 
+bool isSolutionArea(vec2 thief_a, vec2 thief_b) {
+    vec2 target = deltaTarget();
+    float dist_thief_a = distance(thief_a, target);
+    float dist_thief_b = distance(thief_b, target);
+    return dist_thief_a < u_epsilon;
+}
 /** 
  * Calculate the discrete distribution of the jewels 
  * based on the squared (x,y,z) values of the given cut positions.
@@ -137,7 +143,7 @@ vec3 calculate_stolen_necklace(vec3 cuts) {
     if(u_mode == MODE_SHADER_LAMP) {
         return ((thief_a - thief_b).xyy * 0.5) + vec3(0.5);
     }
-    return delta(thief_a, thief_b);
+    return deltaColor(thief_a, thief_b);
 }
 
 // Calculate the distribution of the of the three available necklace segments.
@@ -170,7 +176,7 @@ vec3 calculate_segment_distribution(vec3 cuts) {
     }
 
     vec2 thief_b = vec2(1.0) - thief_a;
-    return delta(thief_a, thief_b);
+    return deltaColor(thief_a, thief_b);
 }
 
 vec3 assertBoundary(vec3 v, float min, float max) {
@@ -218,7 +224,34 @@ bool isValidSphereData() {
     }
     return v_sphereData_valid != 0.0;
 }
+vec3 calculateSolutionArea(vec3 colorIn, vec3 cuts) {
+    if (!u_show_solution_band) {
+        return colorIn;
+    }
+    float xSq = cuts.x * cuts.x;
+    float ySq = cuts.y * cuts.y;
+    float zSq = cuts.z * cuts.z;
 
+    vec2 thief_a = vec2(0.0, 0.0);
+    if(cuts.x > 0.0) {
+        thief_a.x += xSq;
+    } else {
+        thief_a.y += xSq;
+    }
+    if(cuts.y > 0.0) {
+        thief_a.x += ySq;
+    } else {
+        thief_a.y += ySq;
+    }
+    if(cuts.z > 0.0) {
+        thief_a.x += zSq;
+    } else {
+        thief_a.y += zSq;
+    }
+
+    vec2 thief_b = vec2(1.0) - thief_a;
+    return isSolutionArea(thief_a, thief_b) ? vec3(0.5, 0.0, 0.0)+colorIn : colorIn;
+}
 void fragColorWithIntersect(vec3 colorIn) {
     vec3 intersect = u_intersect / u_scaled_radius;
 
@@ -241,6 +274,7 @@ void main() {
     if(u_mode == MODE_STOLEN_NECKLACE || u_mode == MODE_SHADER_LAMP) {
         if(isActiveRegion() && isOnSphere(v_sphereData_p, v_sphereData_octant, v_sphereData_valid)) {
             vec3 color = calculate_stolen_necklace(v_pos);
+            color = calculateSolutionArea(color, v_pos);
             fragColorWithIntersect(color);
         }
         return;

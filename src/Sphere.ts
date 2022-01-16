@@ -283,6 +283,8 @@ class Sphere extends NecklaceComponent {
         ),
       },
       u_epsilon: { type: "f", value: SETTINGS.necklace.epsilon },
+      u_show_solution_band: { type: "b", value: SETTINGS.necklace.show_solution_band},
+      u_show_solutions: { type: "b", value: SETTINGS.necklace.show_solutions},
       u_show_single_thiefs_region: {
         type: "b",
         value: SETTINGS.view.show_single_thiefs_region,
