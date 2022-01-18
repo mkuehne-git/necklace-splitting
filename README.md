@@ -8,7 +8,7 @@ Each point (x,y,z) on the sphere denotes a necklace cut - note the white indicat
 
 The coloring indicates how much one thief owns per jewel type. The colors red and green are used to distinguish between the jewel types. Bright yellow (mix between red and green) for instance indicates that one thief owns the majority of both jewel types.
 
-## Solving the Necklace-Splitting
+## Solve the Necklace splitting Problem
 If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identifical. The orange line around the sphere shows this *Solution Band*. All solutions must exist on this line. This means, that the second cut position is defined by the first cut position. Furthemore, the *Solutions* (higlighted in blue) can be calculated in linear time.
 
 ![Solving necklace-split](./src/images/necklace-with-solution.png)
@@ -16,7 +16,9 @@ If both jewel types are equally split between the two thiefs, the length of the 
 ## Octants
 The sphere can be divided into eight octants. The octants can be binary enumerated using the polarity of (x,y,z). The octants are kind of symmetrical to the origin. Mirrowing an octant at the origin means swapping the thiefs. The octants with number 000 and 111 are kind of boring, since they assign all jewels to just one thief. There is an option to remove these octants from the view.
 
-In contrast, the octants with number 010 and 101 show most diversity. There is the slider ***Octant Offset***, which extrudes the octants from the sphere.
+In contrast, the octants with number 010 and 101 show most diversity. Whenever two cuts are necessary, you will find the solutions in this octants.
+
+You can extrude the octants from the sphere using the slider ***Octant Offset***.
 
 ![necklace-octants-removed](./src/images/necklace-octants.png)
 
