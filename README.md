@@ -4,30 +4,24 @@ This HTML-5 application features an explorable visualization of the [Necklace sp
 
 After watching the [3blue1brown](https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw) video [The Borsuk-Ulam theorem and stolen necklaces](https://youtu.be/yuVqxCSsE7c) a couple of times, I wondered, how the mapping of the necklace splitting onto a sphere would actually look like.
 
-Each point (x,y,z) on the sphere denotes a necklace cut - see the white indicator, which splits the necklace in maximal three segments of length (x²,y²,z²). The sign of each ordinate assigns the segment to either thief A or B.
+Each point (x,y,z) on the sphere denotes a necklace cut - note the white indicator on the image. The cut splits the necklace in maximal three segments of length (x²,y²,z²). The sign of each ordinate assigns the segment to either thief A or B.
 
 The coloring indicates how much one thief owns per jewel type. The colors red and green are used to distinguish between the jewel types. Bright yellow (mix between red and green) for instance indicates that one thief owns the majority of both jewel types.
 
 ## Solving the Necklace-Splitting
-If both jewel types are equally split between the two thiefs, each thief owns a ratio 0.5 per jewel type. The following image shows the distance to this target vector. The dark areas mark the target area. The blue spots in the lower right region of the sphere mark the best fit.
+If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identifical. The orange line around the sphere shows this *Solution Band*. All solutions must exist on this line. This means, that the second cut position is defined by the first cut position. Furthemore, the *Solutions* (higlighted in blue) can be calculated in linear time.
 
-![Solving necklace-split](./src/images/necklace-relative.png)
+![Solving necklace-split](./src/images/necklace-with-solution.png)
 
-## Observing antipodal Points on Sphere
-In addition to the necklace-splitting sphere a few other show cases are provided. All of them color the sphere continously with two or three colors. To better recognize the antipodal points on the sphere it is sometimes useful to remove one color.
+## Octants
+The sphere can be divided into eight octants. The octants can be binary enumerated using the polarity of (x,y,z). The octants are kind of symmetrical to the origin. Mirrowing an octant at the origin means swapping the thiefs. The octants with number 000 and 111 are kind of boring, since they assign all jewels to just one thief. There is an option to remove these octants from the view.
 
-## Special cases
-### All Jewels assigned to one Thief
-The sphere can be divided into eight octants. Two of them assign all jewels to only one of the two thiefs. The following image shows the sphere, where those less interesting octants have been removed.
+In contrast, the octants with number 010 and 101 show most diversity. There is the slider ***Octant Offset***, which extrudes the octants from the sphere.
+
 ![necklace-octants-removed](./src/images/necklace-octants.png)
 
-### Only one Jewel available
-In the case where the necklace contains only a single jewel, a fair split is only possible if continous splits are allowed. A fair split requires the line segments (x², y², z²) being equally distributed between the thiefs.
-![necklace-line-segements](./src/images/necklace-line-segments.png)
-
-The blue band indicates these areas.
-
-A similar scenario exists if the number of jewels is increased to infinity and the jewel types are randomly distributed (noise).
+## Observing antipodal Points on Sphere
+In addition to the necklace-splitting sphere a few other show cases are provided. All of them color the sphere continously with three colors. To better recognize the antipodal points on the sphere it is sometimes useful to remove one color.
 
 # Getting started
 
