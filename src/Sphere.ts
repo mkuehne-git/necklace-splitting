@@ -242,9 +242,7 @@ class Sphere extends NecklaceComponent {
   }
 
   get uniforms() {
-    const scaled_radius =
-      SETTINGS.sphere.radius_factor * SETTINGS.sphere.radius;
-    const offset = SETTINGS.sphere.offset_octant / scaled_radius;
+    const offset = SETTINGS.sphere.offset_octant / SETTINGS.sphere.radius;
     return {
       u_mode: { type: "i", value: SETTINGS.int_mode },
       u_necklace_discrete: {
@@ -254,7 +252,6 @@ class Sphere extends NecklaceComponent {
       u_input: { type: "i", value: this.model.necklace },
       u_count_0: { type: "i", value: this.model.count_0 },
       u_count_1: { type: "i", value: this.model.count_1 },
-      u_radius: { type: "f", value: SETTINGS.sphere.radius },
       u_offset_sphere_octant: {
         type: "f",
         value: SETTINGS.sphere.offset_octant,
@@ -263,8 +260,7 @@ class Sphere extends NecklaceComponent {
         type: "b",
         value: SETTINGS.sphere.use_bad_on_sphere_check,
       },
-      u_radius_factor: { type: "f", value: SETTINGS.sphere.radius_factor },
-      u_scaled_radius: { type: "v3", value: new THREE.Vector3(scaled_radius, scaled_radius, scaled_radius) },
+      u_radius_vector: { type: "v3", value: new THREE.Vector3(SETTINGS.sphere.radius, SETTINGS.sphere.radius, SETTINGS.sphere.radius) },
       u_scale_color: {
         type: "v3",
         value: new THREE.Vector3(

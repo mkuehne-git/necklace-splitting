@@ -56,10 +56,10 @@ void main() {
     SphereData sd_shader = displace_octant(position, u_offset_sphere_octant);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(sd_shader.p, 1.0);
 
-    v_pos = position / u_scaled_radius;
+    v_pos = position / u_radius_vector;
 
     // Calculate internal output and add displacement to sphere octants
-    SphereData sd_out = displace_octant(v_pos, u_offset_sphere_octant / u_scaled_radius.x);
+    SphereData sd_out = displace_octant(v_pos, u_offset_sphere_octant / u_radius_vector.x);
     v_sphereData_p = sd_out.p;
     v_sphereData_octant = sd_out.octant;
     v_sphereData_valid = sd_out.valid ? 1.0 : 0.0;

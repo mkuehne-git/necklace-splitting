@@ -146,8 +146,7 @@ float inter(float a, float b, float x) {
     return (x - a) / (b - a);
 }
 bool isOnSphere(vec3 p, float oct, float valid) {
-    float scaled_radius = u_radius_factor * u_radius;
-    float offset = u_offset_sphere_octant / scaled_radius;
+    float offset = u_offset_sphere_octant / u_radius_vector.x;
     return (valid != 0.0) && (abs(p.x) >= offset) && (abs(p.y) >= offset) && (abs(p.z) >= offset);
 
 }
@@ -186,7 +185,7 @@ vec3 calculateSolutionArea(vec3 colorIn, vec3 cuts) {
     return isSolutionArea(thief_a, thief_b) ? vec3(0.5, 0.0, 0.0) + colorIn : colorIn;
 }
 void fragColorWithIntersect(vec3 colorIn) {
-    vec3 intersect = u_intersect / u_scaled_radius;
+    vec3 intersect = u_intersect / u_radius_vector;
 
     vec3 color = colorIn;
     float dist = distance(v_pos, intersect);

@@ -40,7 +40,6 @@ const SETTINGS = {
   sphere: {
     radius: 15,
     segments: 128,
-    radius_factor: 1.0,
     offset_octant: 0.0,
     use_bad_on_sphere_check: false,
   },
@@ -226,10 +225,6 @@ class Settings {
     sphereFolder
       .add(SETTINGS.sphere, "segments", 3, 511, 1)
       .name("Segments")
-      .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
-    sphereFolder
-      .add(SETTINGS.sphere, "radius_factor", 0.01, 1.5, 0.01)
-      .name("Scaling")
       .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
 
     const controlsSubFolder = viewFolder.addFolder("Other Controls");
