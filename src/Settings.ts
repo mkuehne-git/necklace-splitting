@@ -194,7 +194,7 @@ class Settings {
       .onChange(() => Settings.dispatchEvent(Events.THEME_CHANGED));
     viewFolder
       .add(SETTINGS.view, "show_single_thiefs_region")
-      .name(`Single thief's area`)
+      .name(`Single Thief's Area`)
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     viewFolder
       .add(SETTINGS.view, "axes_visible")

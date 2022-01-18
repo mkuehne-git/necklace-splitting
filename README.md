@@ -14,7 +14,7 @@ If both jewel types are equally split between the two thiefs, the length of the 
 ![Solving necklace-split](./src/images/necklace-with-solution.png)
 
 ## Octants
-The sphere can be divided into eight octants. The octants can be binary enumerated using the polarity of (x,y,z). The octants are kind of symmetrical to the origin. Mirrowing an octant at the origin means swapping the thiefs. The octants with number 000 and 111 are kind of boring, since they assign all jewels to just one thief. There is an option to remove these octants from the view.
+The sphere can be divided into eight octants. The octants can be enumerated using the polarity of (x,y,z) as binary digit. The octants are symmetrical to the origin. Mirrowing an octant at the origin means swapping the thiefs. The octants with number 000 and 111 are not very interesting, since they assign all jewels to just one thief. The option ***Single Thief's Area*** makes it possible to show or hide these octants from the view.
 
 In contrast, the octants with number 010 and 101 show most diversity. Whenever two cuts are necessary, you will find the solutions in this octants.
 
