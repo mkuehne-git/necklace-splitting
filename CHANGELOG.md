@@ -1,7 +1,15 @@
 ## Changelog
 
 ### v0.2.3
-* It is possible to enter necklace configuration as text
+#### Features
+* Enter necklace configuration as text
+* Show possible solution area
+* Show solutions
+
+#### Other
+* Remove showcases ***Segments only***, and ***Test Position Ranges***
+* Remove options ***absolute/relative***, and ***Assert Ranges***
+* Remove slider ***Scaling***
 * Screen capture now uses CTRL + #.
 
 ### v0.2.2
