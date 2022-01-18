@@ -9,7 +9,7 @@ Each point (x,y,z) on the sphere denotes a necklace cut - note the white indicat
 The coloring indicates how much one thief owns per jewel type. The colors red and green are used to distinguish between the jewel types. Bright yellow (mix between red and green) for instance indicates that one thief owns the majority of both jewel types.
 
 ## Solve the Necklace splitting Problem
-If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identifical. The orange line around the sphere shows this *Solution Band*. All solutions must exist on this line. This means, that the second cut position is defined by the first cut position. Furthemore, the *Solutions* (higlighted in blue) can be calculated in linear time.
+If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identifical. The orange line around the sphere shows this *Solution Band*. All solutions must exist on this line. This means, that the second cut position is determined by the first cut. Furthermore, the *Solutions* (higlighted in blue) can be calculated in linear time.
 
 ![Solving necklace-split](./src/images/necklace-with-solution.png)
 
