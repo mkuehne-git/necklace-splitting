@@ -1,14 +1,8 @@
 enum Showcase {
   STOLEN_NECKLACE = 0,
-  SEGMENTS,
   SHADER_LAMP,
   SPACE_COLOR,
   SINUSOID,
-  ASSERT_POSITION_BOUNDARY,
-}
-enum NecklaceRender {
-  ABSOLUTE = 0,
-  DELTA,
 }
 
 enum Events {
@@ -24,4 +18,4 @@ enum Events {
   HIDE_IMPRINT = "hide-imprint",
 }
 
-export { Events, NecklaceRender, Showcase };
+export { Events, Showcase };

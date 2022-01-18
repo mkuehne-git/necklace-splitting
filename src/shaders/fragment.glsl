@@ -128,55 +128,11 @@ vec2 canonicalThief(vec2 thief) {
  * of the given position.
  * 
  * @param cuts {vec3} the given position representing the two cuts
- * @returns {vec3} the distribution of the jewels as color
+ * @returns {vec2} the number jewels (per type) assigned to first thief
  */
-vec3 calculate_stolen_necklace(vec3 cuts) {
+vec2 calculate_stolen_necklace(vec3 cuts) {
     vec2 thief_a = u_necklace_discrete ? calculate_stolen_necklace_discrete(cuts) : calculate_stolen_necklace_continous(cuts);
-
-    thief_a = canonicalThief(thief_a);
-    if(u_mode == MODE_STOLEN_NECKLACE && u_necklace_absolute) {
-        return vec3(thief_a, 0.0);
-    }
-
-    vec2 thief_b = vec2(1.0) - thief_a;
-
-    if(u_mode == MODE_SHADER_LAMP) {
-        return ((thief_a - thief_b).xyy * 0.5) + vec3(0.5);
-    }
-    return deltaColor(thief_a, thief_b);
-}
-
-// Calculate the distribution of the of the three available necklace segments.
-// The segments are defined by the squared (x,y,z) values.
-// This is basically a necklace-split without jewels.
-// The assigment of a segment to one of the thieves is based on the polarity of the (x,y,z) values only.
-vec3 calculate_segment_distribution(vec3 cuts) {
-    float xSq = cuts.x * cuts.x;
-    float ySq = cuts.y * cuts.y;
-    float zSq = cuts.z * cuts.z;
-
-    vec2 thief_a = vec2(0.0, 0.0);
-    if(cuts.x > 0.0) {
-        thief_a.x += xSq;
-    } else {
-        thief_a.y += xSq;
-    }
-    if(cuts.y > 0.0) {
-        thief_a.x += ySq;
-    } else {
-        thief_a.y += ySq;
-    }
-    if(cuts.z > 0.0) {
-        thief_a.x += zSq;
-    } else {
-        thief_a.y += zSq;
-    }
-    if(u_necklace_absolute) {
-        return vec3(thief_a, 0.0);
-    }
-
-    vec2 thief_b = vec2(1.0) - thief_a;
-    return deltaColor(thief_a, thief_b);
+    return canonicalThief(thief_a);
 }
 
 vec3 assertBoundary(vec3 v, float min, float max) {
@@ -225,7 +181,7 @@ bool isValidSphereData() {
     return v_sphereData_valid != 0.0;
 }
 vec3 calculateSolutionArea(vec3 colorIn, vec3 cuts) {
-    if (!u_show_solution_band) {
+    if(!u_show_solution_band) {
         return colorIn;
     }
     float xSq = cuts.x * cuts.x;
@@ -250,7 +206,7 @@ vec3 calculateSolutionArea(vec3 colorIn, vec3 cuts) {
     }
 
     vec2 thief_b = vec2(1.0) - thief_a;
-    return isSolutionArea(thief_a, thief_b) ? vec3(0.5, 0.0, 0.0)+colorIn : colorIn;
+    return isSolutionArea(thief_a, thief_b) ? vec3(0.5, 0.0, 0.0) + colorIn : colorIn;
 }
 void fragColorWithIntersect(vec3 colorIn) {
     vec3 intersect = u_intersect / u_scaled_radius;
@@ -273,28 +229,25 @@ void main() {
     // Don't use switch not supported on MAC-M1
     if(u_mode == MODE_STOLEN_NECKLACE || u_mode == MODE_SHADER_LAMP) {
         if(isActiveRegion() && isOnSphere(v_sphereData_p, v_sphereData_octant, v_sphereData_valid)) {
-            vec3 color = calculate_stolen_necklace(v_pos);
+            vec2 thief_a = calculate_stolen_necklace(v_pos);
+            vec2 thief_b = vec2(1.0) - thief_a;
+            vec3 color = vec3(thief_a, 0.0);
+            if(u_mode == MODE_SHADER_LAMP) {
+                color = ((thief_a - thief_b).xyy * 0.5) + vec3(0.5);
+            }
+            if(u_show_solutions && isSolutionArea(thief_a, thief_b)) {
+                color = deltaColor(thief_a, thief_b);
+            }
             color = calculateSolutionArea(color, v_pos);
-            fragColorWithIntersect(color);
-        }
-        return;
-    } else if(u_mode == MODE_SEGMENTS) {
-        if(isActiveRegion()) {
-            vec3 color = calculate_segment_distribution(v_pos);
             fragColorWithIntersect(color);
         }
         return;
     } else if(u_mode == MODE_SPACE_COLOR) {
         fragColorWithIntersect(v_pos);
         return;
-    } else if(u_mode == MODE_SINUSOID) {
-        if(isValidSphereData()) {
-            vec3 color = vec3(sin(M_PI * v_pos.x), sin(M_PI * v_pos.y), sin(M_PI * v_pos.z));
-            fragColorWithIntersect(color);
-        }
-        return;
-    } else {
-        gl_FragColor = vec4(assertPositionBoundary(v_pos), u_alpha);
-        return;
+    } else if(u_mode == MODE_SINUSOID && isValidSphereData()) {
+        vec3 color = vec3(sin(M_PI * v_pos.x), sin(M_PI * v_pos.y), sin(M_PI * v_pos.z));
+        fragColorWithIntersect(color);
     }
+    return;
 }

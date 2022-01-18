@@ -1,6 +1,6 @@
 // To configure settings
 import { GUI } from "three/examples/jsm/libs/dat.gui.module";
-import { Events, NecklaceRender, Showcase } from "./Enums";
+import { Events, Showcase } from "./Enums";
 import { Imprint } from "./Imprint";
 
 /** Vectors whose distance is less that EPS are treated equal. */
@@ -20,11 +20,9 @@ const MAX_JEWELS = 32;
  */
 const MODES = [
   "Stolen Necklace",
-  "Segments only",
   "Shader Lamp",
   "Space Colors",
   "Sinusoid",
-  "Test Position Ranges",
 ];
 
 const SETTINGS = {
@@ -36,7 +34,6 @@ const SETTINGS = {
     string: "",
     show_solution_band: true,
     show_solutions: true,
-    absolute_distribution: true,
     epsilon: 0.01,
     discrete: true,
   },
@@ -183,21 +180,10 @@ class Settings {
       .add(SETTINGS.necklace, "show_solution_band")
       .name("Solution Band")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-      console.error("Enable feature");
-    // necklaceFolder
-    //   .add(SETTINGS.necklace, "show_solutions")
-    //   .name("Solutions")
-    //   .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-
-// ORG
-    // necklaceFolder
-    //   .add(SETTINGS.necklace, "absolute_distribution")
-    //   .name("Absolute/Relative")
-    //   .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
-      necklaceFolder
-      .add(SETTINGS.necklace, "absolute_distribution")
-      .name("Absolute/Relative")
-      .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
+    necklaceFolder
+      .add(SETTINGS.necklace, "show_solutions")
+      .name("Solutions")
+      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     necklaceFolder
       .add(SETTINGS.necklace, "epsilon", 0, 0.15)
       .name("epsilon")

@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
 
-import { Events, NecklaceRender, Showcase } from "./Enums";
+import { Events, Showcase } from "./Enums";
 import { EPS_SQ, MAX_JEWELS, Settings, SETTINGS } from "./Settings";
 import NecklaceModel from "./NecklaceModel";
 import { Resizer } from "./Resizer";
@@ -235,13 +235,9 @@ class Sphere extends NecklaceComponent {
     return {
       MAX_JEWELS: Math.max(1, this.model.necklace.length),
       MODE_STOLEN_NECKLACE: Showcase.STOLEN_NECKLACE,
-      MODE_SEGMENTS: Showcase.SEGMENTS,
       MODE_SHADER_LAMP: Showcase.SHADER_LAMP,
       MODE_SPACE_COLOR: Showcase.SPACE_COLOR,
       MODE_SINUSOID: Showcase.SINUSOID,
-      MODE_ASSERT_POSITION_BOUNDARY: Showcase.ASSERT_POSITION_BOUNDARY,
-      NECKLACE_ABSOLUTE: NecklaceRender.ABSOLUTE,
-      NECKLACE_DELTA: NecklaceRender.DELTA,
     };
   }
 
@@ -251,10 +247,6 @@ class Sphere extends NecklaceComponent {
     const offset = SETTINGS.sphere.offset_octant / scaled_radius;
     return {
       u_mode: { type: "i", value: SETTINGS.int_mode },
-      u_necklace_absolute: {
-        type: "b",
-        value: SETTINGS.necklace.absolute_distribution,
-      },
       u_necklace_discrete: {
         type: "b",
         value: SETTINGS.necklace.discrete,
