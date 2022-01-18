@@ -58,7 +58,6 @@ const SETTINGS = {
     necklace_visible: true,
     gauge_visible: true,
     show_single_thiefs_region: true,
-    assert_boundary: true,
     axes_visible: true,
     mesh_visible: false,
     faces_visible: true,
@@ -246,10 +245,6 @@ class Settings {
       .add(SETTINGS.view, "gauge_visible")
       .name(`Gauge`)
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
-    controlsSubFolder
-      .add(SETTINGS.view, "assert_boundary")
-      .name("Assert ranges")
-      .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
 
     const colorFolder = viewFolder.addFolder("Color");
     colorFolder

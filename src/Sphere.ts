@@ -251,7 +251,6 @@ class Sphere extends NecklaceComponent {
         type: "b",
         value: SETTINGS.necklace.discrete,
       },
-      u_assert_boundary: { type: "b", value: SETTINGS.view.assert_boundary },
       u_input: { type: "i", value: this.model.necklace },
       u_count_0: { type: "i", value: this.model.count_0 },
       u_count_1: { type: "i", value: this.model.count_1 },

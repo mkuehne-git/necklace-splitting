@@ -135,29 +135,6 @@ vec2 calculate_stolen_necklace(vec3 cuts) {
     return canonicalThief(thief_a);
 }
 
-vec3 assertBoundary(vec3 v, float min, float max) {
-    if(!u_assert_boundary) {
-        return v;
-    }
-    if(v.x < min || v.y < min || v.z < min) {
-        return vec3(1.0, 0.0, 0.0);
-    }
-    if(v.x > max || v.y > max || v.z > max) {
-        return vec3(0.0, 0.0, 1.0);
-    }
-    return v;
-}
-
-// Assert that all component of given vector are within [-1.0, 1.0]
-vec3 assertPositionBoundary(vec3 v) {
-    return assertBoundary(v, -1.0, 1.0);
-}
-
-// Assert that all colors are within [0.0, 1.0]
-vec3 assertColorBoundary(vec3 v) {
-    return assertBoundary(v, 0.0, 1.0);
-}
-
 bool isActiveRegion() {
     return u_show_single_thiefs_region || (!(v_pos.x >= 0.0 && v_pos.y >= 0.0 && v_pos.z >= 0.0) && !(v_pos.x < 0.0 && v_pos.y < 0.0 && v_pos.z < 0.0));
 }
