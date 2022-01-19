@@ -9,14 +9,14 @@ Each point (x,y,z) on the sphere denotes a necklace cut - note the white indicat
 The coloring indicates how much one thief owns per jewel type. The colors red and green are used to distinguish between the jewel types. Bright yellow (mix between red and green) for instance indicates that one thief owns the majority of both jewel types.
 
 ## Solve the Necklace splitting Problem
-If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identifical. The orange line around the sphere shows this *Solution Band*. All solutions must exist on this line. This means, that the second cut position is determined by the first cut. Furthermore, the *Solutions* (higlighted in blue) can be calculated in linear time.
+If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identical. The orange line around the sphere shows this *Solution Band*. All solutions must exist on this line. This means, that the second cut position is determined by the first cut. Furthermore, the *Solutions* (highlighted in blue) can be calculated in linear time.
 
 ![Solving necklace-split](./src/images/necklace-with-solution.png)
 
 ## Octants
 The sphere can be divided into eight octants. The octants can be enumerated using the polarity of (x,y,z) as binary digit. The octants are symmetrical to the origin. Mirrowing an octant at the origin means swapping the thiefs. The octants with number 000 and 111 are not very interesting, since they assign all jewels to just one thief. The option ***Single Thief's Area*** makes it possible to show or hide these octants from the view.
 
-In contrast, the octants with number 010 and 101 show most diversity. Whenever two cuts are necessary, you will find the solutions in this octants.
+In contrast, the octants with number 010 and 101 show most diversity. Whenever two cuts are necessary, you will find the solutions in these octants.
 
 You can extrude the octants from the sphere using the slider ***Octant Offset***.
 
