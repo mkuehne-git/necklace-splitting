@@ -1,6 +1,6 @@
 {
   "name": "stolen-necklace",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "scripts": {
     "dev": "vite",
     "expose": "vite --host --https",

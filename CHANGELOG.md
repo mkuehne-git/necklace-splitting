@@ -1,4 +1,7 @@
 ## Changelog
+* Fix gauge color
+* Rotation specified in Hz.
+* npm update
 
 ### v0.2.3
 #### Features
