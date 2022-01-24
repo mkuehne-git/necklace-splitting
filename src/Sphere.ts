@@ -43,6 +43,7 @@ class Sphere extends NecklaceComponent {
   private _group: THREE.Group;
   private _axesHelper: THREE.AxesHelper;
   private _resizer: Resizer;
+  private _lastRender: DOMHighResTimeStamp;
 
   constructor(
     model: NecklaceModel,
@@ -134,14 +135,18 @@ class Sphere extends NecklaceComponent {
   }
 
   render() {
-    const callback = () => {
-      this._render();
+    const callback: FrameRequestCallback = (time: DOMHighResTimeStamp) => {
+      if (this._lastRender === undefined) {
+        this._lastRender = time;
+      }
+      this._render(time - this._lastRender);
+      this._lastRender = time;
       requestAnimationFrame(callback);
     };
-    callback();
+    callback((performance || Date).now());
   }
 
-  _render() {
+  _render(delta: DOMHighResTimeStamp) {
     stats.begin();
 
     // required if controls.enableDamping or controls.autoRotate are set to true
@@ -160,16 +165,16 @@ class Sphere extends NecklaceComponent {
         this.domElement.style.cursor = "auto";
       }
     }
-
     if (SETTINGS.animation.trigger_reset) {
       SETTINGS.animation.trigger_reset = false;
       this._group.rotation.x = 0;
       this._group.rotation.y = 0;
       this._group.rotation.z = 0;
     } else if (SETTINGS.animation.run) {
-      this._group.rotation.x += SETTINGS.animation.rotation_x;
-      this._group.rotation.y += SETTINGS.animation.rotation_y;
-      this._group.rotation.z += SETTINGS.animation.rotation_z;
+      const ROT_FACTOR = (Math.PI * delta) / 500;
+      this._group.rotation.x += SETTINGS.animation.rotation_x * ROT_FACTOR;
+      this._group.rotation.y += SETTINGS.animation.rotation_y * ROT_FACTOR;
+      this._group.rotation.z += SETTINGS.animation.rotation_z * ROT_FACTOR;
     }
     stats.end();
   }
@@ -260,7 +265,14 @@ class Sphere extends NecklaceComponent {
         type: "b",
         value: SETTINGS.sphere.use_bad_on_sphere_check,
       },
-      u_radius_vector: { type: "v3", value: new THREE.Vector3(SETTINGS.sphere.radius, SETTINGS.sphere.radius, SETTINGS.sphere.radius) },
+      u_radius_vector: {
+        type: "v3",
+        value: new THREE.Vector3(
+          SETTINGS.sphere.radius,
+          SETTINGS.sphere.radius,
+          SETTINGS.sphere.radius
+        ),
+      },
       u_scale_color: {
         type: "v3",
         value: new THREE.Vector3(
@@ -270,8 +282,11 @@ class Sphere extends NecklaceComponent {
         ),
       },
       u_epsilon: { type: "f", value: SETTINGS.necklace.epsilon },
-      u_show_solution_band: { type: "b", value: SETTINGS.necklace.show_solution_band},
-      u_show_solutions: { type: "b", value: SETTINGS.necklace.show_solutions},
+      u_show_solution_band: {
+        type: "b",
+        value: SETTINGS.necklace.show_solution_band,
+      },
+      u_show_solutions: { type: "b", value: SETTINGS.necklace.show_solutions },
       u_show_single_thiefs_region: {
         type: "b",
         value: SETTINGS.view.show_single_thiefs_region,

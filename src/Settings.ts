@@ -260,20 +260,21 @@ class Settings {
       .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
 
     const animationFolder = viewFolder.addFolder("Animation");
-    animationFolder.add(SETTINGS.animation, "run").name("Animate").listen();
+    const MAX_ROT = 0.5;
+    animationFolder.add(SETTINGS.animation, "run").name("Rotate [Hz]").listen();
     animationFolder
-      .add(SETTINGS.animation, "rotation_x", -1.0, 1.0, 0.1)
-      .name("Rot-X")
+      .add(SETTINGS.animation, "rotation_x", -MAX_ROT, MAX_ROT, 0.1)
+      .name("X")
       .listen();
     animationFolder
-      .add(SETTINGS.animation, "rotation_y", -1.0, 1.0, 0.1)
-      .name("Rot-Y")
+      .add(SETTINGS.animation, "rotation_y", -MAX_ROT, MAX_ROT, 0.1)
+      .name("Y")
       .listen();
     animationFolder
-      .add(SETTINGS.animation, "rotation_z", -1.0, 1.0, 0.1)
-      .name("Rot-Z")
+      .add(SETTINGS.animation, "rotation_z", -MAX_ROT, MAX_ROT, 0.1)
+      .name("Z")
       .listen();
-    animationFolder.add(SETTINGS.animation, "reset_speed").name("Reset Rot");
+    animationFolder.add(SETTINGS.animation, "reset_speed").name("Reset Rotation");
 
     this._captureFolder = this.gui.addFolder("Screen capture");
 
