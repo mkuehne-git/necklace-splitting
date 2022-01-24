@@ -130,8 +130,7 @@ class Necklace extends NecklaceComponent {
 
   get showGauge(): boolean {
     return (
-      (SETTINGS.int_mode === Showcase.STOLEN_NECKLACE ||
-        SETTINGS.int_mode === Showcase.SEGMENTS) &&
+      SETTINGS.int_mode === Showcase.STOLEN_NECKLACE &&
       SETTINGS.view.gauge_visible
     );
   }
@@ -315,7 +314,6 @@ class Necklace extends NecklaceComponent {
       // Circle with 1/2 radius, marks the length of target vectors, where both thiefs own the same amount of jewels.
       ctx.beginPath();
       ctx.lineWidth = 1;
-      // ctx.strokeStyle = GAUGE_COLOR;
       ctx.setLineDash([1, 1]);
       ctx.arc(center.x, center.y, radius / 2, 0, -Math.PI, true);
       ctx.stroke();
@@ -346,7 +344,7 @@ class Necklace extends NecklaceComponent {
       const red = 255 + (0 - 255) * dist;
       const green = 0 + (255 - 0) * dist;
 
-      // Draw the gauge outer circle
+      // Draw the gauge outer circle - 1st part
       ctx.beginPath();
       ctx.lineWidth = lineWidth;
       ctx.strokeStyle = `rgb(${red},${green}, 0)`;
@@ -358,8 +356,9 @@ class Necklace extends NecklaceComponent {
         -Math.PI * (1.0 - dist),
         false
       );
-      ctx.stroke();
 
+      // Draw the gauge outer circle - 2nd part
+      ctx.stroke();
       ctx.beginPath();
       ctx.lineWidth = lineWidth;
       ctx.strokeStyle = GAUGE_COLOR;
