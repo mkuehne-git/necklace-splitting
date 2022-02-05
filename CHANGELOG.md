@@ -1,4 +1,9 @@
 ## Changelog
+### v0.3.0
+#### Features
+* Visualize Borsuk-Ulam proof (WIP)
+
+#### Other
 * Fix gauge color
 * Rotation specified in Hz.
 * npm update

@@ -22,8 +22,17 @@ You can extrude the octants from the sphere using the slider ***Octant Offset***
 
 ![necklace-octants-removed](./src/images/necklace-octants.png)
 
-## Observing antipodal Points on Sphere
-In addition to the necklace-splitting sphere a few other show cases are provided. All of them color the sphere continously with three colors. To better recognize the antipodal points on the sphere it is sometimes useful to remove one color.
+## Proof of Borsuk-Ulam Theorem
+
+Starting at [6:19](https://youtu.be/yuVqxCSsE7c?t=379) the video starts explaining why the [Borsuk–Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem) is true.
+
+Be f(x) a continous function, that maps the surface of the sphere to the 2-D plane, then all we need to do is looking for the zeroes of a function g(x) = f(x) - f(-x). Since x and -x are antipodal points on the sphere, it is sufficient to show, that g(x) must have at least one zero.
+
+With enabling the option *View/Sphere/Borsuk-Ulam* a 3-D shape of g is shown instead of the sphere. The z-ordinate of g(x) equals the z-ordinate of x.
+
+> **Note**: This is currently work in progress
+
+The current implementation has some flaws, because the shape of g is created by simply shifting each point form the sphere's mesh (origin) to the image location g(x). This allows for a quick, first view, but it doesn't preserve the integrity of the mesh. That may lead to unexpected rendering artifacts.
 
 # Getting started
 
