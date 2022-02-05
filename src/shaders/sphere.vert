@@ -1,11 +1,29 @@
 #include uniform;
 #include varying;
-
+#include functions;
 struct SphereData {
     vec3 p;
     float octant;
     bool valid;
 };
+
+#define M_PI 3.1415926535897932384626433832795
+
+vec3 borsuk_ulam_proof(vec3 p) {
+    if(!u_show_borsuk_ulam_proof_shape) {
+        return vec3(p);
+    }
+    vec3 x = vec3(p);
+    vec2 g_x;
+    if(u_mode == MODE_STOLEN_NECKLACE || u_mode == MODE_SHADER_LAMP) {
+        g_x = calculate_stolen_necklace(x) - calculate_stolen_necklace(-x);
+    } else if(u_mode == MODE_SPACE_COLOR) {
+        g_x = 2.0 * vec2(p.xy);
+    } else if(u_mode == MODE_SINUSOID) {
+        g_x = vec2(sin(M_PI * p.x), sin(M_PI * p.y)) - vec2(sin(M_PI * -p.x), sin(M_PI * -p.y));
+    }
+    return vec3(g_x, x.z);
+}
 
 SphereData displace_octant(vec3 p, float offset) {
     SphereData sd;
@@ -53,7 +71,8 @@ SphereData displace_octant(vec3 p, float offset) {
 
 void main() {
     // Calculate vertex shader output
-    SphereData sd_shader = displace_octant(position, u_offset_sphere_octant);
+    vec3 g_x = borsuk_ulam_proof(position / u_radius_vector) * u_radius_vector;
+    SphereData sd_shader = displace_octant(g_x, u_offset_sphere_octant);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(sd_shader.p, 1.0);
 
     v_pos = position / u_radius_vector;

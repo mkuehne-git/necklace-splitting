@@ -42,6 +42,7 @@ const SETTINGS = {
     segments: 128,
     offset_octant: 0.0,
     use_bad_on_sphere_check: false,
+    show_borsuk_ulam_proof_shape: false,
   },
   animation: {
     rotation_x: 0.0,
@@ -81,7 +82,7 @@ class Settings {
     folderName,
     object,
     options,
-    onChange = (obj, prop, index) => {}
+    onChange = (obj, prop, index) => { }
   ) {
     // Create the folder
     const folder = parent.addFolder(folderName);
@@ -92,7 +93,7 @@ class Settings {
     parent,
     object,
     options,
-    onChange = (obj, prop, index) => {}
+    onChange = (obj, prop, index) => { }
   ) {
     const initial = object;
     object = {};
@@ -221,6 +222,10 @@ class Settings {
     sphereFolder
       .add(SETTINGS.sphere, "use_bad_on_sphere_check")
       .name("Bad Check")
+      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+    sphereFolder
+      .add(SETTINGS.sphere, "show_borsuk_ulam_proof_shape")
+      .name("Borsuk-Ulam Proof")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     sphereFolder
       .add(SETTINGS.sphere, "segments", 3, 511, 1)

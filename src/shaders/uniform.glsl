@@ -8,6 +8,7 @@ uniform float u_epsilon;
 uniform vec3 u_radius_vector;
 uniform float u_offset_sphere_octant;
 uniform bool u_use_bad_on_sphere_check;
+uniform bool u_show_borsuk_ulam_proof_shape;
 uniform vec3 u_scale_color;
 uniform float u_alpha;
 uniform int u_count_0;

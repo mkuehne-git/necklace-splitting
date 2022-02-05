@@ -9,8 +9,8 @@ import { Resizer } from "./Resizer";
 
 // The GLSL shaders
 /// <reference path="./glsl.d.ts"/>
-import vertexShader from "./shaders/vertex.glsl";
-import fragmentShader from "./shaders/fragment.glsl";
+import vertexShader from "./shaders/sphere.vert";
+import fragmentShader from "./shaders/sphere.frag";
 import { NecklaceComponent, ComponentOptions } from "./NecklaceComponent";
 
 // The little statistics box at the upper left corner
@@ -264,6 +264,10 @@ class Sphere extends NecklaceComponent {
       u_use_bad_on_sphere_check: {
         type: "b",
         value: SETTINGS.sphere.use_bad_on_sphere_check,
+      },
+      u_show_borsuk_ulam_proof_shape: {
+        type: "b",
+        value: SETTINGS.sphere.show_borsuk_ulam_proof_shape,
       },
       u_radius_vector: {
         type: "v3",
