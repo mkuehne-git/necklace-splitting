@@ -48,13 +48,14 @@ class NecklaceModel {
   private necklaceFromInt(necklaceAsInt: number, numberOfJewels: number): void {
     this.initializeStatus(numberOfJewels);
     const strVector = necklaceAsInt.toString(2);
-    // console.log(`necklaceAsInt: ${necklaceAsInt}, ${strVector}`);
     if (necklaceAsInt != 0) {
-      let i = 0;
-      for (const c of strVector) {
-        this._necklace[i++] = c === "0" ? 0 : 1;
+      const maxIndex = strVector.length-1;
+      for (let i=maxIndex;i>=0;i--){
+        // console.log(`Necklace index ${i}: ${strVector[i]}`)
+        this._necklace[maxIndex-i] = strVector[i] === "0" ? 0 : 1;
       }
     }
+    // console.log(`necklaceAsInt: ${necklaceAsInt}, ${strVector}, ${this._necklace}`);
     for (const jewel of this._necklace) {
       if (jewel === 0.0) {
         this._cnt.x += 1;

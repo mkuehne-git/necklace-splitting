@@ -1,4 +1,7 @@
 ## Changelog
+### v0.3.1
+* Fix calculation of necklace configuration
+
 ### v0.3.0
 #### Features
 * Visualize Borsuk-Ulam proof (WIP)
