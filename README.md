@@ -9,7 +9,9 @@ Each point (x,y,z) on the sphere denotes a necklace cut - note the white indicat
 The coloring indicates how much one thief owns per jewel type. The colors red and green are used to distinguish between the jewel types. Bright yellow (mix between red and green) for instance indicates that one thief owns the majority of both jewel types.
 
 ## Solve the Necklace splitting Problem
-If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identical. The orange line around the sphere shows this *Solution Band*. All solutions must exist on this line. This means, that the second cut position is determined by the first cut. Furthermore, the *Solutions* (highlighted in blue) can be calculated in linear time.
+If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identical. The orange line around the sphere shows this solution band (enable with ***Necklacer/Solution Band***). All solutions independent from the necklace configuration exist on this line only.
+
+Given a first cut position, the second possible cut can be calculated directly. The solutions (enable with ***Necklace/Solutions***) for a given necklace configuration can be calculated in linear time by iterating through the jewels.
 
 ![Solving necklace-split](./src/images/necklace-with-solution.png)
 
@@ -22,13 +24,15 @@ You can extrude the octants from the sphere using the slider ***Octant Offset***
 
 ![necklace-octants-removed](./src/images/necklace-octants.png)
 
-## Proof of Borsuk-Ulam Theorem
+## Proof of Borsuk-Ulam theorem
 
 Starting at [6:19](https://youtu.be/yuVqxCSsE7c?t=379) the video starts explaining why the [Borsuk–Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem) is true.
 
-Be f(x) a continous function, that maps the surface of the sphere to the 2-D plane, then all we need to do is looking for the zeroes of a function g(x) = f(x) - f(-x). Since x and -x are antipodal points on the sphere, it is sufficient to show, that g(x) must have at least one zero.
+Let f(x) be the continous function, that maps the surface of the sphere to the 2D plane, then all we need to do is looking for the zeroes of a function g(x) = f(x) - f(-x). Since x and -x are antipodal points on the sphere, it is sufficient to show, that g(x) must have at least one zero. The function g(x) is symmetrical to the origin. 
 
-With enabling the option *View/Sphere/Borsuk-Ulam* a 3-D shape of g is shown instead of the sphere. The z-ordinate of g(x) equals the z-ordinate of x.
+If you calculate g(x) for a circle line around the sphere in the xy plane, the image of g(x) forms a continous, closed loop surrounding the origin. Now if the circle line is moved along the z-axis towards one pole the loop around the origin created by g(x) degenerates into a single point. Since this transformation is continous, the loop must cross the origin at some point during that movement.
+
+The option ***View/Sphere/Borsuk-Ulam*** visualizes the 3D shape, that results from the moving image of g(x). 
 
 > **Note**: This is currently work in progress
 
