@@ -16,11 +16,11 @@ const closeBtn = `<hr><div class="center" width=100%>
  * agents reading the HTML sourc.
  */
 class Imprint {
-  private _decryptedAES: any;
-  private _div: HTMLDivElement;
+  #decryptedAES: any;
+  #div: HTMLDivElement;
   constructor() {
     window.addEventListener("resize", () => {
-      if (this._div !== undefined) {
+      if (this.#div !== undefined) {
         this.hide();
         this.show();
       }
@@ -39,15 +39,15 @@ class Imprint {
   }
   async isAvailable(): Promise<boolean> {
     const m = await loadModule();
-    this._decryptedAES = m.decryptedAES;
-    return this._decryptedAES() !== undefined;
+    this.#decryptedAES = m.decryptedAES;
+    return this.#decryptedAES() !== undefined;
   }
   show() {
-    this._div = document.createElement("div");
-    this._div.classList.add("imprint");
-    this._div.classList.add("padding");
-    this._div.innerHTML = this._decryptedAES();
-    const div = this._div;
+    this.#div = document.createElement("div");
+    const div = this.#div;
+    div.classList.add("imprint");
+    div.classList.add("padding");
+    div.innerHTML = this.#decryptedAES();
     document.body.appendChild(div);
     const style = window.getComputedStyle(document.body);
     const width = div.scrollWidth - 10;
@@ -68,9 +68,9 @@ class Imprint {
     });
   }
   hide() {
-    if (this._div !== undefined) {
-      document.body.removeChild(this._div);
-      this._div = undefined;
+    if (this.#div !== undefined) {
+      document.body.removeChild(this.#div);
+      this.#div = undefined as any;
     }
   }
 }

@@ -8,15 +8,15 @@ function fract(x: number): number {
 }
 
 class NecklaceModel {
-  private _necklace: number[] = undefined;
+  #necklace: number[];
   /** Vector with total number of jewels per type. */
-  private _cnt: Vector2 = undefined;
+  #cnt: Vector2;
 
   /** With two cuts the necklace is split into three segments - represented by this vector. */
-  private _cuts: Vector3 = undefined;
+  #cuts: Vector3;
 
   /** Vector representing the number of jewels per type belonging to thief. */
-  private _thief: Vector2 = undefined;
+  #thief: Vector2;
 
   /**
    *
@@ -36,7 +36,7 @@ class NecklaceModel {
   }
 
   get necklace(): number[] {
-    return [...this._necklace];
+    return [...this.#necklace];
   }
 
   /**
@@ -49,18 +49,18 @@ class NecklaceModel {
     this.initializeStatus(numberOfJewels);
     const strVector = necklaceAsInt.toString(2);
     if (necklaceAsInt != 0) {
-      const maxIndex = strVector.length-1;
-      for (let i=maxIndex;i>=0;i--){
+      const maxIndex = strVector.length - 1;
+      for (let i = maxIndex; i >= 0; i--) {
         // console.log(`Necklace index ${i}: ${strVector[i]}`)
-        this._necklace[maxIndex-i] = strVector[i] === "0" ? 0 : 1;
+        this.#necklace[maxIndex - i] = strVector[i] === "0" ? 0 : 1;
       }
     }
-    // console.log(`necklaceAsInt: ${necklaceAsInt}, ${strVector}, ${this._necklace}`);
-    for (const jewel of this._necklace) {
+    // console.log(`necklaceAsInt: ${necklaceAsInt}, ${strVector}, ${this.#necklace}`);
+    for (const jewel of this.#necklace) {
       if (jewel === 0.0) {
-        this._cnt.x += 1;
+        this.#cnt.x += 1;
       } else {
-        this._cnt.y += 1;
+        this.#cnt.y += 1;
       }
     }
     Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
@@ -68,25 +68,25 @@ class NecklaceModel {
 
   private necklaceFromStr(necklaceAsStr: string): void {
     this.initializeStatus(1);
-    this._necklace = [];
+    this.#necklace = [];
     for (let i = 0; i < necklaceAsStr.length; i++) {
       const necklaceAsInt = necklaceAsStr.charCodeAt(i);
       const strVector = necklaceAsInt.toString(2);
       // console.log(`necklaceAsInt: ${necklaceAsInt}, ${strVector}`);
       if (necklaceAsInt != 0) {
         for (const c of strVector) {
-          this._necklace.push(c === "0" ? 0 : 1);
+          this.#necklace.push(c === "0" ? 0 : 1);
         }
       }
     }
-    for (const jewel of this._necklace) {
+    for (const jewel of this.#necklace) {
       if (jewel === 0.0) {
-        this._cnt.x += 1;
+        this.#cnt.x += 1;
       } else {
-        this._cnt.y += 1;
+        this.#cnt.y += 1;
       }
     }
-    console.log(`necklaceFromString: ${necklaceAsStr}: ${this._necklace} ${this._cnt.x},${this._cnt.y}`);
+    console.log(`necklaceFromString: ${necklaceAsStr}: ${this.#necklace} ${this.#cnt.x},${this.#cnt.y}`);
     Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
   }
 
@@ -103,7 +103,7 @@ class NecklaceModel {
   applyCut(cuts: Vector3): void {
     this.cuts = cuts;
     if (cuts !== undefined) {
-      this.thief_a = SETTINGS.necklace.discrete
+      this.#thief = SETTINGS.necklace.discrete
         ? this.applyCutDiscrete(cuts)
         : this.applyCutContinous(cuts);
     }
@@ -135,7 +135,7 @@ class NecklaceModel {
       }
       return new Vector2(thief[0], thief[1]);
     }
-    return undefined;
+    return new Vector2(0, 0);
   }
 
   private applyCutContinous(p: Vector3): Vector2 {
@@ -186,39 +186,37 @@ class NecklaceModel {
       }
       return new Vector2(thief[0], thief[1]);
     }
-    return undefined;
+    return new Vector2(0, 0);
   }
 
   private initializeStatus(numberOfJewels: number): void {
-    this._necklace = Array(numberOfJewels).fill(0);
-    this._cnt = new Vector2(0, 0);
-    this._cuts = undefined;
-    this._thief = undefined;
+    this.#necklace = Array(numberOfJewels).fill(0);
+    this.#cnt = new Vector2(0, 0);
+    this.#cuts = new Vector3(0, 0);
+    this.#thief = new Vector2(0, 0);
   }
 
   get cnt(): Vector2 {
-    return this._cnt.clone();
+    return this.#cnt.clone();
   }
   private set cnt(value: Vector2) {
-    this._cnt = value.clone();
+    this.#cnt = value.clone();
   }
 
   get count_0(): number {
-    return this._cnt.x;
+    return this.#cnt.x;
   }
 
   get count_1(): number {
-    return this._cnt.y;
+    return this.#cnt.y;
   }
-  get cuts(): Vector3 {
-    return this._cuts ? this._cuts.clone() : undefined;
+  get cuts(): Vector3 | undefined {
+    return this.#cuts ? this.#cuts.clone() : undefined;
   }
-  private set cuts(cuts: Vector3) {
+  private set cuts(cuts: Vector3|undefined) {
     if (cuts !== undefined) {
       this.assertSphere(cuts);
-      this._cuts = cuts.clone();
-    } else {
-      this._cuts = undefined;
+      this.#cuts = cuts.clone();
     }
   }
 
@@ -231,14 +229,14 @@ class NecklaceModel {
   }
 
   get thief_a(): Vector2 {
-    return this._thief !== undefined ? this._thief.clone() : undefined;
+    return this.#thief !== undefined ? this.#thief.clone() : new Vector2(0,0);
   }
   private set thief_a(value: Vector2) {
-    this._thief = value.clone();
+    this.#thief = value.clone();
   }
 
   get thief_b(): Vector2 {
-    return this._thief !== undefined ? this.cnt.sub(this._thief) : undefined;
+    return this.#thief !== undefined ? this.cnt.sub(this.#thief) : new Vector2(0,0);
   }
 
   /**
@@ -248,9 +246,9 @@ class NecklaceModel {
    * @returns {Vector2} ratio of jewels per type assigned to thief
    */
   canonicalThief(thief: Vector2): Vector2 {
-    const x = this._cnt.x !== 0 ? thief.x / this._cnt.x : 0.0;
-    const y = this._cnt.y !== 0 ? thief.y / this._cnt.y : 0.0;
+    const x = this.#cnt.x !== 0 ? thief.x / this.#cnt.x : 0.0;
+    const y = this.#cnt.y !== 0 ? thief.y / this.#cnt.y : 0.0;
     return new Vector2(x, y);
   }
 }
-export default NecklaceModel;
+export { NecklaceModel };

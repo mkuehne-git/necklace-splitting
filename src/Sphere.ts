@@ -1,26 +1,17 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Stats from "three/examples/jsm/libs/stats.module";
 
 import { Events, Showcase } from "./Enums";
 import { EPS_SQ, MAX_JEWELS, Settings, SETTINGS } from "./Settings";
-import NecklaceModel from "./NecklaceModel";
+import { NecklaceModel } from "./NecklaceModel";
+import { ComponentOptions, NecklaceComponent } from "./NecklaceComponent";
 import { Resizer } from "./Resizer";
+import { stats } from "./Stats";
 
 // The GLSL shaders
-/// <reference path="./glsl.d.ts"/>
 import vertexShader from "./shaders/sphere.vert";
 import fragmentShader from "./shaders/sphere.frag";
-import { NecklaceComponent, ComponentOptions } from "./NecklaceComponent";
 
-// The little statistics box at the upper left corner
-const stats = Stats();
-stats["visible"] = (visible: boolean) => {
-  stats.domElement.style.visibility = visible ? "visible" : "hidden";
-};
-stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild(stats.dom);
-stats["visible"](SETTINGS.view.stats_monitor_visible);
 
 const mouse = {
   x: 0,
@@ -29,56 +20,56 @@ const mouse = {
 
 class Sphere extends NecklaceComponent {
   // Just any vector
-  private _lastInterSect: THREE.Vector3;
-  private _scene: THREE.Scene;
-  private _raycaster: THREE.Raycaster;
-  private _camera: THREE.PerspectiveCamera;
-  private _renderer: THREE.WebGLRenderer;
-  private _sphere: THREE.Mesh;
-  private _orbitControls: OrbitControls;
-  private _sphereMesh: THREE.Mesh<
+  #lastInterSect: THREE.Vector3;
+  #scene: THREE.Scene;
+  #raycaster: THREE.Raycaster;
+  #camera: THREE.PerspectiveCamera;
+  #renderer: THREE.WebGLRenderer;
+  #sphere: THREE.Mesh;
+  #orbitControls: OrbitControls;
+  #sphereMesh: THREE.Mesh<
     THREE.SphereGeometry,
     THREE.MeshBasicMaterial
   >;
-  private _group: THREE.Group;
-  private _axesHelper: THREE.AxesHelper;
-  private _resizer: Resizer;
-  private _lastRender: DOMHighResTimeStamp;
+  #group: THREE.Group;
+  #axesHelper: THREE.AxesHelper;
+  #resizer: Resizer;
+  #lastRender: DOMHighResTimeStamp;
 
   constructor(
     model: NecklaceModel,
     options: ComponentOptions = { id: "sphere", container: document.body }
   ) {
     super(model, options);
+    this.canvas = this.domElement;
     // Make sure that initial theme is propagated into the scene.
     // Use .body background-color for 3D scene
     this.onThemeChange();
   }
 
   initializeCanvas(): HTMLCanvasElement {
-    // Just any vector
-    this._lastInterSect = new THREE.Vector3(-1.0, 20, -30);
-    this._scene = new THREE.Scene();
+    this.#lastInterSect = new THREE.Vector3(-1.0, 20, -30);;
+    this.#scene = new THREE.Scene();
 
-    this._raycaster = new THREE.Raycaster();
-    this._camera = new THREE.PerspectiveCamera(
+    this.#raycaster = new THREE.Raycaster();
+    this.#camera = new THREE.PerspectiveCamera(
       75,
       this.container.clientWidth / this.container.clientHeight,
       0.1,
       1000
     );
-    this._renderer = new THREE.WebGLRenderer({ antialias: true });
-    const canvas = this._renderer.domElement;
+    this.#renderer = new THREE.WebGLRenderer({ antialias: true });
+    const canvas = this.#renderer.domElement;
     this.container.appendChild(canvas);
-    this._resizer = new Resizer(this.container, this._camera, this._renderer);
+    this.#resizer = new Resizer(this.container, this.#camera, this.#renderer);
 
-    this._sphere = new THREE.Mesh(
+    this.#sphere = new THREE.Mesh(
       this.createSphereGeometry(),
       this.createSphereMaterial()
     );
-    this._sphere.visible = SETTINGS.view.faces_visible;
+    this.#sphere.visible = SETTINGS.view.faces_visible;
 
-    this._sphereMesh = new THREE.Mesh(
+    this.#sphereMesh = new THREE.Mesh(
       this.createSphereGeometry(),
       new THREE.MeshBasicMaterial({
         wireframe: true,
@@ -86,21 +77,21 @@ class Sphere extends NecklaceComponent {
         transparent: true,
       })
     );
-    this._sphereMesh.visible = SETTINGS.view.mesh_visible;
+    this.#sphereMesh.visible = SETTINGS.view.mesh_visible;
 
-    this._axesHelper = new THREE.AxesHelper(20);
-    this._axesHelper.visible = SETTINGS.view.axes_visible;
+    this.#axesHelper = new THREE.AxesHelper(20);
+    this.#axesHelper.visible = SETTINGS.view.axes_visible;
 
-    this._group = new THREE.Group();
-    this._group.add(this._sphere, this._sphereMesh, this._axesHelper);
-    this._scene.add(this._group);
+    this.#group = new THREE.Group();
+    this.#group.add(this.#sphere, this.#sphereMesh, this.#axesHelper);
+    this.#scene.add(this.#group);
 
-    this._orbitControls = new OrbitControls(
-      this._camera,
-      this._renderer.domElement
+    this.#orbitControls = new OrbitControls(
+      this.#camera,
+      this.#renderer.domElement
     );
-    this._camera.position.z = 50;
-    this._orbitControls.update();
+    this.#camera.position.z = 50;
+    this.#orbitControls.update();
     this.container.addEventListener(Events.CREATE_SPHERE.toString(), () =>
       this.createSphere()
     );
@@ -127,20 +118,20 @@ class Sphere extends NecklaceComponent {
     // console.log(`onMutation: ${JSON.stringify(this)}`);
     const style = window.getComputedStyle(this.container);
     const backgroundColor = style.getPropertyValue("background-color");
-    this._scene.background = new THREE.Color(backgroundColor);
+    this.#scene.background = new THREE.Color(backgroundColor);
   }
 
   get captureElement(): HTMLElement {
-    return this._renderer.domElement;
+    return this.#renderer.domElement;
   }
 
   render() {
     const callback: FrameRequestCallback = (time: DOMHighResTimeStamp) => {
-      if (this._lastRender === undefined) {
-        this._lastRender = time;
+      if (this.#lastRender === undefined) {
+        this.#lastRender = time;
       }
-      this._render(time - this._lastRender);
-      this._lastRender = time;
+      this._render(time - this.#lastRender);
+      this.#lastRender = time;
       requestAnimationFrame(callback);
     };
     callback((performance || Date).now());
@@ -150,12 +141,12 @@ class Sphere extends NecklaceComponent {
     stats.begin();
 
     // required if controls.enableDamping or controls.autoRotate are set to true
-    this._orbitControls.update();
-    this._renderer.render(this._scene, this._camera);
-    if (this._sphere.visible || this._sphereMesh.visible) {
-      this._raycaster.setFromCamera(mouse, this._camera);
-      const intersects = this._raycaster.intersectObject(this._sphere);
-      const uniforms = (this._sphere.material as THREE.ShaderMaterial).uniforms;
+    this.#orbitControls.update();
+    this.#renderer.render(this.#scene, this.#camera);
+    if (this.#sphere.visible || this.#sphereMesh.visible) {
+      this.#raycaster.setFromCamera(mouse, this.#camera);
+      const intersects = this.#raycaster.intersectObject(this.#sphere);
+      const uniforms = (this.#sphere.material as THREE.ShaderMaterial).uniforms;
       if (intersects.length > 0 && !SETTINGS.animation.run) {
         const point = intersects[0].point.clone();
         uniforms.u_intersect.value = point;
@@ -167,22 +158,22 @@ class Sphere extends NecklaceComponent {
     }
     if (SETTINGS.animation.trigger_reset) {
       SETTINGS.animation.trigger_reset = false;
-      this._group.rotation.x = 0;
-      this._group.rotation.y = 0;
-      this._group.rotation.z = 0;
+      this.#group.rotation.x = 0;
+      this.#group.rotation.y = 0;
+      this.#group.rotation.z = 0;
     } else if (SETTINGS.animation.run) {
       const ROT_FACTOR = (Math.PI * delta) / 500;
-      this._group.rotation.x += SETTINGS.animation.rotation_x * ROT_FACTOR;
-      this._group.rotation.y += SETTINGS.animation.rotation_y * ROT_FACTOR;
-      this._group.rotation.z += SETTINGS.animation.rotation_z * ROT_FACTOR;
+      this.#group.rotation.x += SETTINGS.animation.rotation_x * ROT_FACTOR;
+      this.#group.rotation.y += SETTINGS.animation.rotation_y * ROT_FACTOR;
+      this.#group.rotation.z += SETTINGS.animation.rotation_z * ROT_FACTOR;
     }
     stats.end();
   }
 
   _setIntersect(point: THREE.Vector3) {
-    if (point.distanceToSquared(this._lastInterSect) > EPS_SQ) {
+    if (point.distanceToSquared(this.#lastInterSect) > EPS_SQ) {
       this.domElement.style.cursor = "none";
-      this._lastInterSect = point;
+      this.#lastInterSect = point;
       const radius = SETTINGS.sphere.radius || 1.0;
       this.model.applyCut(point.clone().divideScalar(radius));
     }
@@ -198,19 +189,18 @@ class Sphere extends NecklaceComponent {
   }
 
   createSphere() {
-    this._sphere.geometry.dispose();
-    this._sphereMesh.geometry.dispose();
+    this.#sphere.geometry.dispose();
+    this.#sphereMesh.geometry.dispose();
 
     const geometry = this.createSphereGeometry();
-    this._sphere.geometry = geometry;
-    this._sphereMesh.geometry = geometry;
+    this.#sphere.geometry = geometry;
+    this.#sphereMesh.geometry = geometry;
 
     this.updateSphereMaterial();
   }
 
   createSphereGeometry() {
     const segments = SETTINGS.sphere.segments;
-    // console.log(`Radius: ${config.sphere.radius}, Segments: ${segments}`)
     return new THREE.SphereGeometry(
       SETTINGS.sphere.radius,
       segments,
@@ -300,8 +290,8 @@ class Sphere extends NecklaceComponent {
       u_resolution: {
         type: "v2",
         value: new THREE.Vector2(
-          this._renderer.domElement.width,
-          this._renderer.domElement.height
+          this.#renderer.domElement.width,
+          this.#renderer.domElement.height
         ),
       },
       u_intersect: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
@@ -312,18 +302,18 @@ class Sphere extends NecklaceComponent {
    * Updates the ShaderMaterial of the sphere, based on current settings.
    */
   updateSphereMaterial(): void {
-    if (this._sphere !== undefined) {
-      (this._sphere.material as THREE.ShaderMaterial).dispose();
+    if (this.#sphere !== undefined) {
+      (this.#sphere.material as THREE.ShaderMaterial).dispose();
     }
-    this._sphere.material = this.createSphereMaterial();
-    this._sphereMesh.material.transparent = SETTINGS.color.alpha != 1.0;
+    this.#sphere.material = this.createSphereMaterial();
+    this.#sphereMesh.material.transparent = SETTINGS.color.alpha != 1.0;
     Settings.dispatchEvent(Events.MODEL_CHANGED);
   }
 
   updateVisibility(): void {
-    this._axesHelper.visible = SETTINGS.view.axes_visible;
-    this._sphereMesh.visible = SETTINGS.view.mesh_visible;
-    this._sphere.visible = SETTINGS.view.faces_visible;
+    this.#axesHelper.visible = SETTINGS.view.axes_visible;
+    this.#sphereMesh.visible = SETTINGS.view.mesh_visible;
+    this.#sphere.visible = SETTINGS.view.faces_visible;
     stats["visible"](SETTINGS.view.stats_monitor_visible);
     Settings.dispatchEvent(Events.MODEL_CHANGED);
   }

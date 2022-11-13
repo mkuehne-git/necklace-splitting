@@ -7,13 +7,13 @@
 
 
 // To configure settings
-import { EPS_SQ, SETTINGS, Settings } from './Settings.js';
+import { SETTINGS, Settings } from './Settings';
 import { Events } from "./Enums";
 
 import { ScreenCapture } from './ScreenCapture';
 import { Sphere } from './Sphere';
 import { Necklace } from './Necklace';
-import NecklaceModel from './NecklaceModel';
+import { NecklaceModel } from './NecklaceModel';
 
 // The UI to configure the settings.
 const settings = new Settings();
@@ -34,7 +34,6 @@ function onThemeChange() {
 }
 Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
 sphere.render();
-
 const capture = new ScreenCapture(
   {
     folder: settings.captureFolder,
@@ -45,3 +44,6 @@ const capture = new ScreenCapture(
     sphere: sphere.captureElement,
     necklace: necklace.captureElement
   });
+
+// Make empty module to allow top level await
+export { };

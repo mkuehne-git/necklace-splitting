@@ -1,11 +1,10 @@
 import { textShadow } from "html2canvas/dist/types/css/property-descriptors/text-shadow";
 import * as THREE from "three";
-import { Vector2 } from "three";
 
-import { SETTINGS, EPS, EPS_SQ, Settings } from "./Settings";
+import { SETTINGS } from "./Settings";
 import { Events, Showcase } from "./Enums";
-import { ComponentOptions, NecklaceComponent } from "./NecklaceComponent";
-import NecklaceModel from "./NecklaceModel";
+import { NecklaceComponent, ComponentOptions } from "./NecklaceComponent";
+import { NecklaceModel } from "./NecklaceModel";
 
 let counter = 0;
 const JEWEL_A_COLOR = "--jewel-a-color";
@@ -34,6 +33,7 @@ class Necklace extends NecklaceComponent {
     options: ComponentOptions = { id: "necklace", container: document.body }
   ) {
     super(model, options);
+    this.canvas = this.domElement;
     window.addEventListener("resize", () => {
       const width = Math.min(innerWidth, this.container.clientWidth);
       const height = Math.min(innerHeight, this.container.clientHeight);
@@ -64,26 +64,19 @@ class Necklace extends NecklaceComponent {
   /**
    * @returns number of jewels on necklace
    */
-  private get size() {
+  private get size(): number {
     return this.model.size;
   }
 
-  get scaledKnife() {
-    if (this.model.cuts !== undefined) {
-      return undefined;
-    }
-    return this.model.cuts.clone().multiplyScalar(this.size);
-  }
-
-  get width() {
+  get width(): number {
     return this.canvas.width;
   }
 
-  get height() {
+  get height(): number {
     return this.canvas.height;
   }
 
-  get jewelWidth() {
+  get jewelWidth(): number {
     return this.width / this.size;
   }
   get thief_a_color() {
@@ -103,21 +96,21 @@ class Necklace extends NecklaceComponent {
     );
   }
 
-  get between_jewels_color() {
+  get between_jewels_color(): string {
     return getComputedStyle(document.body).getPropertyValue(
       BETWEEN_JEWELS_COLOR
     );
   }
-  get jewel_a_color() {
+  get jewel_a_color(): string {
     return getComputedStyle(document.body).getPropertyValue(JEWEL_A_COLOR);
   }
-  get jewel_b_color() {
+  get jewel_b_color(): string {
     return getComputedStyle(document.body).getPropertyValue(JEWEL_B_COLOR);
   }
-  get gauge_color() {
+  get gauge_color(): string {
     return getComputedStyle(document.body).getPropertyValue(GAUGE_COLOR);
   }
-  get captureElement() {
+  get captureElement(): HTMLCanvasElement {
     return this.domElement;
   }
 
@@ -135,58 +128,61 @@ class Necklace extends NecklaceComponent {
     );
   }
 
-  render() {
+  render(): void {
     if (this.canvas !== undefined) {
       this._render();
     }
   }
-  private _render() {
+  private _render(): void {
     // console.log("Necklace.render");
     this.canvas.width = this.canvas.clientWidth;
     this.canvas.height = this.canvas.clientHeight;
-    const ctx = this.canvas.getContext("2d");
+    const ctxOrNull: CanvasRenderingContext2D | null = this.canvas.getContext("2d");
+    if (ctxOrNull !== null) {
+      const ctx: CanvasRenderingContext2D = ctxOrNull;
+      const xOffset = 0;
+      const yOffset = 0;
+      let xPos = xOffset;
 
-    const xOffset = 0;
-    const yOffset = 0;
-    let xPos = xOffset;
+      const cuts = this.model.cuts;
 
-    const cuts = this.model.cuts;
+      if (this.showNecklace) {
+        this.drawNecklace(ctx, xPos, yOffset, cuts);
 
-    if (this.showNecklace) {
-      this.drawNecklace(ctx, xPos, yOffset, cuts);
+        // Render line segments for x*x, y*y, z*z
+        if (cuts !== undefined) {
+          this.drawSegments(ctx, cuts);
+        }
+      }
 
-      // Render line segments for x*x, y*y, z*z
-      if (cuts !== undefined) {
-        this.drawSegments(ctx, cuts);
+      // render textual result
+      if (this.model.thief_a !== undefined && this.showGauge) {
+        const thief_a = this.model.canonicalThief(this.model.thief_a);
+        const thief_b = this.model.canonicalThief(this.model.thief_b);
+        this.drawGauge(ctx, 50, thief_a, thief_b);
+      }
+
+      // Some debug output
+      if (SETTINGS.text) {
+        ctx.font = "12px";
+        ctx.fillStyle = "rgb(255,255,255)";
+        ctx.fillText(SETTINGS.text, 0, 150);
       }
     }
 
-    // render textual result
-    if (this.model.thief_a !== undefined && this.showGauge) {
-      const thief_a = this.model.canonicalThief(this.model.thief_a);
-      const thief_b = this.model.canonicalThief(this.model.thief_b);
-      this.drawGauge(ctx, 50, thief_a, thief_b);
-    }
-
-    // Some debug output
-    if (SETTINGS.text) {
-      ctx.font = "12px";
-      ctx.fillStyle = "rgb(255,255,255)";
-      ctx.fillText(SETTINGS.text, 0, 150);
-    }
   }
 
   private drawNecklace(
     ctx: CanvasRenderingContext2D,
     x0: number,
     y0: number,
-    cuts: THREE.Vector3
+    cuts: THREE.Vector3 | undefined
   ): void {
     const X_GAP = 2;
     const Y_GAP = JEWEL_HEIGHT + Y_GAP_BETWEEN_THIEVES;
 
     // White rectangle as background, if no cuts
-    if (!cuts) {
+    if (cuts === undefined) {
       ctx.fillStyle = this.between_jewels_color;
       ctx.fillRect(x0, y0, this.width, JEWEL_HEIGHT);
     }
@@ -367,7 +363,7 @@ class Necklace extends NecklaceComponent {
     }
   }
 
-  private yOffset(cuts: THREE.Vector3, x: number, yGap: number): number {
+  private yOffset(cuts: THREE.Vector3 | undefined, x: number, yGap: number): number {
     if (cuts === undefined) {
       return 0;
     }

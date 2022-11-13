@@ -14,23 +14,29 @@ HTMLCanvasElement.prototype.getContext = (function (origFn) {
 
 const CAPTURES = ["All", "Sphere", "Necklace"];
 
+type CaptureControls = {
+  all: HTMLElement | undefined,
+  sphere: HTMLElement | undefined,
+  necklace: HTMLElement | undefined
+}
+
 /**
  * Allow to take screen captures of existing DOM elements. Reacts on keyboard key 's'.
  */
 class ScreenCapture {
-  private _fBeforeCapture: () => HTMLElement;
-  private _optionsArray: any[];
-  private _captionIndex: number;
+  #fBeforeCapture: () => HTMLElement;
+  #optionsArray: any[];
+  #captionIndex: number;
   constructor(
     settings: any,
-    options = {
-      all: (HTMLElement = undefined),
-      sphere: (HTMLElement = undefined),
-      necklace: (HTMLElement = undefined),
+    options: CaptureControls = {
+      all: undefined,
+      sphere: undefined,
+      necklace: undefined,
     }
   ) {
-    this._fBeforeCapture = () => document.body;
-    this._configureSettings(settings, options);
+    this.#fBeforeCapture = () => document.body;
+    this.#configureSettings(settings, options);
     document.addEventListener("keydown", (e) => {
       if (e.ctrlKey && e.key === "#") {
         this.capture();
@@ -38,14 +44,14 @@ class ScreenCapture {
     });
   }
 
-  _configureSettings(settings, options) {
-    this._optionsArray = [options.all, options.sphere, options.necklace];
+  #configureSettings(settings, options) {
+    this.#optionsArray = [options.all, options.sphere, options.necklace];
     const folder = settings.folder;
     const property = settings.property;
     property.selection = CAPTURES[0];
-    this._captionIndex = 0;
-    this._fBeforeCapture = () => {
-      return this._optionsArray[this._captionIndex];
+    this.#captionIndex = 0;
+    this.#fBeforeCapture = () => {
+      return this.#optionsArray[this.#captionIndex];
     };
     property.on_capture_clicked = () => this.capture();
 
@@ -54,13 +60,13 @@ class ScreenCapture {
       property.selection,
       CAPTURES,
       (obj, prop, index) => {
-        this._captionIndex = index;
+        this.#captionIndex = index;
       }
     );
     folder.add(property, "on_capture_clicked").name("Click or press 's'");
   }
 
-  capture(fBeforeCapture = this._fBeforeCapture) {
+  capture(fBeforeCapture = this.#fBeforeCapture) {
     console.log(`screenCapture ${fBeforeCapture}`);
     const elementToCapture = fBeforeCapture();
     if (!elementToCapture) {

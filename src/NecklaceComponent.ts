@@ -1,4 +1,4 @@
-import NecklaceModel from "./NecklaceModel";
+import { NecklaceModel } from "./NecklaceModel";
 interface ComponentOptions {
   id: string;
   container: HTMLElement;
@@ -7,61 +7,67 @@ interface ComponentOptions {
 abstract class NecklaceComponent {
   protected model: NecklaceModel;
 
-  private _id: string;
-  private _container: HTMLElement;
-  private _canvas: HTMLCanvasElement;
-  private _observer: MutationObserver;
+  #id: string;
+  #container: HTMLElement;
+  #canvas: HTMLCanvasElement;
+  #observer: MutationObserver;
 
   constructor(
     model: NecklaceModel,
     options: ComponentOptions = { id: "canvas", container: document.body }
   ) {
     this.model = model;
-    this._id = options.id;
-    this._container = options.container;
-    this._canvas = this.domElement;
+    this.#id = options.id;
+    this.#container = options.container;
   }
   get container(): HTMLElement {
-    return this._container;
+    return this.#container;
   }
   get canvas(): HTMLCanvasElement {
-    return this._canvas;
+    return this.#canvas;
   }
 
-  get domElement() {
-    if (this._canvas === undefined) {
+  set canvas(c: HTMLCanvasElement) {
+    if (this.#canvas !== undefined) {
+      throw Error("Canvas already set")
+    }
+    this.#canvas = c;
+  }
+
+  get domElement(): HTMLCanvasElement {
+    if (this.#canvas === undefined) {
       const canvas = this.initializeCanvas();
-      if (this._id !== undefined) {
-        canvas.setAttribute("id", this._id);
+      if (this.#id !== undefined) {
+        canvas.setAttribute("id", this.#id);
       }
 
       canvas.classList.add("sphere");
       const componentThis = this;
       let initialized = false;
-      this._observer = new MutationObserver((mutations) => {
+      this.#observer = new MutationObserver((mutations) => {
         if (initialized) {
           mutations.forEach((value, index, array) => {
             componentThis.onMutation(value);
           });
         }
       });
-      this._observer.observe(this._container, {
+      this.#observer.observe(this.#container, {
         attributes: true,
         attributeFilter: ["class"],
       });
-      this._container.appendChild(canvas);
+      this.#container.appendChild(canvas);
 
       initialized = true;
       return canvas;
     }
-    return this._canvas;
+    return this.#canvas;
   }
   /**
    * Set visibility of this component, affects rendering only.
    */
   set visible(visible: boolean) {
-    if (this._canvas !== undefined) {
-      this._canvas.style.visibility = visible ? "visible" : "hidden";
+    if (this.#canvas !== undefined) {
+      this.#canvas.style.visibility = visible ? "visible" : "hidden";
     }
   }
 

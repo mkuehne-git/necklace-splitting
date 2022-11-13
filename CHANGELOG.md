@@ -1,4 +1,10 @@
 ## Changelog
+### v0.4.0
+* Replace `dat.gui` by `lil-gui`
+* Update versions of dependent libraries
+* Remove dynamic import for imprint
+* Update README.md
+
 ### v0.3.1
 * Fix calculation of necklace configuration
 

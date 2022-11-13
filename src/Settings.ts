@@ -1,5 +1,5 @@
 // To configure settings
-import { GUI } from "three/examples/jsm/libs/dat.gui.module";
+import { Controller, GUI } from "three/examples/jsm/libs/lil-gui.module.min";
 import { Events, Showcase } from "./Enums";
 import { Imprint } from "./Imprint";
 
@@ -76,22 +76,25 @@ const SETTINGS = {
   text: undefined,
 };
 class Settings {
-  private _captureFolder: any;
+  #captureFolder: any;
+  #showcaseFolder: GUI;
+  #hidden: boolean;
   static addRadioButtonsFolder(
-    parent,
-    folderName,
+    parent: GUI,
+    folderName: String,
     object,
     options,
     onChange = (obj, prop, index) => { }
   ) {
     // Create the folder
     const folder = parent.addFolder(folderName);
-    return Settings.addRadioButtons(folder, object, options, onChange);
+    Settings.addRadioButtons(folder, object, options, onChange);
+    return folder;
   }
 
   static addRadioButtons(
-    parent,
-    object,
+    parent: GUI,
+    object: any,
     options,
     onChange = (obj, prop, index) => { }
   ) {
@@ -117,14 +120,31 @@ class Settings {
           onChange(object, property, index);
         });
     });
-    return parent;
   }
-  private gui;
+  private gui: GUI;
   constructor() {
     this.gui = new GUI();
     this.gui.domElement.id = "gui";
 
-    const showcaseFolder = Settings.addRadioButtonsFolder(
+    this.createShowcaseFolder();
+    this.createNecklaceFolder();
+    this.createViewFolder();
+    this.createCaptureFolder();
+
+    this.createShowHideListener();
+  }
+
+  createShowHideListener(): void {
+    window.addEventListener('keydown', (e) => {
+      if (e.key === "h" || e.key === "H") {
+        this.#hidden ? this.gui.show() : this.gui.hide();
+        this.#hidden = !this.#hidden;
+      }
+    })
+  }
+
+  createShowcaseFolder(): void {
+    this.#showcaseFolder = Settings.addRadioButtonsFolder(
       this.gui,
       `Showcase: ${SETTINGS.radio}`,
       SETTINGS.radio,
@@ -132,13 +152,16 @@ class Settings {
       (object, property, index) => {
         SETTINGS.int_mode = index;
         Settings.dispatchEvent(Events.CREATE_SPHERE);
-        showcaseFolder.name = `Showcase: ${MODES[index]}`;
-        showcaseFolder.close();
+        this.#showcaseFolder.title(`Showcase: ${MODES[index]}`);
+        this.#showcaseFolder.close();
       }
     );
+    this.#showcaseFolder.close();
+  }
 
-    const necklaceFolder = this.gui.addFolder("Necklace");
-    necklaceFolder
+  createNecklaceFolder() {
+    const folder = this.gui.addFolder("Necklace");
+    folder
       .add(SETTINGS.necklace, "number_of_jewels", 0, MAX_JEWELS, 1)
       .name("Jewels")
       .onChange(() => {
@@ -153,7 +176,7 @@ class Settings {
           .setValue(SETTINGS.necklace.configuration);
         Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
       });
-    const configurationController = necklaceFolder
+    const configurationController = folder
       .add(
         SETTINGS.necklace,
         "configuration",
@@ -165,123 +188,144 @@ class Settings {
       .onChange(() =>
         Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER)
       );
-    necklaceFolder
+    folder
       .add(SETTINGS.necklace, "string")
       .name("String")
       .onChange(() =>
         Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_STRING)
       );
-    necklaceFolder
+    folder
       .add(SETTINGS.necklace, "discrete")
       .name("Discrete")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-    necklaceFolder
+    folder
       .add(SETTINGS.necklace, "show_solution_band")
       .name("Solution Band")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-    necklaceFolder
+    folder
       .add(SETTINGS.necklace, "show_solutions")
       .name("Solutions")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-    necklaceFolder
+    folder
       .add(SETTINGS.necklace, "epsilon", 0, 0.15)
       .name("epsilon")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+    folder.close();
+  }
 
-    const viewFolder = this.gui.addFolder("View");
-    viewFolder
+  createViewFolder() {
+    const folder = this.gui.addFolder("View");
+    folder
       .add(SETTINGS.view, "dark_theme")
       .name(`Dark theme`)
       .onChange(() => Settings.dispatchEvent(Events.THEME_CHANGED));
-    viewFolder
+    folder
       .add(SETTINGS.view, "show_single_thiefs_region")
       .name(`Single Thief's Area`)
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-    viewFolder
+    folder
       .add(SETTINGS.view, "axes_visible")
       .name("Axes")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
-    viewFolder
+    folder
       .add(SETTINGS.view, "mesh_visible")
       .name("Mesh")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
-    viewFolder
+    folder
       .add(SETTINGS.view, "faces_visible")
       .name("Faces")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
+    folder.close();
+    this.createSphereSubFolder(folder);
+    this.createControlsSubFolder(folder);
+    this.createColorSubFolder(folder);
+    this.createAnimationSubFolder(folder);
+  }
 
-    const sphereFolder = viewFolder.addFolder("Sphere");
-    sphereFolder
+  createSphereSubFolder(parent) {
+    const folder = parent.addFolder("Sphere");
+    folder
       .add(SETTINGS.sphere, "radius", 1, 50, 1)
       .name("Radius")
       .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
-    sphereFolder
+    folder
       .add(SETTINGS.sphere, "offset_octant", 0.0, 5.0, 0.1)
       .name("Octant Offset")
       .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
-    sphereFolder
+    folder
       .add(SETTINGS.sphere, "use_bad_on_sphere_check")
       .name("Bad Check")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-    sphereFolder
+    folder
       .add(SETTINGS.sphere, "show_borsuk_ulam_proof_shape")
       .name("Borsuk-Ulam Proof")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-    sphereFolder
+    folder
       .add(SETTINGS.sphere, "segments", 3, 511, 1)
       .name("Segments")
       .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
+    folder.close();
+  }
 
-    const controlsSubFolder = viewFolder.addFolder("Other Controls");
-    controlsSubFolder
+  createControlsSubFolder(parent) {
+    const folder = parent.addFolder("Other Controls");
+    folder
       .add(SETTINGS.view, "stats_monitor_visible")
       .name(`Monitor`)
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
-    controlsSubFolder
+    folder
       .add(SETTINGS.view, "necklace_visible")
       .name(`Necklace`)
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
-    controlsSubFolder
+    folder
       .add(SETTINGS.view, "gauge_visible")
       .name(`Gauge`)
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
-
-    const colorFolder = viewFolder.addFolder("Color");
-    colorFolder
+    folder.close();
+  }
+  createColorSubFolder(parent) {
+    const folder = parent.addFolder("Color");
+    folder
       .add(SETTINGS.color, "scale_red", 0.0, 1.0)
       .name("Red")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-    colorFolder
+    folder
       .add(SETTINGS.color, "scale_green", 0.0, 1.0)
       .name("Green")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-    colorFolder
+    folder
       .add(SETTINGS.color, "scale_blue", 0.0, 1.0)
       .name("Blue")
       .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
-    colorFolder
+    folder
       .add(SETTINGS.color, "alpha", 0.0, 1.0)
       .name("Alpha")
       .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
+    folder.close();
+  }
 
-    const animationFolder = viewFolder.addFolder("Animation");
+  createAnimationSubFolder(parent) {
+    const folder = parent.addFolder("Animation");
     const MAX_ROT = 0.5;
-    animationFolder.add(SETTINGS.animation, "run").name("Rotate [Hz]").listen();
-    animationFolder
+    folder.add(SETTINGS.animation, "run").name("Rotate [Hz]").listen();
+    folder
       .add(SETTINGS.animation, "rotation_x", -MAX_ROT, MAX_ROT, 0.1)
       .name("X")
       .listen();
-    animationFolder
+    folder
       .add(SETTINGS.animation, "rotation_y", -MAX_ROT, MAX_ROT, 0.1)
       .name("Y")
       .listen();
-    animationFolder
+    folder
       .add(SETTINGS.animation, "rotation_z", -MAX_ROT, MAX_ROT, 0.1)
       .name("Z")
       .listen();
-    animationFolder.add(SETTINGS.animation, "reset_speed").name("Reset Rotation");
+    folder.add(SETTINGS.animation, "reset_speed").name("Reset Rotation");
+    folder.close();
+  }
 
-    this._captureFolder = this.gui.addFolder("Screen capture");
+  createCaptureFolder() :void{
+    const folder = this.gui.addFolder("Screen capture");
 
     // Configure imprint
     const imprint = new Imprint();
@@ -291,18 +335,21 @@ class Settings {
         this.gui.add(SETTINGS, "imprint").name("Imprint");
       }
     });
+    folder.close();
+    this.#captureFolder = folder;
   }
+
   static dispatchEvent(event: Events): void {
     const evt = new Event(event.toString(), { bubbles: true });
     document.body.dispatchEvent(evt);
   }
 
   get captureFolder() {
-    return this._captureFolder;
+    return this.#captureFolder;
   }
 }
 
-function resetAnimation() {
+function resetAnimation() :void{
   SETTINGS.animation.trigger_reset = true;
   SETTINGS.animation.run = false;
   SETTINGS.animation.rotation_x = 0;

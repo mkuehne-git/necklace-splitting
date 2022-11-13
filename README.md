@@ -6,10 +6,10 @@ After watching the [3blue1brown](https://www.youtube.com/channel/UCYO_jab_esuFRV
 
 Each point (x,y,z) on the sphere denotes a necklace cut - note the white indicator on the image. The cut splits the necklace in maximal three segments of length (x²,y²,z²). The sign of each ordinate assigns the segment to either thief A or B.
 
-The coloring indicates how much one thief owns per jewel type. The colors red and green are used to distinguish between the jewel types. Bright yellow (mix between red and green) for instance indicates that one thief owns the majority of both jewel types.
+The coloring indicates how much thief A owns per jewel type. The colors red and green are used to distinguish between the jewel types. Bright yellow (mix between red and green) for instance indicates that thief A owns the majority of both jewel types.
 
 ## Solve the Necklace splitting Problem
-If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identical. The orange line around the sphere shows this solution band (enable with ***Necklacer/Solution Band***). All solutions independent from the necklace configuration exist on this line only.
+If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identical. The orange line around the sphere shows this solution band (enable with ***Necklace/Solution Band***). All solutions independent from the necklace configuration exist on this line only.
 
 Given a first cut position, the second possible cut can be calculated directly. The solutions (enable with ***Necklace/Solutions***) for a given necklace configuration can be calculated in linear time by iterating through the jewels.
 
@@ -30,7 +30,9 @@ Starting at [6:19](https://youtu.be/yuVqxCSsE7c?t=379) the video starts explaini
 
 Let f(x) be the continous function, that maps the surface of the sphere to the 2D plane, then all we need to do is looking for the zeroes of a function g(x) = f(x) - f(-x). Since x and -x are antipodal points on the sphere, it is sufficient to show, that g(x) must have at least one zero. The function g(x) is symmetrical to the origin. 
 
-If you calculate g(x) for a circle line around the sphere in the xy plane, the image of g(x) forms a continous, closed loop surrounding the origin. Now if the circle line is moved along the z-axis towards one pole the loop around the origin created by g(x) degenerates into a single point. Since this transformation is continous, the loop must cross the origin at some point during that movement.
+If you calculate g(x) for a circle line around the sphere in the xy plane, the image of g(x) forms a continous, closed loop surrounding the origin. This is because g(x) is both continous and symmetric to the origin. 
+
+Now, if the circle line is moved along the z-axis towards one pole the closed loop around the origin created by g(x) degenerates into a single point. Since this transformation is continous, the loop must cross the origin at some point during that movement.
 
 The option ***View/Sphere/Borsuk-Ulam*** visualizes the 3D shape, that results from the moving image of g(x). 
 
@@ -58,15 +60,15 @@ View live on GitHub-Pages [https://mkuehne-git.github.io/necklace-splitting/](ht
     > vite --host
 
     
-      vite v2.7.10 dev server running at:
+      vite v3.2.3 dev server running at:
 
-      > Local: http://localhost:3000/
+      > Local: http://localhost:5173/
       > Network: use `--host` to expose
 
       ready in 152ms.
     ```
 
-* Open [localhost:3000](http://localhost:3000) to launch the application. The port may differ. If you want to expose it to other clients in your network, use
+* Open [localhost:5173](http://localhost:5173) to launch the application. The port may differ. If you want to expose it to other clients in your network, use
 
     ```bash
     $ npm run expose
@@ -103,9 +105,8 @@ If you want to create your own build or deployment - please check out the [instr
 
 * [Vite](https://github.com/vitejs/vite) - Next Generation Frontend Tooling
 * [vite-plugin-glsl](https://www.npmjs.com/package/vite-plugin-glsl) - Recursively imports and inlines shader chunks within GLSL files relative to their directory.
-* [rollup-plugin-dynamic-import-variables](https://www.npmjs.com/package/rollup-plugin-dynamic-import-variables)
 * WebGL [three.js](https://threejs.org/)
-* Settings with [dat.gui](https://github.com/dataarts/dat.gui)
+* Settings with [lil-gui](https://github.com/georgealways/lil-gui)
 
 # License
 
