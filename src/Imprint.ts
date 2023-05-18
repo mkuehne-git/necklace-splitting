@@ -43,30 +43,32 @@ class Imprint {
     return this.#decryptedAES() !== undefined;
   }
   show() {
-    this.#div = document.createElement("div");
-    const div = this.#div;
-    div.classList.add("imprint");
-    div.classList.add("padding");
-    div.innerHTML = this.#decryptedAES();
-    document.body.appendChild(div);
-    const style = window.getComputedStyle(document.body);
-    const width = div.scrollWidth - 10;
-    const height = div.scrollHeight;
-    const backgroundColor = style.getPropertyValue("background-color");
-    html2canvas(div, {
-      backgroundColor,
-      windowWidth: width,
-      windowHeight: height,
-    }).then((canvas) => {
-      div.classList.remove("padding");
-      div.innerHTML = "";
-      div.appendChild(canvas);
-      const p = document.createElement("p");
-      p.classList.add("padding");
-      p.innerHTML = trailer + closeBtn;
-      div.appendChild(p);
-    });
+    if (this.#div === undefined) {
+      this.#div = document.createElement("div");
+      const div = this.#div;
+      div.classList.add("imprint");
+      div.innerHTML = this.#decryptedAES();
+      document.body.appendChild(div);
+      const style = window.getComputedStyle(document.body);
+      const width = div.scrollWidth - 20;
+      const height = div.scrollHeight;
+      const backgroundColor = style.getPropertyValue("background-color");
+      html2canvas(div, {
+        backgroundColor,
+        windowWidth: width,
+        windowHeight: height,
+      }).then((canvas) => {
+        canvas.classList.add("padding");
+        div.innerHTML = "";
+        div.appendChild(canvas);
+        const p = document.createElement("p");
+        p.classList.add("padding");
+        p.innerHTML = trailer + closeBtn;
+        div.appendChild(p);
+      });
+    }
   }
+
   hide() {
     if (this.#div !== undefined) {
       document.body.removeChild(this.#div);
