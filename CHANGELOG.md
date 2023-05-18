@@ -1,4 +1,9 @@
 ## Changelog
+### v0.4.1
+* Fix sizing of Imprint, no horizontal scrollbar
+* Fix mulitple clicks on Imprint, breaking Close button
+* Update dependencies
+
 ### v0.4.0
 * Replace `dat.gui` by `lil-gui`
 * Update versions of dependent libraries
