@@ -1,4 +1,8 @@
 ## Changelog
+### v0.4.2
+* Update packages
+* Improve README.md
+
 ### v0.4.1
 * Fix sizing of Imprint, no horizontal scrollbar
 * Fix mulitple clicks on Imprint, breaking Close button
