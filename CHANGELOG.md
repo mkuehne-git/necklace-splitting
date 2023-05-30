@@ -2,6 +2,7 @@
 ### v0.4.2
 * Update packages
 * Improve README.md
+* Controller UI with Settings icon
 
 ### v0.4.1
 * Fix sizing of Imprint, no horizontal scrollbar

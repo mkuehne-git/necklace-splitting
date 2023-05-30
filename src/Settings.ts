@@ -1,7 +1,11 @@
 // To configure settings
 import { Controller, GUI } from "three/examples/jsm/libs/lil-gui.module.min";
 import { Events, Showcase } from "./Enums";
+import { ClassMutationObserver } from './ClassMutationObserver';
 import { Imprint } from "./Imprint";
+
+// The icon
+import svgAsString from './images/Settings.svg?raw';
 
 /** Vectors whose distance is less that EPS are treated equal. */
 const EPS = 0.001;
@@ -79,6 +83,8 @@ class Settings {
   #captureFolder: any;
   #showcaseFolder: GUI;
   #hidden: boolean;
+  #gui: GUI;
+  #guiIcon: HTMLElement;
   static addRadioButtonsFolder(
     parent: GUI,
     folderName: string,
@@ -121,10 +127,9 @@ class Settings {
         });
     });
   }
-  private gui: GUI;
   constructor() {
-    this.gui = new GUI();
-    this.gui.domElement.id = "gui";
+    this.#gui = new GUI();
+    this.#gui.domElement.id = "gui";
 
     this.createShowcaseFolder();
     this.createNecklaceFolder();
@@ -132,12 +137,35 @@ class Settings {
     this.createCaptureFolder();
 
     this.createShowHideListener();
+    this.createSettingsIcon();
   }
+  createSettingsIcon() {
+    const div = document.createElement('DIV');
+    div.innerHTML = svgAsString;
+    this.#guiIcon = div.querySelector('#gui-icon') as HTMLElement;
+    this.#guiIcon.classList.add('show');
+    this.#gui.hide();
+    this.#gui.domElement.insertAdjacentElement('beforeBegin', this.#guiIcon);
+    new ClassMutationObserver(this.#gui.domElement, (value: MutationRecord, index: number | undefined) => {
+        const div = value.target as HTMLDivElement;
+        if (index === 0 && !div?.classList.contains('transition') && div?.classList.contains('closed')) {
+            this.#gui.hide();
+            this.#gui.close();
+            this.#guiIcon.classList.toggle('show');
+        }
+    });
+    // Make Icon invisible, show open GUI
+    this.#guiIcon?.addEventListener('click', () => {
+        this.#guiIcon.classList.toggle('show');
+        this.#gui.show();
+        this.#gui.open();
+    });
+}
 
   createShowHideListener(): void {
     window.addEventListener('keydown', (e) => {
       if (e.key === "h" || e.key === "H") {
-        this.#hidden ? this.gui.show() : this.gui.hide();
+        this.#hidden ? this.#gui.show() : this.#gui.hide();
         this.#hidden = !this.#hidden;
       }
     })
@@ -145,7 +173,7 @@ class Settings {
 
   createShowcaseFolder(): void {
     this.#showcaseFolder = Settings.addRadioButtonsFolder(
-      this.gui,
+      this.#gui,
       `Showcase: ${SETTINGS.radio}`,
       SETTINGS.radio,
       MODES,
@@ -160,7 +188,7 @@ class Settings {
   }
 
   createNecklaceFolder() {
-    const folder = this.gui.addFolder("Necklace");
+    const folder = this.#gui.addFolder("Necklace");
     folder
       .add(SETTINGS.necklace, "number_of_jewels", 0, MAX_JEWELS, 1)
       .name("Jewels")
@@ -214,7 +242,7 @@ class Settings {
   }
 
   createViewFolder() {
-    const folder = this.gui.addFolder("View");
+    const folder = this.#gui.addFolder("View");
     folder
       .add(SETTINGS.view, "dark_theme")
       .name(`Dark theme`)
@@ -325,14 +353,14 @@ class Settings {
   }
 
   createCaptureFolder() :void{
-    const folder = this.gui.addFolder("Screen capture");
+    const folder = this.#gui.addFolder("Screen capture");
 
     // Configure imprint
     const imprint = new Imprint();
     const p = imprint.isAvailable();
     p.then((available) => {
       if (available) {
-        this.gui.add(SETTINGS, "imprint").name("Imprint");
+        this.#gui.add(SETTINGS, "imprint").name("Imprint");
       }
     });
     folder.close();

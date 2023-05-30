@@ -14,8 +14,9 @@
   --thief-a-color-light: rgb(255, 127, 127);
   --thief-b-color-light: rgb(144, 238, 144);
   --gauge-color: var(--between-jewels-color);
-
   color: var(--text-color);
+
+  --settings-size: 48px;
 }
 
 :root .dark {
@@ -68,3 +69,27 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+#gui-icon {
+  /* Icon shall be on top. */
+  z-index: 2;
+
+  position: absolute;
+  display: block;
+  top: 0;
+  right: 0;
+  
+  opacity: 0;
+
+  /* Total of 48x48px, according material design guides. */
+  margin: 12px;
+  width: calc(var(--settings-size)/2);
+  height: calc(var(--settings-size)/2);
+
+  fill: var(--text-color);
+}
+
+#gui-icon.show {
+  opacity: 1;
+}
+
