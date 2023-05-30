@@ -69,7 +69,7 @@ const SETTINGS = {
     alpha: 1.0,
   },
   capture: {},
-  imprint: showImprint,
+  imprint: () => Settings.dispatchEvent(Events.SHOW_IMPRINT),
 
   radio: MODES[Showcase.STOLEN_NECKLACE],
   // trick for debugging without console
@@ -81,7 +81,7 @@ class Settings {
   #hidden: boolean;
   static addRadioButtonsFolder(
     parent: GUI,
-    folderName: String,
+    folderName: string,
     object,
     options,
     onChange = (obj, prop, index) => { }
@@ -355,10 +355,6 @@ function resetAnimation() :void{
   SETTINGS.animation.rotation_x = 0;
   SETTINGS.animation.rotation_y = 0;
   SETTINGS.animation.rotation_z = 0;
-}
-
-function showImprint() {
-  Settings.dispatchEvent(Events.SHOW_IMPRINT);
 }
 
 export { EPS, EPS_SQ, MAX_JEWELS, SETTINGS, Settings };

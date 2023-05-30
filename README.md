@@ -1,6 +1,8 @@
 ![Necklace-splitting](./src/images/necklace.png)
 # necklace-splitting
-This HTML-5 application features an explorable visualization of the [Necklace splitting problem](https://en.wikipedia.org/wiki/Necklace_splitting_problem) and its connection to the [Borsuk-Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem). Online available, [here](https://mkuehne-git.github.io/necklace-splitting/).
+This HTML-5 application features an explorable visualization of the [Necklace splitting problem](https://en.wikipedia.org/wiki/Necklace_splitting_problem) and its connection to the [Borsuk-Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem). 
+
+Available on [Github Pages](https://mkuehne-git.github.io/necklace-splitting/).
 
 After watching the [3blue1brown](https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw) video [The Borsuk-Ulam theorem and stolen necklaces](https://youtu.be/yuVqxCSsE7c) a couple of times, I wondered, how the mapping of the necklace splitting onto a sphere would actually look like.
 
@@ -8,7 +10,7 @@ Each point (x,y,z) on the sphere denotes a necklace cut - note the white indicat
 
 The coloring indicates how much thief A owns per jewel type. The colors red and green are used to distinguish between the jewel types. Bright yellow (mix between red and green) for instance indicates that thief A owns the majority of both jewel types.
 
-## Solve the Necklace splitting Problem
+## Solve the Necklace Splitting Problem
 If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identical. The orange line around the sphere shows this solution band (enable with ***Necklace/Solution Band***). All solutions independent from the necklace configuration exist on this line only.
 
 Given a first cut position, the second possible cut can be calculated directly. The solutions (enable with ***Necklace/Solutions***) for a given necklace configuration can be calculated in linear time by iterating through the jewels.
@@ -24,7 +26,7 @@ You can extrude the octants from the sphere using the slider ***Octant Offset***
 
 ![necklace-octants-removed](./src/images/necklace-octants.png)
 
-## Proof of Borsuk-Ulam theorem
+## Proof of Borsuk-Ulam Theorem
 
 Starting at [6:19](https://youtu.be/yuVqxCSsE7c?t=379) the video starts explaining why the [Borsuk–Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem) is true.
 
@@ -103,11 +105,12 @@ If you want to create your own build or deployment - please check out the [instr
 
 # Acknowledgments
 
-* [Vite](https://github.com/vitejs/vite) - Next Generation Frontend Tooling
-* [vite-plugin-glsl](https://www.npmjs.com/package/vite-plugin-glsl) - Recursively imports and inlines shader chunks within GLSL files relative to their directory.
 * WebGL [three.js](https://threejs.org/)
 * Settings with [lil-gui](https://github.com/georgealways/lil-gui)
+* [Vite](https://github.com/vitejs/vite) - Next Generation Frontend Tooling
+* [vite-plugin-glsl](https://www.npmjs.com/package/vite-plugin-glsl) - Recursively imports and inlines shader chunks within GLSL files relative to their directory.
+* [@vitejs/plugin-basic-ssl](https://www.npmjs.com/package/@vitejs/plugin-basic-ssl) - A plugin to generate untrusted certificates which still allows to access the page after proceeding a wall with warning.
 
 # License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/mkuehne-git/necklace-splitting/blob/main/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/mkuehne-git/necklace-splitting/blob/main/LICENSE) file for details.
