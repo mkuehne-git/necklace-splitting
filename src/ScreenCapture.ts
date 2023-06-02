@@ -38,7 +38,9 @@ class ScreenCapture {
     this.#fBeforeCapture = () => document.body;
     this.#configureSettings(settings, options);
     document.addEventListener("keydown", (e) => {
-      if (e.ctrlKey && e.key === "#") {
+      if (e.altKey && e.key === "s") {
+        e.stopPropagation(); 
+        e.preventDefault();       
         this.capture();
       }
     });
@@ -63,7 +65,7 @@ class ScreenCapture {
         this.#captionIndex = index;
       }
     );
-    folder.add(property, "on_capture_clicked").name("Click or press 's'");
+    folder.add(property, "on_capture_clicked").name("Click or press 'alt s'");
   }
 
   capture(fBeforeCapture = this.#fBeforeCapture) {
