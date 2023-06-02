@@ -1,4 +1,6 @@
 ## Changelog
+### v0.4.3
+* Screen capture with ***alt-s***
 ### v0.4.2
 * Update packages
 * Improve README.md
