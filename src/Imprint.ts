@@ -1,6 +1,7 @@
 import html2canvas from "html2canvas";
 
 import { Events } from "./Enums";
+import { ClassMutationObserver } from "./ClassMutationObserver";
 
 const loadModule = async () => {
   return await import(/* @vite-ignore */ "./imprint-gen");
@@ -19,24 +20,25 @@ class Imprint {
   #decryptedAES: any;
   #div: HTMLDivElement;
   constructor() {
-    window.addEventListener("resize", () => {
-      if (this.#div !== undefined) {
-        this.hide();
-        this.show();
-      }
-    });
-    document.body.addEventListener(Events.SHOW_IMPRINT.toString(), () => {
-      this.show();
-    });
-    document.body.addEventListener(Events.HIDE_IMPRINT.toString(), () => {
-      this.hide();
-    });
+    window.addEventListener("resize", () => this.redraw());
+    new ClassMutationObserver(document.body, () => this.redraw());
+    document.body.addEventListener(Events.SHOW_IMPRINT.toString(), (e) => this.show());
+    document.body.addEventListener(Events.HIDE_IMPRINT.toString(), (e) => this.hide());
+
     document.body.addEventListener("keydown", (e) => {
       if (e.key === "Esc" || e.key === "Escape") {
         this.hide();
       }
     });
   }
+
+  private redraw() {
+    if (this.#div !== undefined) {
+      this.hide();
+      this.show();
+    }
+  }
+
   async isAvailable(): Promise<boolean> {
     const m = await loadModule();
     this.#decryptedAES = m.decryptedAES;

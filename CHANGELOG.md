@@ -1,6 +1,7 @@
 ## Changelog
 ### v0.4.3
 * Screen capture with ***alt-s***
+* Redraw imprint on theme change
 ### v0.4.2
 * Update packages
 * Improve README.md
