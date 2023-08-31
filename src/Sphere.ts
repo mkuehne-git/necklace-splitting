@@ -144,7 +144,7 @@ class Sphere extends NecklaceComponent {
     this.#orbitControls.update();
     this.#renderer.render(this.#scene, this.#camera);
     if (this.#sphere.visible || this.#sphereMesh.visible) {
-      this.#raycaster.setFromCamera(mouse, this.#camera);
+      this.#raycaster.setFromCamera(mouse as THREE.Vector2, this.#camera);
       const intersects = this.#raycaster.intersectObject(this.#sphere);
       const uniforms = (this.#sphere.material as THREE.ShaderMaterial).uniforms;
       if (intersects.length > 0 && !SETTINGS.animation.run) {

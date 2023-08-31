@@ -14,26 +14,24 @@ const closeBtn = `<hr><div class="center" width=100%>
 /**
  * This class generates an imprint, if the file './imprint-gen.js' can be imported. The imprint will
  * be displayed as resizable image - instead of plain text. This is a little protection against
- * agents reading the HTML sourc.
+ * agents reading the HTML source.
  */
 class Imprint {
-  #decryptedAES: any;
-  #div: HTMLDivElement;
+  private decryptedAES: () => string;
+  private div: HTMLDivElement;
   constructor() {
     window.addEventListener("resize", () => this.redraw());
     new ClassMutationObserver(document.body, () => this.redraw());
     document.body.addEventListener(Events.SHOW_IMPRINT.toString(), (e) => this.show());
     document.body.addEventListener(Events.HIDE_IMPRINT.toString(), (e) => this.hide());
-
     document.body.addEventListener("keydown", (e) => {
       if (e.key === "Esc" || e.key === "Escape") {
         this.hide();
       }
     });
   }
-
   private redraw() {
-    if (this.#div !== undefined) {
+    if (this.div !== undefined) {
       this.hide();
       this.show();
     }
@@ -41,18 +39,18 @@ class Imprint {
 
   async isAvailable(): Promise<boolean> {
     const m = await loadModule();
-    this.#decryptedAES = m.decryptedAES;
-    return this.#decryptedAES() !== undefined;
+    this.decryptedAES = m.decryptedAES;
+    return this.decryptedAES() !== undefined;
   }
   show() {
-    if (this.#div === undefined) {
-      this.#div = document.createElement("div");
-      const div = this.#div;
+    if (this.div === undefined) {
+      this.div = document.createElement("div");
+      const div = this.div;
       div.classList.add("imprint");
-      div.innerHTML = this.#decryptedAES();
+      div.innerHTML = this.decryptedAES();
       document.body.appendChild(div);
       const style = window.getComputedStyle(document.body);
-      const width = div.scrollWidth - 20;
+      const width = div.scrollWidth;
       const height = div.scrollHeight;
       const backgroundColor = style.getPropertyValue("background-color");
       html2canvas(div, {
@@ -70,11 +68,10 @@ class Imprint {
       });
     }
   }
-
   hide() {
-    if (this.#div !== undefined) {
-      document.body.removeChild(this.#div);
-      this.#div = undefined as any;
+    if (this.div !== undefined) {
+      document.body.removeChild(this.div);
+      this.div = undefined as any;
     }
   }
 }

@@ -5,6 +5,7 @@
  * 3blue1brown video https://youtu.be/yuVqxCSsE7c
  */
 
+import '@fontsource/dejavu-sans';
 
 // To configure settings
 import { SETTINGS, Settings } from './Settings';
@@ -44,6 +45,13 @@ const capture = new ScreenCapture(
     sphere: sphere.captureElement,
     necklace: necklace.captureElement
   });
+
+// Version info before infoIcon
+const span = document.createElement('SPAN');
+span.setAttribute('id', 'version-info');
+span.innerHTML = `v${APP_VERSION}`;
+document.body.insertAdjacentElement('beforeend', span);
+
 
 // Make empty module to allow top level await
 export { };

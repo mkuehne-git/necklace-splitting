@@ -1,4 +1,9 @@
 ## Changelog
+### v0.4.4
+* Add `manifest.json` to create PWA
+* Create `icons` for PWA
+* Fix rendering issue (not showing full content) for imprint
+* Add version info at lower right corner
 ### v0.4.3
 * Screen capture with ***alt-s***
 * Redraw imprint on theme change

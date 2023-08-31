@@ -16,6 +16,10 @@
   --gauge-color: var(--between-jewels-color);
   color: var(--text-color);
 
+  /* Default font, load via npm -i @fontsource/dejavu-sans */
+  font-family: "DejaVu Sans";
+
+  /* Size of the Settings icon, including empty margins around */
   --settings-size: 48px;
 }
 
@@ -27,47 +31,39 @@
   color: var(--text-color);
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
-  margin: 0px;
+  margin: 0;
   background-color: var(--background-color);
-  
+
   /* tell our scene container to take up the full page */
   position: absolute;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 #necklace {
   display: block;
   position: absolute;
   bottom: 0%;
-  
+
   width: 100%;
   height: 20%;
-  
+
   margin-bottom: 2px;
 }
 
-.imprint {
-  display: block;
-  background-color: var(--background-color);
-  margin : 0;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  opacity: 1.0;
+#gui {
+  /* GUI shall be on top. */
+  z-index: 2;
   position: absolute;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-}
-
-.padding {
-  padding : 10px;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  top: 0;
+  right: 0;
+  z-index: 2;
 }
 
 #gui-icon {
@@ -78,7 +74,7 @@ body {
   display: block;
   top: 0;
   right: 0;
-  
+
   opacity: 0;
 
   /* Total of 48x48px, according material design guides. */
@@ -92,4 +88,40 @@ body {
 #gui-icon.show {
   opacity: 1;
 }
+
+.imprint {
+  display: block;
+  background-color: var(--background-color);
+  margin: 0;
+  opacity: 1.0;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.padding {
+  /* overflow: visible; */
+  background-color: var(--background-color);
+  margin: 0;
+  padding-top: 0px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#version-info {
+  position: absolute;
+  right: 8px;
+  bottom: 2px;
+  font-size: x-small;
+  opacity: 0.5;
+}
+
 
