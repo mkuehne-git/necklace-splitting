@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# Vite PWA
+dev-dist
+
 # Input used by create-imprint.mjs
 imprint.config.json
 

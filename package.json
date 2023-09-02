@@ -1,6 +1,6 @@
 {
   "name": "necklace-splitting",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,7 +15,8 @@
     "@types/three": "^0.155.1",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
     "vite": "^4.4.9",
-    "vite-plugin-glsl": "^1.1.2"
+    "vite-plugin-glsl": "^1.1.2",
+    "vite-plugin-pwa": "^0.16.4"
   },
   "dependencies": {
     "@fontsource/dejavu-sans": "^5.0.7",

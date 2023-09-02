@@ -2,7 +2,7 @@
 # necklace-splitting
 This HTML-5 application features an explorable visualization of the [Necklace splitting problem](https://en.wikipedia.org/wiki/Necklace_splitting_problem) and its connection to the [Borsuk-Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem). 
 
-Available on [Github Pages](https://mkuehne-git.github.io/necklace-splitting/).
+Available on [Github Pages](https://mkuehne-git.github.io/necklace-splitting/). The application can be installed as PWA (tested on Android).
 
 After watching the [3blue1brown](https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw) video [The Borsuk-Ulam theorem and stolen necklaces](https://youtu.be/yuVqxCSsE7c) a couple of times, I wondered, how the mapping of the necklace splitting onto a sphere would actually look like.
 
@@ -38,9 +38,8 @@ Now, if the circle line is moved along the z-axis towards one pole the closed lo
 
 The option ***View/Sphere/Borsuk-Ulam*** visualizes the 3D shape, that results from the moving image of g(x). 
 
-> **Note**: This is currently work in progress
-
-The current implementation has some flaws, because the shape of g is created by simply shifting each point form the sphere's mesh (origin) to the image location g(x). This allows for a quick, first view, but it doesn't preserve the integrity of the mesh. That may lead to unexpected rendering artifacts.
+> **Note**: This is a quick and dirty prove of concept only.<br>
+The current implementation has serious flaws, because the shape of g is created by simply shifting each point form the sphere's mesh (origin) to the image location g(x). This allows for a quick, first view, but it doesn't preserve the integrity of the mesh. That may lead to unexpected rendering artifacts.
 
 # Getting started
 
@@ -110,7 +109,8 @@ If you want to create your own build or deployment - please check out the [instr
 * [Vite](https://github.com/vitejs/vite) - Next Generation Frontend Tooling
 * [vite-plugin-glsl](https://www.npmjs.com/package/vite-plugin-glsl) - Recursively imports and inlines shader chunks within GLSL files relative to their directory.
 * [@vitejs/plugin-basic-ssl](https://www.npmjs.com/package/@vitejs/plugin-basic-ssl) - A plugin to generate untrusted certificates which still allows to access the page after proceeding a wall with warning.
-
+* [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) - PWA Vite Plugin, used to transform the application into PWA, see `vite.config.ts`.
+* [FavIcon Generator](https://realfavicongenerator.net/) - I used this to generate the `favicons` and the related section in `index.html`. PWA icons were generated with `PWABuilder Studio` inside VS Code.
 # License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/mkuehne-git/necklace-splitting/blob/main/LICENSE) file for details.
