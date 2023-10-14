@@ -18,9 +18,6 @@
 
   /* Default font, load via npm -i @fontsource/dejavu-sans */
   font-family: "DejaVu Sans";
-
-  /* Size of the Settings icon, including empty margins around */
-  --settings-size: 48px;
 }
 
 :root .dark {
@@ -29,6 +26,7 @@
   --text-color: var(--between-jewels-color);
   --gauge-color: var(--between-jewels-color);
   color: var(--text-color);
+
 }
 
 * {
@@ -55,38 +53,6 @@ body {
   height: 20%;
 
   margin-bottom: 2px;
-}
-
-#gui {
-  /* GUI shall be on top. */
-  z-index: 2;
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 2;
-}
-
-#gui-icon {
-  /* Icon shall be on top. */
-  z-index: 2;
-
-  position: absolute;
-  display: block;
-  top: 0;
-  right: 0;
-
-  opacity: 0;
-
-  /* Total of 48x48px, according material design guides. */
-  margin: 12px;
-  width: calc(var(--settings-size)/2);
-  height: calc(var(--settings-size)/2);
-
-  fill: var(--text-color);
-}
-
-#gui-icon.show {
-  opacity: 1;
 }
 
 .imprint {
@@ -116,6 +82,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 #version-info {
   position: absolute;
   right: 8px;
@@ -123,5 +90,3 @@ body {
   font-size: x-small;
   opacity: 0.5;
 }
-
-
