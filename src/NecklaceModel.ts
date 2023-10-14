@@ -86,7 +86,7 @@ class NecklaceModel {
         this.#cnt.y += 1;
       }
     }
-    console.log(`necklaceFromString: ${necklaceAsStr}: ${this.#necklace} ${this.#cnt.x},${this.#cnt.y}`);
+    // console.log(`necklaceFromString: ${necklaceAsStr}: ${this.#necklace} ${this.#cnt.x},${this.#cnt.y}`);
     Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
   }
 

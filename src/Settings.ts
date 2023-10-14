@@ -3,9 +3,11 @@ import { Controller, GUI } from "three/examples/jsm/libs/lil-gui.module.min";
 import { Events, Showcase } from "./Enums";
 import { ClassMutationObserver } from './ClassMutationObserver';
 import { Imprint } from "./Imprint";
+import './css/lil-gui.css';
 
-// The icon
-import svgAsString from './images/Settings.svg?raw';
+// The icono open/close the GUI
+import svgSettingsOpenAsString from './images/settings-open.svg?raw';
+import svgSettingsCloseAsString from './images/settings-close.svg?raw';
 
 /** Vectors whose distance is less that EPS are treated equal. */
 const EPS = 0.001;
@@ -85,6 +87,7 @@ class Settings {
   #hidden: boolean;
   #gui: GUI;
   #guiIcon: HTMLElement;
+  #guiCloseIcon: HTMLElement;
   static addRadioButtonsFolder(
     parent: GUI,
     folderName: string,
@@ -127,40 +130,56 @@ class Settings {
         });
     });
   }
+  static registerOnThemeChange(element: HTMLElement) {
+    element.addEventListener(Events.THEME_CHANGED.toString(), () => onThemeChange(element));
+  }
+  
   constructor() {
     this.#gui = new GUI();
     this.#gui.domElement.id = "gui";
+
+    this.createSettingsIcon();
+    this.createShowHideListener();
 
     this.createShowcaseFolder();
     this.createNecklaceFolder();
     this.createViewFolder();
     this.createCaptureFolder();
-
-    this.createShowHideListener();
-    this.createSettingsIcon();
   }
+
   createSettingsIcon() {
     const div = document.createElement('DIV');
-    div.innerHTML = svgAsString;
-    this.#guiIcon = div.querySelector('#gui-icon') as HTMLElement;
+    div.innerHTML = svgSettingsOpenAsString + svgSettingsCloseAsString;
+    this.#guiIcon = div.querySelector('#settings-icon') as HTMLElement;
+    this.#guiCloseIcon = div.querySelector('#settings-close-icon') as HTMLElement;
     this.#guiIcon.classList.add('show');
     this.#gui.hide();
     this.#gui.domElement.insertAdjacentElement('beforeBegin', this.#guiIcon);
+    this.#guiIcon.insertAdjacentElement('afterEnd', this.#guiCloseIcon);
     new ClassMutationObserver(this.#gui.domElement, (value: MutationRecord, index: number | undefined) => {
-        const div = value.target as HTMLDivElement;
-        if (index === 0 && !div?.classList.contains('transition') && div?.classList.contains('closed')) {
-            this.#gui.hide();
-            this.#gui.close();
-            this.#guiIcon.classList.toggle('show');
-        }
+      const div = value.target as HTMLDivElement;
+      if (index === 0 && !div?.classList.contains('transition') && div?.classList.contains('closed')) {
+        this.#gui.hide();
+        this.#gui.close();
+        this.toggleSettings();
+      }
     });
-    // Make Icon invisible, show open GUI
+    // Toggle settings-icon, settings-close-icon, show and open GUI
     this.#guiIcon?.addEventListener('click', () => {
-        this.#guiIcon.classList.toggle('show');
-        this.#gui.show();
-        this.#gui.open();
+      this.toggleSettings()
+      this.#gui.show();
+      this.#gui.open();
     });
-}
+    // Toggle settings-icon, settings-close-icon, hide GUI
+    this.#guiCloseIcon?.addEventListener('click', () => {
+      this.#gui.$title.click();
+    });
+  }
+
+  toggleSettings() {
+    this.#guiIcon.classList.toggle('show');
+    this.#guiCloseIcon.classList.toggle('show');
+  }
 
   createShowHideListener(): void {
     window.addEventListener('keydown', (e) => {
@@ -352,7 +371,7 @@ class Settings {
     folder.close();
   }
 
-  createCaptureFolder() :void{
+  createCaptureFolder(): void {
     const folder = this.#gui.addFolder("Screen capture");
 
     // Configure imprint
@@ -377,7 +396,7 @@ class Settings {
   }
 }
 
-function resetAnimation() :void{
+function resetAnimation(): void {
   SETTINGS.animation.trigger_reset = true;
   SETTINGS.animation.run = false;
   SETTINGS.animation.rotation_x = 0;
@@ -385,4 +404,11 @@ function resetAnimation() :void{
   SETTINGS.animation.rotation_z = 0;
 }
 
+function onThemeChange(element: HTMLElement) {
+  const oldThemeStyle = SETTINGS.view.dark_theme ? 'light' : 'dark';
+  const newThemeStyle = SETTINGS.view.dark_theme ? 'dark' : 'light';
+  if (!element.classList.replace(oldThemeStyle, newThemeStyle)) {
+    element.classList.add(newThemeStyle);
+  }
+}
 export { EPS, EPS_SQ, MAX_JEWELS, SETTINGS, Settings };

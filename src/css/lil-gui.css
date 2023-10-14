@@ -1,0 +1,67 @@
+:root {
+    /* Size of the Settings icon, including empty margins around */
+    --settings-size: 48px;
+}
+
+/* Remove title control, which usually closes the GUI. */
+.lil-gui.root>.title:first-of-type {
+    display: none
+}
+
+.light .lil-gui {
+    --background-color: var(--background-color);
+    --text-color: var(--text-color);
+    --title-background-color: #e1e1e1;
+    --title-text-color: var(--text-color);
+
+    --widget-color: #e0e0e0;
+    --hover-color: #e8e8e8;
+    --focus-color: #eee;
+
+    --number-color: #024e68;
+    --string-color: #5a8d04;
+}
+
+.dark .lil-gui {
+    --background-color: var(--background-color);
+    --text-color: var(--text-color);
+    --title-background-color: #111111;
+    --title-text-color: var(--text-color);
+
+    --widget-color: #424242;
+    --hover-color: #4f4f4f;
+    --focus-color: #595959;
+
+    --number-color: #2cc9ff;
+    --string-color: #a2db3c;
+}
+
+.settings-icon {
+    /* Icon shall be on top. */
+    z-index: 2;
+
+    position: absolute;
+    display: block;
+    visibility: hidden;
+    top: 0;
+    right: 0;
+
+    /* Total of 48x48px, according material design guides. */
+    margin: calc(var(--settings-size)/4);
+    width: calc(var(--settings-size)/2);
+    height: calc(var(--settings-size)/2);
+
+    fill: var(--text-color);
+}
+
+.settings-icon.show {
+    visibility: visible;
+}
+
+#gui {
+    /* GUI shall be on top. */
+    z-index: 2;
+    position: absolute;
+    top: var(--settings-size);
+    right: 0;
+}

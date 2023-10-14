@@ -22,17 +22,7 @@ const model = new NecklaceModel();
 const sphere = new Sphere(model);
 const necklace = new Necklace(model);
 
-
-document.body.addEventListener(Events.THEME_CHANGED.toString(), onThemeChange);
-
-function onThemeChange() {
-  const oldThemeStyle = SETTINGS.view.dark_theme ? 'light' : 'dark';
-  const newThemeStyle = SETTINGS.view.dark_theme ? 'dark' : 'light';
-  if (document.body.classList.contains(oldThemeStyle)) {
-    document.body.classList.remove(oldThemeStyle);
-  }
-  document.body.classList.add(newThemeStyle);
-}
+Settings.registerOnThemeChange(document.body);
 Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
 sphere.render();
 const capture = new ScreenCapture(
