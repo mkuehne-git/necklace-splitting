@@ -1,6 +1,14 @@
 :root {
     /* Size of the Settings icon, including empty margins around */
     --settings-size: 48px;
+
+    --b-grey: calc(255 * 0.9);
+    --b-color: rgb(var(--b-grey), var(--b-grey), var(--b-grey));
+}
+
+:root .dark {
+    --b-grey: calc(33 * 1.3);
+    --b-color: rgb(var(--b-grey), var(--b-grey), var(--b-grey));
 }
 
 /* Remove title control, which usually closes the GUI. */
@@ -36,48 +44,75 @@
     --string-color: #a2db3c;
 }
 
-.settings-icon {
-    /* Icon shall be on top. */
+div.toggle-div {
     z-index: 2;
-
     position: absolute;
-    display: none;
-    top: 0;
+    display: grid;
+
     right: 0;
 
+    width: var(--settings-size);
+    height: var(--settings-size);
+
+    border-style: solid;
+    border-radius: 50%;
+    border-width: 0px;
+    border-color: var(--background-color);
+}
+
+div.toggle-div.clicked {
+    border-width: calc(var(--settings-size)/2)px;
+    border-color: var(--b-color);
+
+    animation-name: pulse;
+    animation-duration: 1.3s
+}
+
+@keyframes pulse {
+    0% {
+        border-width: 0px;
+    }
+
+    50% {
+        border-width: calc(var(--settings-size)/2);
+    }
+
+    100% {
+        border-width: 0px;
+    }
+}
+
+.toggle-icon {
+    display: none;
+}
+
+.toggle-icon.show {
+    /* Icon shall be on top. */
+    z-index: 2;
+    position: absolute;
+    display: block;
+
+    align-self: center;
+    justify-self: center;
+
     /* Total of 48x48px, according material design guides. */
-    margin: calc(var(--settings-size)/4);
+    margin:48px;
     width: calc(var(--settings-size)/2);
     height: calc(var(--settings-size)/2);
 
     fill: var(--text-color);
 }
 
-.settings-icon.show {
-    display: block;
-}
 
-.themes-icon {
-    display: none;
-}
-
-.themes-icon.show {
-    /* Icon shall be on top. */
-    z-index: 2;
-    position: absolute;
-    display: block;
-
-    top: 0;
+div#themes-div {
     right: var(--settings-size);
+}
 
+.themes.show {
     --icon-size: 20px;
 
-    /* Total of 48x48px, according material design guides. */
-    margin: calc((var(--settings-size) - var(--icon-size)) / 2);
     width: var(--icon-size);
     height: var(--icon-size);
-
-    fill: var(--text-color);
 }
 
 #gui {

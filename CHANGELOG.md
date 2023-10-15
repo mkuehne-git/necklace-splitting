@@ -1,4 +1,6 @@
 ## Changelog
+### v0.4.8
+* Animate Setting/Theme-icons.
 ### v0.4.7
 * Use icon-buttons to switch themes.
 ### v0.4.6

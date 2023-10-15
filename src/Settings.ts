@@ -129,7 +129,7 @@ class Settings {
         });
     });
   }
-  
+
   constructor() {
     this.#gui = new GUI();
     this.#gui.domElement.id = "gui";
@@ -145,13 +145,14 @@ class Settings {
 
   createSettingsIcon() {
     const div = document.createElement('DIV');
+    div.classList.add('toggle-div');
+    div.id = 'settings-div'
     div.innerHTML = svgSettingsOpenAsString + svgSettingsCloseAsString;
     this.#guiIcon = div.querySelector('#settings-icon') as HTMLElement;
     this.#guiCloseIcon = div.querySelector('#settings-close-icon') as HTMLElement;
     this.#guiIcon.classList.add('show');
     this.#gui.hide();
-    this.#gui.domElement.insertAdjacentElement('beforeBegin', this.#guiIcon);
-    this.#guiIcon.insertAdjacentElement('afterEnd', this.#guiCloseIcon);
+    this.#gui.domElement.insertAdjacentElement('beforeBegin', div);
     new ClassMutationObserver(this.#gui.domElement, (value: MutationRecord, index: number | undefined) => {
       const div = value.target as HTMLDivElement;
       if (index === 0 && !div?.classList.contains('transition') && div?.classList.contains('closed')) {
@@ -160,15 +161,19 @@ class Settings {
         this.toggleSettings();
       }
     });
-    // Toggle settings-icon, settings-close-icon, show and open GUI
-    this.#guiIcon?.addEventListener('click', () => {
-      this.toggleSettings()
-      this.#gui.show();
-      this.#gui.open();
-    });
-    // Toggle settings-icon, settings-close-icon, hide GUI
-    this.#guiCloseIcon?.addEventListener('click', () => {
-      this.#gui.$title.click();
+    div.addEventListener('click', () => div.classList.add('clicked'));
+    div.addEventListener('animationend', () => {
+      if (div.classList.contains('clicked')) {
+        // console.log('animationend')
+        div.classList.remove('clicked');
+        if (this.#guiIcon.classList.contains('show')) {
+          this.toggleSettings();
+          this.#gui.show();
+          this.#gui.open();
+        } else {
+          this.#gui.$title.click();          
+        }
+      }
     });
   }
 
