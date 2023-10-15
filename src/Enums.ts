@@ -1,11 +1,11 @@
-enum Showcase {
+export enum Showcase {
   STOLEN_NECKLACE = 0,
   SHADER_LAMP,
   SPACE_COLOR,
   SINUSOID,
 }
 
-enum Events {
+export enum Events {
   CREATE_SPHERE = "create-sphere",
   SET_NECKLACE_CONFIGURATION_BY_NUMBER = "necklace-configuration-by-number",
   SET_NECKLACE_CONFIGURATION_BY_STRING = "necklace-configuration-by-string",
@@ -18,4 +18,9 @@ enum Events {
   HIDE_IMPRINT = "hide-imprint",
 }
 
-export { Events, Showcase };
+export namespace Events {
+  export function dispatchEvent(event: Events): void {
+    const evt = new Event(event.toString(), { bubbles: true });
+    document.body.dispatchEvent(evt);
+  }
+}

@@ -1,4 +1,6 @@
 ## Changelog
+### v0.4.7
+* Use icon-buttons to switch themes.
 ### v0.4.6
 * Replace `> control` button in settings menu by close icon.
 * Setting menu supporting light and dark theme.

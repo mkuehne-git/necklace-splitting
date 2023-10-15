@@ -8,7 +8,7 @@
     display: none
 }
 
-.light .lil-gui {
+.lil-gui {
     --background-color: var(--background-color);
     --text-color: var(--text-color);
     --title-background-color: #e1e1e1;
@@ -41,8 +41,7 @@
     z-index: 2;
 
     position: absolute;
-    display: block;
-    visibility: hidden;
+    display: none;
     top: 0;
     right: 0;
 
@@ -55,7 +54,30 @@
 }
 
 .settings-icon.show {
-    visibility: visible;
+    display: block;
+}
+
+.themes-icon {
+    display: none;
+}
+
+.themes-icon.show {
+    /* Icon shall be on top. */
+    z-index: 2;
+    position: absolute;
+    display: block;
+
+    top: 0;
+    right: var(--settings-size);
+
+    --icon-size: 20px;
+
+    /* Total of 48x48px, according material design guides. */
+    margin: calc((var(--settings-size) - var(--icon-size)) / 2);
+    width: var(--icon-size);
+    height: var(--icon-size);
+
+    fill: var(--text-color);
 }
 
 #gui {

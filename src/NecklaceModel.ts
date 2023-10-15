@@ -63,7 +63,7 @@ class NecklaceModel {
         this.#cnt.y += 1;
       }
     }
-    Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
+    Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
   }
 
   private necklaceFromStr(necklaceAsStr: string): void {
@@ -87,7 +87,7 @@ class NecklaceModel {
       }
     }
     // console.log(`necklaceFromString: ${necklaceAsStr}: ${this.#necklace} ${this.#cnt.x},${this.#cnt.y}`);
-    Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
+    Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
   }
 
   /**
@@ -107,7 +107,7 @@ class NecklaceModel {
         ? this.applyCutDiscrete(cuts)
         : this.applyCutContinous(cuts);
     }
-    Settings.dispatchEvent(Events.NECKLACE_CUT);
+    Events.dispatchEvent(Events.NECKLACE_CUT);
   }
 
   private applyCutDiscrete(p: Vector3): Vector2 {

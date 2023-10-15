@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 import { Events, Showcase } from "./Enums";
-import { EPS_SQ, MAX_JEWELS, Settings, SETTINGS } from "./Settings";
+import { EPS_SQ, MAX_JEWELS, SETTINGS } from "./Settings";
 import { NecklaceModel } from "./NecklaceModel";
 import { ComponentOptions, NecklaceComponent } from "./NecklaceComponent";
 import { Resizer } from "./Resizer";
@@ -42,9 +42,6 @@ class Sphere extends NecklaceComponent {
   ) {
     super(model, options);
     this.canvas = this.domElement;
-    // Make sure that initial theme is propagated into the scene.
-    // Use .body background-color for 3D scene
-    this.onThemeChange();
   }
 
   initializeCanvas(): HTMLCanvasElement {
@@ -179,15 +176,6 @@ class Sphere extends NecklaceComponent {
     }
   }
 
-  onThemeChange() {
-    const oldThemeStyle = SETTINGS.view.dark_theme ? "light" : "dark";
-    const newThemeStyle = SETTINGS.view.dark_theme ? "dark" : "light";
-    if (this.container.classList.contains(oldThemeStyle)) {
-      this.container.classList.remove(oldThemeStyle);
-    }
-    this.container.classList.add(newThemeStyle);
-  }
-
   createSphere() {
     this.#sphere.geometry.dispose();
     this.#sphereMesh.geometry.dispose();
@@ -307,7 +295,7 @@ class Sphere extends NecklaceComponent {
     }
     this.#sphere.material = this.createSphereMaterial();
     this.#sphereMesh.material.transparent = SETTINGS.color.alpha != 1.0;
-    Settings.dispatchEvent(Events.MODEL_CHANGED);
+    Events.dispatchEvent(Events.MODEL_CHANGED);
   }
 
   updateVisibility(): void {
@@ -315,7 +303,7 @@ class Sphere extends NecklaceComponent {
     this.#sphereMesh.visible = SETTINGS.view.mesh_visible;
     this.#sphere.visible = SETTINGS.view.faces_visible;
     stats["visible"](SETTINGS.view.stats_monitor_visible);
-    Settings.dispatchEvent(Events.MODEL_CHANGED);
+    Events.dispatchEvent(Events.MODEL_CHANGED);
   }
 }
 

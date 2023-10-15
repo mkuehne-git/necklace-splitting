@@ -5,9 +5,9 @@ import { ClassMutationObserver } from './ClassMutationObserver';
 import { Imprint } from "./Imprint";
 import './css/lil-gui.css';
 
-// The icono open/close the GUI
-import svgSettingsOpenAsString from './images/settings-open.svg?raw';
-import svgSettingsCloseAsString from './images/settings-close.svg?raw';
+// The icon open/close the GUI
+import svgSettingsOpenAsString from './icons/settings/open.svg?raw';
+import svgSettingsCloseAsString from './icons/settings/close.svg?raw';
 
 /** Vectors whose distance is less that EPS are treated equal. */
 const EPS = 0.001;
@@ -59,7 +59,6 @@ const SETTINGS = {
     run: false,
   },
   view: {
-    dark_theme: true,
     stats_monitor_visible: false,
     necklace_visible: true,
     gauge_visible: true,
@@ -75,7 +74,7 @@ const SETTINGS = {
     alpha: 1.0,
   },
   capture: {},
-  imprint: () => Settings.dispatchEvent(Events.SHOW_IMPRINT),
+  imprint: () => Events.dispatchEvent(Events.SHOW_IMPRINT),
 
   radio: MODES[Showcase.STOLEN_NECKLACE],
   // trick for debugging without console
@@ -129,9 +128,6 @@ class Settings {
           onChange(object, property, index);
         });
     });
-  }
-  static registerOnThemeChange(element: HTMLElement) {
-    element.addEventListener(Events.THEME_CHANGED.toString(), () => onThemeChange(element));
   }
   
   constructor() {
@@ -198,7 +194,7 @@ class Settings {
       MODES,
       (object, property, index) => {
         SETTINGS.int_mode = index;
-        Settings.dispatchEvent(Events.CREATE_SPHERE);
+        Events.dispatchEvent(Events.CREATE_SPHERE);
         this.#showcaseFolder.title(`Showcase: ${MODES[index]}`);
         this.#showcaseFolder.close();
       }
@@ -221,7 +217,7 @@ class Settings {
           .min(0)
           .max(MAX_CONFIGURATION)
           .setValue(SETTINGS.necklace.configuration);
-        Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
+        Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
       });
     const configurationController = folder
       .add(
@@ -233,55 +229,51 @@ class Settings {
       )
       .name("Configuration")
       .onChange(() =>
-        Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER)
+        Events.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER)
       );
     folder
       .add(SETTINGS.necklace, "string")
       .name("String")
       .onChange(() =>
-        Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_STRING)
+        Events.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_STRING)
       );
     folder
       .add(SETTINGS.necklace, "discrete")
       .name("Discrete")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     folder
       .add(SETTINGS.necklace, "show_solution_band")
       .name("Solution Band")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     folder
       .add(SETTINGS.necklace, "show_solutions")
       .name("Solutions")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     folder
       .add(SETTINGS.necklace, "epsilon", 0, 0.15)
       .name("epsilon")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     folder.close();
   }
 
   createViewFolder() {
     const folder = this.#gui.addFolder("View");
     folder
-      .add(SETTINGS.view, "dark_theme")
-      .name(`Dark theme`)
-      .onChange(() => Settings.dispatchEvent(Events.THEME_CHANGED));
-    folder
       .add(SETTINGS.view, "show_single_thiefs_region")
       .name(`Single Thief's Area`)
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     folder
       .add(SETTINGS.view, "axes_visible")
       .name("Axes")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_VISIBLE));
     folder
       .add(SETTINGS.view, "mesh_visible")
       .name("Mesh")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_VISIBLE));
     folder
       .add(SETTINGS.view, "faces_visible")
       .name("Faces")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_VISIBLE));
     folder.close();
     this.createSphereSubFolder(folder);
     this.createControlsSubFolder(folder);
@@ -294,23 +286,23 @@ class Settings {
     folder
       .add(SETTINGS.sphere, "radius", 1, 50, 1)
       .name("Radius")
-      .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
+      .onChange(() => Events.dispatchEvent(Events.CREATE_SPHERE));
     folder
       .add(SETTINGS.sphere, "offset_octant", 0.0, 5.0, 0.1)
       .name("Octant Offset")
-      .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
+      .onChange(() => Events.dispatchEvent(Events.CREATE_SPHERE));
     folder
       .add(SETTINGS.sphere, "use_bad_on_sphere_check")
       .name("Bad Check")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     folder
       .add(SETTINGS.sphere, "show_borsuk_ulam_proof_shape")
       .name("Borsuk-Ulam Proof")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     folder
       .add(SETTINGS.sphere, "segments", 3, 511, 1)
       .name("Segments")
-      .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
+      .onChange(() => Events.dispatchEvent(Events.CREATE_SPHERE));
     folder.close();
   }
 
@@ -319,15 +311,15 @@ class Settings {
     folder
       .add(SETTINGS.view, "stats_monitor_visible")
       .name(`Monitor`)
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_VISIBLE));
     folder
       .add(SETTINGS.view, "necklace_visible")
       .name(`Necklace`)
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_VISIBLE));
     folder
       .add(SETTINGS.view, "gauge_visible")
       .name(`Gauge`)
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_VISIBLE));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_VISIBLE));
     folder.close();
   }
   createColorSubFolder(parent) {
@@ -335,19 +327,19 @@ class Settings {
     folder
       .add(SETTINGS.color, "scale_red", 0.0, 1.0)
       .name("Red")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     folder
       .add(SETTINGS.color, "scale_green", 0.0, 1.0)
       .name("Green")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     folder
       .add(SETTINGS.color, "scale_blue", 0.0, 1.0)
       .name("Blue")
-      .onChange(() => Settings.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
+      .onChange(() => Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL));
     folder
       .add(SETTINGS.color, "alpha", 0.0, 1.0)
       .name("Alpha")
-      .onChange(() => Settings.dispatchEvent(Events.CREATE_SPHERE));
+      .onChange(() => Events.dispatchEvent(Events.CREATE_SPHERE));
     folder.close();
   }
 
@@ -386,11 +378,6 @@ class Settings {
     this.#captureFolder = folder;
   }
 
-  static dispatchEvent(event: Events): void {
-    const evt = new Event(event.toString(), { bubbles: true });
-    document.body.dispatchEvent(evt);
-  }
-
   get captureFolder() {
     return this.#captureFolder;
   }
@@ -404,11 +391,4 @@ function resetAnimation(): void {
   SETTINGS.animation.rotation_z = 0;
 }
 
-function onThemeChange(element: HTMLElement) {
-  const oldThemeStyle = SETTINGS.view.dark_theme ? 'light' : 'dark';
-  const newThemeStyle = SETTINGS.view.dark_theme ? 'dark' : 'light';
-  if (!element.classList.replace(oldThemeStyle, newThemeStyle)) {
-    element.classList.add(newThemeStyle);
-  }
-}
 export { EPS, EPS_SQ, MAX_JEWELS, SETTINGS, Settings };

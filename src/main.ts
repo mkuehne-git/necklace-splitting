@@ -9,6 +9,7 @@ import '@fontsource/dejavu-sans';
 
 // To configure settings
 import { SETTINGS, Settings } from './Settings';
+import { ThemesSwitcher } from './ThemesSwitcher';
 import { Events } from "./Enums";
 
 import { ScreenCapture } from './ScreenCapture';
@@ -16,14 +17,18 @@ import { Sphere } from './Sphere';
 import { Necklace } from './Necklace';
 import { NecklaceModel } from './NecklaceModel';
 
+
 // The UI to configure the settings.
 const settings = new Settings();
+const switcher = new ThemesSwitcher();
 const model = new NecklaceModel();
 const sphere = new Sphere(model);
 const necklace = new Necklace(model);
 
-Settings.registerOnThemeChange(document.body);
-Settings.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
+switcher.initTheme()
+switcher.registerOnThemeChange(document.body);
+
+Events.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
 sphere.render();
 const capture = new ScreenCapture(
   {
