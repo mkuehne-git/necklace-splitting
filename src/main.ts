@@ -16,16 +16,17 @@ import { ScreenCapture } from './ScreenCapture';
 import { Sphere } from './Sphere';
 import { Necklace } from './Necklace';
 import { NecklaceModel } from './NecklaceModel';
+import { SVGToggleButton } from './SVGToggleButton';
 
 
 // The UI to configure the settings.
 const settings = new Settings();
-const switcher = new ThemesSwitcher();
+const switcher = await ThemesSwitcher.create();
 const model = new NecklaceModel();
 const sphere = new Sphere(model);
 const necklace = new Necklace(model);
 
-switcher.initTheme()
+switcher.initTheme();
 switcher.registerOnThemeChange(document.body);
 
 Events.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);

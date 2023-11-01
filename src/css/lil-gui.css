@@ -1,3 +1,7 @@
+/* Styling of Settings- and ThemesChanger-button.
+ * Support dark/light themes for lil-gui, remove title control, which is
+ * replaced by Settings button.
+ */
 :root {
     /* Size of the Settings icon, including empty margins around */
     --settings-size: 48px;
@@ -83,13 +87,13 @@ div.toggle-div.clicked {
 }
 
 .toggle-icon {
+    /* Icon shall be on top. */
+    z-index: 2;
+    position: absolute;
     display: none;
 }
 
 .toggle-icon.show {
-    /* Icon shall be on top. */
-    z-index: 2;
-    position: absolute;
     display: block;
 
     align-self: center;
@@ -104,7 +108,7 @@ div.toggle-div.clicked {
 }
 
 
-div#themes-div {
+div.themes {
     right: var(--settings-size);
 }
 
