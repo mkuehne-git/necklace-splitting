@@ -13,6 +13,7 @@ type IconDescriptor = {
 }
 
 type ToggleButtonConfiguration = {
+    container?: Element | null,
     icons: IconDescriptor[],
     classToken: string,
     event: string
@@ -40,7 +41,8 @@ class SVGToggleButton {
             const svg = this.createSVGElement(icon, p.classToken);
             div.innerHTML += svg;
         }
-        document.body.appendChild(div);
+        const container = p.container || document.body;
+        container.appendChild(div);
 
         div.addEventListener('click', () => div.classList.add(CLICKED));
         div.addEventListener('animationend', () => {

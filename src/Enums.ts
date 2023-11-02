@@ -7,6 +7,7 @@ export enum Showcase {
 
 export enum Events {
   SETTINGS_CHANGED = "settings-changed",
+  CHANGE_THEME = "change-theme",
   THEME_CHANGED = "theme-changed",
 
   SHOW_IMPRINT = "show-imprint",
