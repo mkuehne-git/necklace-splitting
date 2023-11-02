@@ -43,6 +43,7 @@ const span = document.createElement('SPAN');
 span.setAttribute('id', 'version-info');
 span.innerHTML = `v${APP_VERSION}`;
 document.body.insertAdjacentElement('beforeend', span);
+switcher.initTheme();
 
 
 // Make empty module to allow top level await
