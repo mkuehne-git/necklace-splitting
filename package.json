@@ -1,6 +1,6 @@
 {
   "name": "necklace-splitting",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,17 +12,17 @@
   "devDependencies": {
     "@types/node": "^20.8.6",
     "@types/stats": "^0.16.30",
-    "@types/three": "^0.157.0",
+    "@types/three": "^0.158.0",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
-    "vite": "^4.4.11",
+    "vite": "^4.5.0",
     "vite-plugin-glsl": "^1.1.2",
-    "vite-plugin-pwa": "^0.16.4"
+    "vite-plugin-pwa": "^0.16.6"
   },
   "dependencies": {
     "@fontsource/dejavu-sans": "^5.0.7",
-    "crypto-js": "^4.1.1",
+    "crypto-js": "^4.2.0",
     "html2canvas": "^1.4.1",
-    "three": "^0.157.0"
+    "three": "^0.158.0"
   },
   "license": "MIT"
 }

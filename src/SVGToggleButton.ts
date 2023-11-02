@@ -1,20 +1,19 @@
 
-const loadSVG = async (path: string) => {
-    const imported = await import(/* @vite-ignore */ path + '?raw');
-    return imported.default;
-};
-
 const PREFIX = 'toggle';
 const DIV_ELEMENT = 'div';
 const CLICKED = 'clicked';
 
 const DIV_SUFFIX = '-div';
-const ICON_SUFFIX ='-icon';
-const SHOW ='show';
+const ICON_SUFFIX = '-icon';
+const SHOW = 'show';
+
+type IconDescriptor = {
+    id: string,
+    svg: string
+}
 
 type ToggleButtonConfiguration = {
-    path: string,
-    icons: string[],
+    icons: IconDescriptor[],
     classToken: string,
     event: string
 }
@@ -27,40 +26,18 @@ type ToggleButtonConfiguration = {
  * The button itself is a {@code <div>}, containing all SVG icons.
  */
 class SVGToggleButton {
-    /**
-     * Factory method to create an SVGToggleButton. The method is {@code async} because the SVG
-     * icons are imported dynamically.
-     * 
-     * @param p configuration of the button
-     * @returns Promise to SVGToggleButton 
-     */
-    static async create(p: ToggleButtonConfiguration): Promise<SVGToggleButton> {
-        return await new SVGToggleButton().build(p);
-    }
     #div: HTMLElement;
-    #icons: string[] = [];
+    #icons: IconDescriptor[] = [];
+    #event: string;
 
-    show(index: number): void {
-        this.icon(index)?.classList.add(SHOW);
-    }
-
-    toggle(): void {
-        for (let index = 0; index<this.#icons.length; index++) {
-            this.icon(index)?.classList.toggle(SHOW)
-        }
-    }
-
-    private icon(index: number): Element | null {
-        return this.#div.querySelector(`#${this.#icons[index]}${ICON_SUFFIX}`);
-    }
-
-    private async build(p: ToggleButtonConfiguration): Promise<SVGToggleButton> {
+    constructor(p: ToggleButtonConfiguration) {
+        this.#event = p.event;
+        this.#icons = p.icons;
         const div = document.createElement(DIV_ELEMENT);
         div.classList.add(`${PREFIX}${DIV_SUFFIX}`);
         div.classList.add(p.classToken);
-        for await (const icon of p.icons) {
-            this.#icons.push(icon)
-            const svg = await this.createSVGElement(`${p.path}/${icon}.svg`, `${icon}${ICON_SUFFIX}`, p.classToken);
+        for (const icon of p.icons) {
+            const svg = this.createSVGElement(icon, p.classToken);
             div.innerHTML += svg;
         }
         document.body.appendChild(div);
@@ -68,24 +45,41 @@ class SVGToggleButton {
         div.addEventListener('click', () => div.classList.add(CLICKED));
         div.addEventListener('animationend', () => {
             if (div.classList.contains(CLICKED)) {
-                // console.log('animationend')
                 div.classList.remove(CLICKED);
                 const evt = new Event(p.event, { bubbles: true });
-                document.body.dispatchEvent(evt);
+                div.dispatchEvent(evt);
             }
         });
         this.#div = div;
-        return this;
+    } 
+
+    show(index: number): void {
+        this.icon(index)?.classList.add(SHOW);
     }
-    private async createSVGElement(path: string, id: string, classToken: string): Promise<string> {
+
+    toggle(): void {
+        for (let index = 0; index < this.#icons.length; index++) {
+            this.icon(index)?.classList.toggle(SHOW)
+        }
+    }
+
+    private icon(index: number): Element | null {
+        return this.#div.querySelector(`#${this.#icons[index].id}${ICON_SUFFIX}`);
+    }
+
+    private createSVGElement(icon:IconDescriptor, classToken: string): string {
         const template = document.createElement('template');
-        const svgImport = await loadSVG(path);
-        template.innerHTML = svgImport;
+        template.innerHTML = icon.svg;
         const svg = template.content.firstElementChild as SVGElement;
-        svg.id = id;
+        svg.id = `${icon.id}${ICON_SUFFIX}`;
         svg.classList.add(`${PREFIX}${ICON_SUFFIX}`);
         svg.classList.add(classToken);
         return svg.outerHTML;
     }
+
+    addOnClickListener(callback: () => void): void {
+        this.#div.addEventListener(this.#event, callback);
+    }
+
 }
 export { SVGToggleButton };

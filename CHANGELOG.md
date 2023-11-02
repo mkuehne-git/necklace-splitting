@@ -1,4 +1,8 @@
 ## Changelog
+### v0.4.9
+* Refactor, extract SVGToggleButton as own class.
+* Use for Settings and ThemeSwitcher.
+* Update packages, fixing `cryptho-js`` issue
 ### v0.4.8
 * Animate Setting/Theme-icons.
 ### v0.4.7

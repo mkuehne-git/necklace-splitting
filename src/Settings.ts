@@ -5,9 +5,7 @@ import { ClassMutationObserver } from './ClassMutationObserver';
 import { Imprint } from "./Imprint";
 import './css/lil-gui.css';
 
-// The icon open/close the GUI
-import svgSettingsOpenAsString from './icons/settings/open.svg?raw';
-import svgSettingsCloseAsString from './icons/settings/close.svg?raw';
+import { SettingsButton } from "./SettingsButton";
 
 /** Vectors whose distance is less that EPS are treated equal. */
 const EPS = 0.001;
@@ -144,42 +142,16 @@ class Settings {
   }
 
   createSettingsIcon() {
-    const div = document.createElement('DIV');
-    div.classList.add('toggle-div');
-    div.id = 'settings-div'
-    div.innerHTML = svgSettingsOpenAsString + svgSettingsCloseAsString;
-    this.#guiIcon = div.querySelector('#settings-icon') as HTMLElement;
-    this.#guiCloseIcon = div.querySelector('#settings-close-icon') as HTMLElement;
-    this.#guiIcon.classList.add('show');
-    this.#gui.hide();
-    this.#gui.domElement.insertAdjacentElement('beforeBegin', div);
+    const settingsButton = new SettingsButton(this.#gui);
     new ClassMutationObserver(this.#gui.domElement, (value: MutationRecord, index: number | undefined) => {
       const div = value.target as HTMLDivElement;
       if (index === 0 && !div?.classList.contains('transition') && div?.classList.contains('closed')) {
         this.#gui.hide();
         this.#gui.close();
-        this.toggleSettings();
-      }
-    });
-    div.addEventListener('click', () => div.classList.add('clicked'));
-    div.addEventListener('animationend', () => {
-      if (div.classList.contains('clicked')) {
-        // console.log('animationend')
-        div.classList.remove('clicked');
-        if (this.#guiIcon.classList.contains('show')) {
-          this.toggleSettings();
-          this.#gui.show();
-          this.#gui.open();
-        } else {
-          this.#gui.$title.click();          
-        }
-      }
-    });
-  }
 
-  toggleSettings() {
-    this.#guiIcon.classList.toggle('show');
-    this.#guiCloseIcon.classList.toggle('show');
+        settingsButton.toggle();
+      }
+    });    
   }
 
   createShowHideListener(): void {
