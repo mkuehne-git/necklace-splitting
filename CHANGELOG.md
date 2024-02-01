@@ -1,4 +1,6 @@
 ## Changelog
+### v0.4.10
+* Fix: Upgrade `vite` and `three` packages.
 ### v0.4.9
 * Refactor, extract SVGToggleButton as own class.
 * Use for Settings and ThemeSwitcher.
