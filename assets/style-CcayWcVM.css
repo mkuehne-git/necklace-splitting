@@ -1,0 +1,92 @@
+:root {
+  color-scheme: light dark;
+
+  --background-color: #fff;
+  --between-jewels-color: #2e2e2e;
+
+  --text-color: var(--between-jewels-color);
+  --jewel-a-color: rgb(0, 153, 51);
+  --jewel-b-color: rgb(0, 128, 255);
+  --thief-a-color: red;
+  --thief-b-color: green;
+  --l100: 100%;
+  --l50: 50%;
+  --thief-a-color-light: rgb(255, 127, 127);
+  --thief-b-color-light: rgb(144, 238, 144);
+  --gauge-color: var(--between-jewels-color);
+  color: var(--text-color);
+
+  /* Default font, load via npm -i @fontsource/dejavu-sans */
+  font-family: "DejaVu Sans";
+}
+
+:root .dark {
+  --background-color: #212121;
+  --between-jewels-color: #f7f7f7;
+  --text-color: var(--between-jewels-color);
+  --gauge-color: var(--between-jewels-color);
+  color: var(--text-color);
+
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--background-color);
+
+  /* tell our scene container to take up the full page */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#necklace {
+  display: block;
+  position: absolute;
+  bottom: 0%;
+
+  width: 100%;
+  height: 20%;
+
+  margin-bottom: 2px;
+}
+
+.imprint {
+  display: block;
+  background-color: var(--background-color);
+  margin: 0;
+  opacity: 1.0;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.padding {
+  /* overflow: visible; */
+  background-color: var(--background-color);
+  margin: 0;
+  padding-top: 0px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#version-info {
+  position: absolute;
+  right: 8px;
+  bottom: 2px;
+  font-size: x-small;
+  opacity: 0.5;
+}
