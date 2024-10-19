@@ -1,4 +1,6 @@
 ## Changelog
+### v0.4.11
+* Fix: Rollup cve, update packages.
 ### v0.4.10
 * Fix: Upgrade `vite` and `three` packages.
 ### v0.4.9

@@ -2,9 +2,9 @@
 
 The `npm clean-install` ensures, that you build with up-to-date dependencies.
 
-```bash=
-$ npm clean-install
-$ npm run build
+```bash
+npm clean-install
+npm run build
 ```
 
 Check for uncommited changes - due to potential change of `package-lock.json` - before deployment.
@@ -13,14 +13,14 @@ Check for uncommited changes - due to potential change of `package-lock.json` - 
 
 ## GitHub Pages
 
-Within this chapter, the deployment target is denoted as 
+Within this chapter, the deployment target is denoted as
 `https://<USERNAME>.github.io/<REPO>`.
 
 1. `cd` into project root  
-2.
-3. Create `./deploy.sh` with the following content (see [Vite - Deploying a Static Site ](https://vitejs.dev/guide/static-deploy.html#github-pages)). 
 
-    ```bash=
+2. Create `./deploy.sh` with the following content (see [Vite - Deploying a Static Site](https://vitejs.dev/guide/static-deploy.html#github-pages)).
+
+    ```bash
     #!/usr/bin/env sh
 
     # abort on errors
@@ -49,7 +49,9 @@ Within this chapter, the deployment target is denoted as
 
     cd -    
     ```
-3. Edit `vite.config.js` and change in line #5 `'/temp/'` to your `'<REPO>'`.
+
+3. Edit `vite.config.js` and change in line #5 `/temp/` to your `<REPO>`.
+
     ```javascript  {.line-numbers, highlight=5}
     import { defineConfig } from 'vite';
     import glsl from 'vite-plugin-glsl';
@@ -62,11 +64,15 @@ Within this chapter, the deployment target is denoted as
         ]
     });
     ```
+
 4. Make `deploy.sh` executable, with  
+
     ```bash
-    $ chmod a+x deploy.sh
+    chmod a+x deploy.sh
     ```
+
 5. Execute  
-    ```
-    $ ./deploy.sh
+
+    ```bash
+    ./deploy.sh
     ```
