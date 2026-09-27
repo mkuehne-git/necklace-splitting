@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.14 · 2026-09-27
+
+* Add project instructions (`CLAUDE.md`) and the modernization plan (`MODERNIZATION.md`). No functional change.
+
 ## v0.4.13
 
 * Bump `vite` from 5.4.10 -> 6.3.5
