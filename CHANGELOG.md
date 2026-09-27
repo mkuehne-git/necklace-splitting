@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.4.35 · 2026-09-27
+## v0.5.0 · 2026-09-27
+
+* **Updates on your terms:** when a new version of the app is available, it asks whether to reload now or later, instead of switching to the new version on its own.
+* **Check for updates** in the settings looks for a new version right away and tells you whether there is one.
+
+## v0.4.35 · 2026-09-27 · [44e1eeb](https://github.com/mkuehne-git/necklace-splitting/commit/44e1eeb)
 
 * Faster start: the code for screen captures and the imprint (about 200 kB) loads when first used instead of at startup.
 

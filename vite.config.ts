@@ -51,7 +51,8 @@ export default defineConfig({
                 ]
 
             },
-            registerType: 'autoUpdate',
+            // The app asks before it reloads into a new version (src/ui/PwaUpdate.ts).
+            registerType: 'prompt',
             devOptions: {
                 enabled: true
             }

@@ -1,0 +1,90 @@
+/* The PWA update dialog and status messages (ui/PwaUpdate.ts). */
+
+.pwa-update-dialog {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 10;
+}
+
+.pwa-update-dialog.hidden {
+    display: none;
+}
+
+.pwa-update-content {
+    width: min(420px, calc(100vw - 32px));
+    background: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    padding: 20px 22px;
+}
+
+.pwa-update-content h2 {
+    margin: 0 0 12px;
+    font-size: 1.2rem;
+}
+
+.pwa-update-content p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.pwa-update-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.pwa-update-button {
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    padding: 8px 16px;
+}
+
+.pwa-update-button.primary {
+    background: var(--text-color);
+    color: var(--background-color);
+}
+
+.pwa-update-button.secondary {
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid rgba(127, 127, 127, 0.5);
+}
+
+.pwa-status {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    min-width: 220px;
+    max-width: min(460px, calc(100vw - 24px));
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    text-align: center;
+    z-index: 20;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    /* Inverted, so it stands out in either theme. */
+    color: var(--background-color);
+    background: var(--text-color);
+}
+
+.pwa-status.success {
+    color: #ffffff;
+    background: #14783c;
+}
+
+/* Dark enough for white text (about 5:1). */
+.pwa-status.warning {
+    color: #ffffff;
+    background: #8a5a00;
+}

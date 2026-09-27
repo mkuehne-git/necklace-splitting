@@ -14,6 +14,7 @@ import { ThemesSwitcher } from './ui/ThemesSwitcher';
 import { Events } from "./Enums";
 
 import { ScreenCapture } from './ui/ScreenCapture';
+import { initPwaUpdate } from './ui/PwaUpdate';
 import { Sphere } from './sphere/Sphere';
 import { Necklace } from './necklace/Necklace';
 import { NecklaceModel } from './necklace/NecklaceModel';
@@ -45,6 +46,7 @@ span.setAttribute('id', 'version-info');
 span.innerHTML = `v${APP_VERSION}`;
 document.body.insertAdjacentElement('beforeend', span);
 switcher.initTheme();
+initPwaUpdate();
 
 
 // Make empty module to allow top level await

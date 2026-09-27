@@ -7,6 +7,7 @@ import '../css/lil-gui.css';
 
 import { SettingsButton } from "./SettingsButton";
 import { EPS, EPS_SQ, MAX_JEWELS, MODES, SETTINGS } from "./settingsValues";
+import { checkForPwaUpdates, showPwaStatus } from "../ui/PwaUpdate";
 
 class Settings {
   #captureFolder: any;
@@ -69,6 +70,17 @@ class Settings {
     this.createNecklaceFolder();
     this.createViewFolder();
     this.createCaptureFolder();
+    this.createUpdateButton();
+  }
+
+  createUpdateButton(): void {
+    const actions = {
+      checkForUpdates: async () => {
+        showPwaStatus("Checking for updates...", "info");
+        await checkForPwaUpdates();
+      },
+    };
+    this.#gui.add(actions, "checkForUpdates").name("Check for updates");
   }
 
   createSettingsIcon() {

@@ -68,3 +68,12 @@ test('the service worker registers', async ({ page }) => {
     const scope = await page.evaluate(async () => (await navigator.serviceWorker.ready).scope);
     expect(scope).toMatch(/\/necklace-splitting\/$/);
 });
+
+test('Check for updates reports that there is none', async ({ page }) => {
+    await openApp(page);
+    await page.evaluate(async () => { await navigator.serviceWorker.ready; });
+    await openSettings(page);
+    await control(page, /^Check for updates$/).locator('button').click();
+    await expect(page.locator('#pwa-status')).toHaveText('No update available.');
+    await expect(page.locator('#pwa-update-dialog')).toBeHidden();
+});

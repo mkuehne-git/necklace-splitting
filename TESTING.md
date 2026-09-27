@@ -37,13 +37,14 @@ Not covered: the solution band, the solution highlighting and the octants are co
 happy-dom tests; html2canvas is mocked, since it needs a real browser. It is loaded with a dynamic import, so the tests wait with `vi.dynamicImportSettled()`. All code loads it through `loadHtml2canvas()`, which starts the import once: when two dynamic imports of a mocked module start at the same time, Vitest gives one of them the real module.
 
 - **`SVGToggleButton`** (`test/SVGToggleButton.test.ts`): one SVG per icon, show and toggle, and the click that is reported only when the pulse animation (`lil-gui.css`) has ended.
+- **`PwaUpdate`** (`test/PwaUpdate.test.ts`, `virtual:pwa-register` mocked): the update dialog appears only when a new version is waiting, Reload updates and Later closes it; Check for updates reports a waiting update, no update, no registration and no service worker support (v0.5.0).
 - **`Imprint`** (`test/Imprint.test.ts`, `imprint-gen` mocked): the text is rendered as an image with the trailer and Close button, opens once, opens and closes through the application events, closes with Escape - also while the settings panel has the focus (regression for v0.4.25) - and redraws on resize only while open.
 
 ## Step 3: End-to-end (done, v0.4.29)
 
 Playwright in Chromium and Firefox (`playwright.config.ts`, `e2e/`). `npm run test:e2e` builds with `VITE_E2E=true` (32 instead of 128 sphere segments, `settingsValues.ts`) and serves it with `vite preview` over HTTP, where browsers allow the service worker. **Run `npm run build` afterwards**, so that `dist/` does not keep the test build.
 
-- **`e2e/app.spec.ts`:** the app loads without console errors; hovering the sphere cuts the necklace and hides the pointer; the theme switcher; the gear button opens and closes the settings; a showcase changes the sphere; a new configuration changes necklace and sphere; the service worker registers.
+- **`e2e/app.spec.ts`:** the app loads without console errors; hovering the sphere cuts the necklace and hides the pointer; the theme switcher; the gear button opens and closes the settings; a showcase changes the sphere; a new configuration changes necklace and sphere; the service worker registers; Check for updates reports that there is none (v0.5.0). The update itself is not tested end to end: it needs two builds of different versions.
 - **`e2e/render.spec.ts`:** counts WebGL draw calls: the resting view is not drawn again; pointer moves, dragging and theme changes draw it; the rotation animation draws every frame and stops drawing when it stops (v0.4.33).
 - **`e2e/memory.spec.ts`:** counts the live WebGL buffers and shader programs: switching showcases (which rebuilds the sphere) and changing the number of jewels (a new shader program) leave as many alive as before. They fail when the `dispose()` calls in `Sphere.ts` are removed.
 - **`e2e/capture.spec.ts`:** a capture of the sphere contains the rendered sphere, also after the view has rested (the WebGL canvas keeps its drawing buffer, `ScreenCapture.ts`); html2canvas is loaded on the first capture, not at startup (v0.4.35).
