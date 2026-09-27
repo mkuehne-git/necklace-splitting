@@ -1,4 +1,4 @@
-import { Events, Showcase } from "./Enums";
+import { Events, Showcase } from "../Enums";
 
 /** The end-to-end test build (`VITE_E2E=true`) uses a coarser sphere, so that WebGL in headless browsers stays fast. */
 const E2E_BUILD = import.meta.env.VITE_E2E === 'true';

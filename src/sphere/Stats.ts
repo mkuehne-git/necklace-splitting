@@ -1,5 +1,5 @@
 import Stats from "three/addons/libs/stats.module.js";
-import { SETTINGS } from "./Settings";
+import { SETTINGS } from "../settings/settingsValues";
 
 // The little statistics box at the upper left corner
 const VISIBLE_ATTRIBUTE = "visible"

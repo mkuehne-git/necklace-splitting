@@ -1,7 +1,7 @@
-import { Events } from "./Enums";
+import { Events } from "../Enums";
 import { SVGToggleButton } from "./SVGToggleButton";
-import { icon as lightIcon } from "./icons/themes/lightIcon";
-import { icon as darkIcon } from "./icons/themes/darkIcon";
+import { icon as lightIcon } from "../icons/themes/lightIcon";
+import { icon as darkIcon } from "../icons/themes/darkIcon";
 
 // Used by CSS to style dark/light mode
 const DARK_THEME = 'dark';

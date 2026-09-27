@@ -4,8 +4,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { Vector2, Vector3 } from "three";
 
 import { Events } from "../src/Enums";
-import { NecklaceModel } from "../src/NecklaceModel";
-import { SETTINGS } from "../src/settingsValues";
+import { NecklaceModel } from "../src/necklace/NecklaceModel";
+import { SETTINGS } from "../src/settings/settingsValues";
 
 /** Configures the model the way the settings panel does: by number, lowest bit first. */
 function fromNumber(configuration: number, numberOfJewels: number): NecklaceModel {

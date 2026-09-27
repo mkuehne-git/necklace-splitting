@@ -1,9 +1,9 @@
 // To configure settings
 import { Controller, GUI } from "three/addons/libs/lil-gui.module.min.js";
-import { Events } from "./Enums";
-import { ClassMutationObserver } from './ClassMutationObserver';
-import { Imprint } from "./Imprint";
-import './css/lil-gui.css';
+import { Events } from "../Enums";
+import { ClassMutationObserver } from '../ui/ClassMutationObserver';
+import { Imprint } from "../imprint/Imprint";
+import '../css/lil-gui.css';
 
 import { SettingsButton } from "./SettingsButton";
 import { EPS, EPS_SQ, MAX_JEWELS, MODES, SETTINGS } from "./settingsValues";

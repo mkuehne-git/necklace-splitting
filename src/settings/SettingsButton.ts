@@ -1,9 +1,9 @@
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import { Events } from "./Enums";
-import { SVGToggleButton } from "./SVGToggleButton";
+import { Events } from "../Enums";
+import { SVGToggleButton } from "../ui/SVGToggleButton";
 
-import { icon as openIcon } from "./icons/settings/openIcon";
-import { icon as closeIcon } from "./icons/settings/closeIcon";
+import { icon as openIcon } from "../icons/settings/openIcon";
+import { icon as closeIcon } from "../icons/settings/closeIcon";
 
 class SettingsButton {
     #status: boolean;

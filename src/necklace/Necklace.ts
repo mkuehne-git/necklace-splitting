@@ -1,8 +1,7 @@
-import { textShadow } from "html2canvas/dist/types/css/property-descriptors/text-shadow";
 import * as THREE from "three";
 
-import { SETTINGS } from "./Settings";
-import { Events, Showcase } from "./Enums";
+import { SETTINGS } from "../settings/settingsValues";
+import { Events, Showcase } from "../Enums";
 import { NecklaceComponent, ComponentOptions } from "./NecklaceComponent";
 import { NecklaceModel } from "./NecklaceModel";
 

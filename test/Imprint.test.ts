@@ -6,7 +6,7 @@ vi.mock("../src/imprint-gen", () => ({ decryptedAES: () => "<h1>Impressum</h1>" 
 const html2canvas = vi.hoisted(() => vi.fn());
 vi.mock("html2canvas", () => ({ default: html2canvas }));
 
-import { Imprint } from "../src/Imprint";
+import { Imprint } from "../src/imprint/Imprint";
 import { Events } from "../src/Enums";
 
 let imprint: Imprint;

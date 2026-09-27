@@ -1,10 +1,10 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { Events, Showcase } from "./Enums";
-import { EPS_SQ, MAX_JEWELS, SETTINGS } from "./Settings";
-import { NecklaceModel } from "./NecklaceModel";
-import { ComponentOptions, NecklaceComponent } from "./NecklaceComponent";
+import { Events, Showcase } from "../Enums";
+import { EPS_SQ, MAX_JEWELS, SETTINGS } from "../settings/settingsValues";
+import { NecklaceModel } from "../necklace/NecklaceModel";
+import { ComponentOptions, NecklaceComponent } from "../necklace/NecklaceComponent";
 import { Resizer } from "./Resizer";
 import { stats } from "./Stats";
 

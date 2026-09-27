@@ -8,14 +8,14 @@
 import '@fontsource/dejavu-sans';
 
 // To configure settings
-import { SETTINGS, Settings } from './Settings';
-import { ThemesSwitcher } from './ThemesSwitcher';
+import { SETTINGS, Settings } from './settings/Settings';
+import { ThemesSwitcher } from './ui/ThemesSwitcher';
 import { Events } from "./Enums";
 
-import { ScreenCapture } from './ScreenCapture';
-import { Sphere } from './Sphere';
-import { Necklace } from './Necklace';
-import { NecklaceModel } from './NecklaceModel';
+import { ScreenCapture } from './ui/ScreenCapture';
+import { Sphere } from './sphere/Sphere';
+import { Necklace } from './necklace/Necklace';
+import { NecklaceModel } from './necklace/NecklaceModel';
 
 
 // The UI to configure the settings.

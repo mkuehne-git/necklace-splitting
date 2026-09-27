@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.30 · 2026-09-27
+## v0.4.31 · 2026-09-27
+
+* Group the source files by area (`sphere/`, `necklace/`, `settings/`, `ui/`, `imprint/`); the README images move to `docs/images/`. No functional change.
+
+## v0.4.30 · 2026-09-27 · [f730f41](https://github.com/mkuehne-git/necklace-splitting/commit/f730f41)
 
 * Check types, tests and the build on GitHub for every change, and keep the dependencies up to date with Dependabot. No functional change.
 

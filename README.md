@@ -1,4 +1,4 @@
-![Necklace-splitting](./src/images/necklace.png)
+![Necklace-splitting](./docs/images/necklace.png)
 # necklace-splitting
 This HTML-5 application features an explorable visualization of the [Necklace splitting problem](https://en.wikipedia.org/wiki/Necklace_splitting_problem) and its connection to the [Borsuk-Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem). 
 
@@ -15,7 +15,7 @@ If both jewel types are equally split between the two thiefs, the length of the 
 
 Given a first cut position, the second possible cut can be calculated directly. The solutions (enable with ***Necklace/Solutions***) for a given necklace configuration can be calculated in linear time by iterating through the jewels.
 
-![Solving necklace-split](./src/images/necklace-with-solution.png)
+![Solving necklace-split](./docs/images/necklace-with-solution.png)
 
 ## Octants
 The sphere can be divided into eight octants. The octants can be enumerated using the polarity of (x,y,z) as binary digit. The octants are symmetrical to the origin. Mirrowing an octant at the origin means swapping the thiefs. The octants with number 000 and 111 are not very interesting, since they assign all jewels to just one thief. The option ***Single Thief's Area*** makes it possible to show or hide these octants from the view.
@@ -24,7 +24,7 @@ In contrast, the octants with number 010 and 101 show most diversity. Whenever t
 
 You can extrude the octants from the sphere using the slider ***Octant Offset***.
 
-![necklace-octants-removed](./src/images/necklace-octants.png)
+![necklace-octants-removed](./docs/images/necklace-octants.png)
 
 ## Proof of Borsuk-Ulam Theorem
 

@@ -1,10 +1,10 @@
 import html2canvas from "html2canvas";
 
-import { Events } from "./Enums";
-import { ClassMutationObserver } from "./ClassMutationObserver";
+import { Events } from "../Enums";
+import { ClassMutationObserver } from "../ui/ClassMutationObserver";
 
 const loadModule = async () => {
-  return await import("./imprint-gen");
+  return await import("../imprint-gen");
 };
 
 const trailer = `<hr><p style="opacity: 1.0;">Dieses Impressum wurde erstellt durch <a href="https://www.impressum-generator.de" rel="nofollow">impressum-generator.de</a>.</p>`;

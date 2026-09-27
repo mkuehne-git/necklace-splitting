@@ -1,7 +1,7 @@
 import { Vector2, Vector3 } from "three";
 
-import { EPS, SETTINGS } from "./settingsValues";
-import { Events } from "./Enums";
+import { EPS, SETTINGS } from "../settings/settingsValues";
+import { Events } from "../Enums";
 
 function fract(x: number): number {
   return x % 1;

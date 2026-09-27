@@ -1,6 +1,6 @@
 import html2canvas from "html2canvas";
 
-import { Settings, SETTINGS } from "./Settings";
+import { Settings, SETTINGS } from "../settings/Settings";
 // This is for the screen capture. Without the WebGL content, i.e. my sphere would not be showing.
 //
 // https://stackoverflow.com/questions/55760121/html2canvas-captures-everything-except-the-content-of-an-inner-canvas

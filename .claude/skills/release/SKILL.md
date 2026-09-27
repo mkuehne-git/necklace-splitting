@@ -30,7 +30,7 @@ Run these in order and report failures with their output - do not commit around 
 
 1. `npm run typecheck` (tsc; Vite builds without checking types), then `npm test` (Vitest).
 2. `npm run build`.
-3. `npm run test:e2e` when the change touches the UI, `main.ts`, `Settings.ts`, the sphere or necklace views, CSS, the service worker or `vite.config.ts`. It builds with `VITE_E2E=true` (coarser sphere), so **run `npm run build` again afterwards** - otherwise `dist/` holds the test build.
+3. `npm run test:e2e` when the change touches the UI, `main.ts`, `src/settings/`, the sphere or necklace views, CSS, the service worker or `vite.config.ts`. It builds with `VITE_E2E=true` (coarser sphere), so **run `npm run build` again afterwards** - otherwise `dist/` holds the test build.
 4. For build-related changes (dependencies, `vite.config.ts`, imports): check that `dist/assets/` holds the expected chunks, and for the imprint that `src/imprint-gen.js` was bundled.
 5. For visual changes, say what still needs a manual look in a real browser (light and dark theme, phone width, Firefox), as `CLAUDE.md` asks.
 
