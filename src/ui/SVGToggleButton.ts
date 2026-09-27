@@ -1,4 +1,6 @@
 
+import '../css/toggle-buttons.css';
+
 const PREFIX = 'toggle';
 const DIV_ELEMENT = 'div';
 const CLICKED = 'clicked';
@@ -22,7 +24,7 @@ type ToggleButtonConfiguration = {
 /**
  * This class creates a button, that toggles between states. 
  * Each state has an associated icon, provided as SVN graphic. Only one icon is visible at any given point in time.
- * The L&F, including position, size and click animations are controlled by {@code lil-gui.css}.
+ * The L&F, including position, size and click animations are controlled by {@code toggle-buttons.css}.
  * The visible icon has class attribute {@code SHOW}.
  * The button itself is a {@code <div>}, containing all SVG icons.
  */

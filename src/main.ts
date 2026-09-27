@@ -5,6 +5,7 @@
  * 3blue1brown video https://youtu.be/yuVqxCSsE7c
  */
 
+import './css/style.css';
 import '@fontsource/dejavu-sans';
 
 // To configure settings

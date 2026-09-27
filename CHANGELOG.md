@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.31 · 2026-09-27
+## v0.4.32 · 2026-09-27
+
+* Split the styles into one file per area. No functional change.
+
+## v0.4.31 · 2026-09-27 · [2f7361a](https://github.com/mkuehne-git/necklace-splitting/commit/2f7361a)
 
 * Group the source files by area (`sphere/`, `necklace/`, `settings/`, `ui/`, `imprint/`); the README images move to `docs/images/`. No functional change.
 
