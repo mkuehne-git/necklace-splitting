@@ -1,0 +1,276 @@
+var e=`# Changelog
+
+## v0.12.0 · 2026-09-27 · [b7b390c](https://github.com/mkuehne-git/necklace-splitting/commit/b7b390c)
+
+* The app now shows the necklace only: the showcases Shader Lamp, Space Colors and Sinusoid, and the Showcase buttons in the settings, are gone.
+
+## v0.11.0 · 2026-09-27 · [27c7726](https://github.com/mkuehne-git/necklace-splitting/commit/27c7726)
+
+* **Deutsch:** the app is available in German - buttons, settings, messages and the explanation behind the info button. It follows the browser's language; **Language** in the settings chooses one. The changelog stays in English.
+
+## v0.10.0 · 2026-09-27 · [c5cb1fb](https://github.com/mkuehne-git/necklace-splitting/commit/c5cb1fb)
+
+* **About this app:** the new info button at the top right explains what you see - how each point of the sphere cuts the necklace, what the colors mean, where the solutions are, the octants, and why a fair split always exists (the Borsuk-Ulam theorem) - and which settings show what.
+
+## v0.9.0 · 2026-09-27 · [bce60b7](https://github.com/mkuehne-git/necklace-splitting/commit/bce60b7)
+
+* **Changelog:** click the version number in the lower right corner, or at the bottom of the settings, to see what changed in each version.
+* **What's new:** after an update, the app shows once what changed since you last used it.
+
+## v0.8.1 · 2026-09-27 · [fdade8b](https://github.com/mkuehne-git/necklace-splitting/commit/fdade8b)
+
+* Fix: checkboxes, number fields and scrollbars follow the app's theme. When the system used the dark theme and the app the light one, some of them were drawn dark.
+
+## v0.8.0 · 2026-09-27 · [5cc438d](https://github.com/mkuehne-git/necklace-splitting/commit/5cc438d)
+
+* **New settings panel:** the settings open in a panel on the right (full screen on phones) with clear sections - Necklace, View, Animation, Screen capture and Advanced - and larger controls that are easier to use on touch screens.
+  * The four showcases are buttons at the top of the Necklace section.
+  * The configuration and the necklace text are regular input fields; a configuration too large for the number of jewels is limited to the largest possible one.
+  * Imprint, Check for updates and Restore defaults are always at the bottom. Restore defaults asks before it resets anything.
+  * A screen capture of everything no longer includes the open settings panel.
+* The **h** key opens and closes the settings right from the start (before, the first press did nothing), and not while you type in a field. Escape closes them.
+* All controls can be used with the keyboard and are labelled for screen readers.
+
+## v0.7.1 · 2026-09-27 · [36466c2](https://github.com/mkuehne-git/necklace-splitting/commit/36466c2)
+
+* Fix: when updates are not available, Check for updates now names the reason - a page opened over plain HTTP, or a private window - instead of claiming the browser does not support them.
+
+## v0.7.0 · 2026-09-27 · [a1e0dfe](https://github.com/mkuehne-git/necklace-splitting/commit/a1e0dfe)
+
+* **Your settings are remembered:** the showcase, the necklace (also one entered as text), the view, color and rotation settings, the theme and the camera position are still there after a reload or when you open the app again.
+* **Restore defaults** in the settings goes back to the original settings.
+
+## v0.6.0 · 2026-09-27 · [354381a](https://github.com/mkuehne-git/necklace-splitting/commit/354381a)
+
+* **The imprint closes with an X** at the top right, where the settings button is. It stays in view while you scroll, and is there right away, before the imprint has finished loading. Escape still closes it.
+* The settings and theme buttons can be used with the keyboard (Tab, then Enter or Space), and screen readers announce what they do.
+
+## v0.5.0 · 2026-09-27 · [79b3f18](https://github.com/mkuehne-git/necklace-splitting/commit/79b3f18)
+
+* **Updates on your terms:** when a new version of the app is available, it asks whether to reload now or later, instead of switching to the new version on its own.
+* **Check for updates** in the settings looks for a new version right away and tells you whether there is one.
+
+## v0.4.35 · 2026-09-27 · [44e1eeb](https://github.com/mkuehne-git/necklace-splitting/commit/44e1eeb)
+
+* Faster start: the code for screen captures and the imprint (about 200 kB) loads when first used instead of at startup.
+
+## v0.4.34 · 2026-09-27 · [4a0c1d7](https://github.com/mkuehne-git/necklace-splitting/commit/4a0c1d7)
+
+* Add tests that changing settings does not use more and more graphics memory. No functional change.
+
+## v0.4.33 · 2026-09-27 · [8a8b2a0](https://github.com/mkuehne-git/necklace-splitting/commit/8a8b2a0)
+
+* Less battery: the 3D view is drawn again only when something changes - you turn it, point at it, change a setting, the window or the theme - and every frame only while the rotation animation runs. Before, it was redrawn at the display's full frame rate all the time.
+* The marker under the pointer follows it one frame sooner.
+
+## v0.4.32 · 2026-09-27 · [2166b89](https://github.com/mkuehne-git/necklace-splitting/commit/2166b89)
+
+* Split the styles into one file per area. No functional change.
+
+## v0.4.31 · 2026-09-27 · [2f7361a](https://github.com/mkuehne-git/necklace-splitting/commit/2f7361a)
+
+* Group the source files by area (\`sphere/\`, \`necklace/\`, \`settings/\`, \`ui/\`, \`imprint/\`); the README images move to \`docs/images/\`. No functional change.
+
+## v0.4.30 · 2026-09-27 · [f730f41](https://github.com/mkuehne-git/necklace-splitting/commit/f730f41)
+
+* Check types, tests and the build on GitHub for every change, and keep the dependencies up to date with Dependabot. No functional change.
+
+## v0.4.29 · 2026-09-27 · [3dbd43d](https://github.com/mkuehne-git/necklace-splitting/commit/3dbd43d)
+
+* Add end-to-end tests in Chromium and Firefox (Playwright). No functional change.
+
+## v0.4.28 · 2026-09-27 · [72752c5](https://github.com/mkuehne-git/necklace-splitting/commit/72752c5)
+
+* Add tests for the icon buttons and the imprint. No functional change.
+
+## v0.4.27 · 2026-09-27 · [f1b9399](https://github.com/mkuehne-git/necklace-splitting/commit/f1b9399)
+
+* Add unit tests for the necklace model (Vitest). No functional change.
+
+## v0.4.26 · 2026-09-27 · [482cbb5](https://github.com/mkuehne-git/necklace-splitting/commit/482cbb5)
+
+* Add a TypeScript type check (\`npm run typecheck\`) and fix the errors it found. No functional change.
+
+## v0.4.25 · 2026-09-27 · [eb36339](https://github.com/mkuehne-git/necklace-splitting/commit/eb36339)
+
+* Fix: Escape closes the imprint even while the settings panel is open.
+
+## v0.4.24 · 2026-09-27 · [e4e6ec3](https://github.com/mkuehne-git/necklace-splitting/commit/e4e6ec3)
+
+* Development: \`npm run dev\` serves over HTTPS and is reachable from other devices, replacing \`npm run expose\`; \`npm run dev:http\` serves over plain HTTP. No functional change.
+
+## v0.4.23 · 2026-09-27 · [0f1b8cd](https://github.com/mkuehne-git/necklace-splitting/commit/0f1b8cd)
+
+* Update the build tools (Vite 6 -> 8 and its plugins). The known security advisories in the build dependencies are resolved. No functional change.
+
+## v0.4.22 · 2026-09-27 · [74c0e2f](https://github.com/mkuehne-git/necklace-splitting/commit/74c0e2f)
+
+* Fix: the imprint is bundled with the app, so it can no longer go missing on GitHub Pages.
+
+## v0.4.21 · 2026-09-27 · [459f917](https://github.com/mkuehne-git/necklace-splitting/commit/459f917)
+
+* Update three.js 0.170 -> 0.186. No functional change.
+
+## v0.4.20 · 2026-09-27 · [15a2e51](https://github.com/mkuehne-git/necklace-splitting/commit/15a2e51)
+
+* Clean up the dependency list: runtime packages are listed once, the unused \`@types/stats\` is gone. No functional change.
+
+## v0.4.19 · 2026-09-27 · [86c09c9](https://github.com/mkuehne-git/necklace-splitting/commit/86c09c9)
+
+* Add a release checklist for preparing each version. No functional change.
+
+## v0.4.18 · 2026-09-27 · [2094412](https://github.com/mkuehne-git/necklace-splitting/commit/2094412)
+
+* The build and deployment instructions moved from \`BUILD.md\` into the README. No functional change.
+
+## v0.4.17 · 2026-09-27 · [491bd3c](https://github.com/mkuehne-git/necklace-splitting/commit/491bd3c)
+
+* Add the date and commit to every changelog entry. No functional change.
+
+## v0.4.16 · 2026-09-27 · [22efd67](https://github.com/mkuehne-git/necklace-splitting/commit/22efd67)
+
+* Document the versioning rule and commit message format. No functional change.
+
+## v0.4.15 · 2026-09-27 · [c910557](https://github.com/mkuehne-git/necklace-splitting/commit/c910557)
+
+* Pin the Node.js version for development (\`.nvmrc\`: Node 24; \`engines\`: 22.12 or newer). No functional change.
+
+## v0.4.14 · 2026-09-27 · [1d07b86](https://github.com/mkuehne-git/necklace-splitting/commit/1d07b86)
+
+* Add project instructions (\`CLAUDE.md\`) and the modernization plan (\`MODERNIZATION.md\`). No functional change.
+
+## v0.4.13 · 2025-05-24 · [d61beec](https://github.com/mkuehne-git/necklace-splitting/commit/d61beec)
+
+* Bump \`vite\` from 5.4.10 -> 6.3.5
+
+## v0.4.12 · 2024-11-10 · [f64117c](https://github.com/mkuehne-git/necklace-splitting/commit/f64117c)
+
+* Update three.js 0.161.0 -> 0.170.0
+
+## v0.4.11 · 2024-10-19 · [336a49a](https://github.com/mkuehne-git/necklace-splitting/commit/336a49a)
+
+* Fix: Rollup cve, update packages.
+
+## v0.4.10 · 2024-02-01 · [dda8432](https://github.com/mkuehne-git/necklace-splitting/commit/dda8432)
+
+* Fix: Upgrade \`vite\` and \`three\` packages.
+
+## v0.4.9 · 2023-11-02 · [4b14407](https://github.com/mkuehne-git/necklace-splitting/commit/4b14407)
+
+* Refactor, extract SVGToggleButton as own class.
+* Use for Settings and ThemeSwitcher.
+* Update packages, fixing \`cryptho-js\`\` issue
+
+## v0.4.8 · 2023-10-16 · [6442550](https://github.com/mkuehne-git/necklace-splitting/commit/6442550)
+
+* Animate Setting/Theme-icons.
+
+## v0.4.7 · 2023-10-15 · [7393562](https://github.com/mkuehne-git/necklace-splitting/commit/7393562)
+
+* Use icon-buttons to switch themes.
+
+## v0.4.6 · 2023-10-14 · [8fa2f44](https://github.com/mkuehne-git/necklace-splitting/commit/8fa2f44)
+
+* Replace \`> control\` button in settings menu by close icon.
+* Setting menu supporting light and dark theme.
+
+## v0.4.5 · 2023-09-02 · [ad7671a](https://github.com/mkuehne-git/necklace-splitting/commit/ad7671a)
+
+* Fix PWA implementation, replace \`manifest.json\` with \`manifest.webmanifest\`, generated by \`vite-plugin-pwa\`.
+* Add \`ServiceWorker\`, which allows offline usage.
+* Change PWA icon background to white.
+
+## v0.4.4 · 2023-08-31 · [70497cd](https://github.com/mkuehne-git/necklace-splitting/commit/70497cd)
+
+* Add \`manifest.json\` to create PWA
+* Create \`icons\` for PWA
+* Fix rendering issue (not showing full content) for imprint
+* Add version info at lower right corner
+
+## v0.4.3 · 2023-06-02 · [40b1298](https://github.com/mkuehne-git/necklace-splitting/commit/40b1298)
+
+* Screen capture with ***alt-s***
+* Redraw imprint on theme change
+
+## v0.4.2 · 2023-05-30 · [5d525ce](https://github.com/mkuehne-git/necklace-splitting/commit/5d525ce)
+
+* Update packages
+* Improve README.md
+* Controller UI with Settings icon
+
+## v0.4.1 · 2023-05-18 · [426ad52](https://github.com/mkuehne-git/necklace-splitting/commit/426ad52)
+
+* Fix sizing of Imprint, no horizontal scrollbar
+* Fix mulitple clicks on Imprint, breaking Close button
+* Update dependencies
+
+## v0.4.0 · 2022-11-13 · [7117ba8](https://github.com/mkuehne-git/necklace-splitting/commit/7117ba8)
+
+* Replace \`dat.gui\` by \`lil-gui\`
+* Update versions of dependent libraries
+* Remove dynamic import for imprint
+* Update README.md
+
+## v0.3.1 · 2022-02-05 · [9ca5be0](https://github.com/mkuehne-git/necklace-splitting/commit/9ca5be0)
+
+* Fix calculation of necklace configuration
+
+## v0.3.0 · 2022-02-05 · [1ab6e86](https://github.com/mkuehne-git/necklace-splitting/commit/1ab6e86)
+
+### Features
+
+* Visualize Borsuk-Ulam proof (WIP)
+
+### Other
+
+* Fix gauge color
+* Rotation specified in Hz.
+* npm update
+
+## v0.2.3 · 2022-01-14 · [6ef02b7](https://github.com/mkuehne-git/necklace-splitting/commit/6ef02b7)
+
+### Features
+
+* Enter necklace configuration as text
+* Show possible solution area
+* Show solutions
+
+### Other
+
+* Remove showcases ***Segments only***, and ***Test Position Ranges***
+* Remove options ***absolute/relative***, and ***Assert Ranges***
+* Remove slider ***Scaling***
+* Screen capture now uses CTRL + #.
+
+## v0.2.2 · 2022-01-02 · [6703792](https://github.com/mkuehne-git/necklace-splitting/commit/6703792)
+
+* Fix difference between discrete and continous split.
+* Hide mouse pointer when hovering over sphere.
+
+### Features
+
+* Close imprint dialog with Esc.
+* Imprint only, if imprint-gen.js available
+
+## v0.2.0
+
+### Features
+
+* Allow to separate the *octants* of the sphere by adding an *octant* specific offset vector
+ to each point calculated by the vertex shader.
+
+### Technical Refactoring
+
+* Migrate from Javascript to Typescript
+* Create classes for Neckace and Sphere
+* Introduce event to publish changes of settings.
+
+## v0.1.0
+
+### Main Features
+
+* Interactive Sphere showing the Borsuk-Ulam color mapping
+* Interactive Necklace showing the jewel split among the thiefs, based on point on sphere.
+* Gauge rating the *fairness* of the split.
+* Selective screeen capture, and file download
+`;export{e as default};
