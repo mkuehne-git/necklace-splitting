@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.20 · 2026-09-27
+## v0.4.21 · 2026-09-27
+
+* Update three.js 0.170 -> 0.186. No functional change.
+
+## v0.4.20 · 2026-09-27 · [15a2e51](https://github.com/mkuehne-git/necklace-splitting/commit/15a2e51)
 
 * Clean up the dependency list: runtime packages are listed once, the unused `@types/stats` is gone. No functional change.
 

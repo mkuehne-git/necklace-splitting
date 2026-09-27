@@ -1,5 +1,5 @@
 // To configure settings
-import { Controller, GUI } from "three/examples/jsm/libs/lil-gui.module.min";
+import { Controller, GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { Events, Showcase } from "./Enums";
 import { ClassMutationObserver } from './ClassMutationObserver';
 import { Imprint } from "./Imprint";

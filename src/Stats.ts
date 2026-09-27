@@ -1,9 +1,9 @@
-import Stats from "three/examples/jsm/libs/stats.module";
+import Stats from "three/addons/libs/stats.module.js";
 import { SETTINGS } from "./Settings";
 
 // The little statistics box at the upper left corner
 const VISIBLE_ATTRIBUTE = "visible"
-const stats = Stats();
+const stats = new Stats();
 stats[VISIBLE_ATTRIBUTE] = (visible: boolean) => {
     stats.domElement.style.visibility = visible ? "visible" : "hidden";
 };
