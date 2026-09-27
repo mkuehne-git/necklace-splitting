@@ -89,7 +89,7 @@ Ported from Climate Helix in this order; each is a self-contained step.
 
 ## Decisions for the owner
 
-Decided 2026-09-27: the owner accepted the plan with its recommendations - copy the Climate Helix modules (1) and replace lil-gui after Phase 6 (2). Items 3-5 are open until Phase 7.
+Decided 2026-09-27: the owner accepted the plan with its recommendations - copy the Climate Helix modules (1) and replace lil-gui after Phase 6 (2). Also decided 2026-09-27: yes to the info panel and to German (3), so the native settings panel is built with translatable texts. Items 4 and 5 are open.
 
 1. **Share code or copy it?** The common UI modules could live in a shared package, but for two small apps copying the Climate Helix versions and letting them diverge is simpler. Recommendation: copy.
 2. **Replace lil-gui?** It is the largest step (8 folders, ~40 controls) and the prerequisite for localization. Recommendation: yes, after Phase 6.

@@ -85,8 +85,12 @@ export function initPwaUpdate(): void {
 
 export async function checkForPwaUpdates(): Promise<boolean> {
     if (!('serviceWorker' in navigator)) {
-        showPwaStatus('Service workers are not supported in this browser.', 'warning');
-        console.info('Service workers are not supported in this browser.');
+        // Browsers offer service workers only on HTTPS and localhost, and not in private windows.
+        const message = window.isSecureContext
+            ? 'Updates are turned off in this browser window, for example in a private window.'
+            : 'Updates need HTTPS or localhost; this page was opened over plain HTTP.';
+        showPwaStatus(message, 'warning');
+        console.info(message);
         return false;
     }
 

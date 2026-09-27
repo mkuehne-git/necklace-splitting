@@ -30,6 +30,11 @@ function serviceWorkers(registrations: { update: () => Promise<void>; waiting: u
   }
 }
 
+/** Sets window.isSecureContext for one test (happy-dom has none). */
+function secureContext(secure: boolean) {
+  Object.defineProperty(window, "isSecureContext", { configurable: true, value: secure });
+}
+
 beforeEach(() => {
   document.body.innerHTML = "";
   pwa.updateServiceWorker.mockClear();
@@ -38,6 +43,7 @@ beforeEach(() => {
 
 afterEach(() => {
   delete (navigator as unknown as Record<string, unknown>).serviceWorker;
+  delete (window as unknown as Record<string, unknown>).isSecureContext;
 });
 
 describe("PWA update prompt", () => {
@@ -90,10 +96,18 @@ describe("Check for updates", () => {
     expect(status()!.textContent).toBe("No service worker is registered yet.");
   });
 
-  it("says so when the browser has no service workers", async () => {
+  it("names plain HTTP as the reason when the page is not secure", async () => {
     serviceWorkers(undefined);
+    secureContext(false);
     expect(await checkForPwaUpdates()).toBe(false);
-    expect(status()!.textContent).toBe("Service workers are not supported in this browser.");
+    expect(status()!.textContent).toBe("Updates need HTTPS or localhost; this page was opened over plain HTTP.");
+  });
+
+  it("names the browser window when the page is secure but has no service workers", async () => {
+    serviceWorkers(undefined);
+    secureContext(true);
+    expect(await checkForPwaUpdates()).toBe(false);
+    expect(status()!.textContent).toBe("Updates are turned off in this browser window, for example in a private window.");
   });
 
   it("shows one status message at a time, and removes it after a while", async () => {

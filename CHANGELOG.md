@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.7.0 · 2026-09-27
+## v0.7.1 · 2026-09-27
+
+* Fix: when updates are not available, Check for updates now names the reason - a page opened over plain HTTP, or a private window - instead of claiming the browser does not support them.
+
+## v0.7.0 · 2026-09-27 · [a1e0dfe](https://github.com/mkuehne-git/necklace-splitting/commit/a1e0dfe)
 
 * **Your settings are remembered:** the showcase, the necklace (also one entered as text), the view, color and rotation settings, the theme and the camera position are still there after a reload or when you open the app again.
 * **Restore defaults** in the settings goes back to the original settings.
