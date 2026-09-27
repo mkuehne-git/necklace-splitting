@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.19 · 2026-09-27
+## v0.4.20 · 2026-09-27
+
+* Clean up the dependency list: runtime packages are listed once, the unused `@types/stats` is gone. No functional change.
+
+## v0.4.19 · 2026-09-27 · [86c09c9](https://github.com/mkuehne-git/necklace-splitting/commit/86c09c9)
 
 * Add a release checklist for preparing each version. No functional change.
 

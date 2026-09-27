@@ -1,6 +1,6 @@
 {
   "name": "necklace-splitting",
-  "version": "0.4.19",
+  "version": "0.4.20",
   "type": "module",
   "engines": {
     "node": ">=22.12.0"
@@ -13,19 +13,15 @@
     "imprint": "node ./src/mjs/create-imprint.mjs"
   },
   "devDependencies": {
-    "@fontsource/dejavu-sans": "^5.1.0",
     "@types/node": "^20.17.6",
-    "@types/stats": "^0.16.30",
     "@types/three": "^0.169.0",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
-    "crypto-js": "^4.2.0",
-    "html2canvas": "^1.4.1",
     "vite": "^6.3.5",
     "vite-plugin-glsl": "^1.4.1",
     "vite-plugin-pwa": "^1.0.0"
   },
   "dependencies": {
-    "@fontsource/dejavu-sans": "^5.0.7",
+    "@fontsource/dejavu-sans": "^5.1.0",
     "crypto-js": "^4.2.0",
     "html2canvas": "^1.4.1",
     "three": "^0.170.0"
