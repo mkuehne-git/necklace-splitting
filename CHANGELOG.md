@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.22 · 2026-09-27
+## v0.4.23 · 2026-09-27
+
+* Update the build tools (Vite 6 -> 8 and its plugins). The known security advisories in the build dependencies are resolved. No functional change.
+
+## v0.4.22 · 2026-09-27 · [74c0e2f](https://github.com/mkuehne-git/necklace-splitting/commit/74c0e2f)
 
 * Fix: the imprint is bundled with the app, so it can no longer go missing on GitHub Pages.
 
