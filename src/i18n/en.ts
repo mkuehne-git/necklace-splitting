@@ -64,6 +64,7 @@ export const en = {
         'button.lightTheme': 'Switch to light theme',
         'button.darkTheme': 'Switch to dark theme',
         'button.close': 'Close',
+        'button.showInfo': 'About this app',
 
         'version.title': 'Show the changelog',
         'changelog.heading': 'Changelog',

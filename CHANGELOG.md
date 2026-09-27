@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.9.0 · 2026-09-27
+## v0.10.0 · 2026-09-27
+
+* **About this app:** the new info button at the top right explains what you see - how each point of the sphere cuts the necklace, what the colors mean, where the solutions are, the octants, and why a fair split always exists (the Borsuk-Ulam theorem) - and which settings show what.
+
+## v0.9.0 · 2026-09-27 · [bce60b7](https://github.com/mkuehne-git/necklace-splitting/commit/bce60b7)
 
 * **Changelog:** click the version number in the lower right corner, or at the bottom of the settings, to see what changed in each version.
 * **What's new:** after an update, the app shows once what changed since you last used it.

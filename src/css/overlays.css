@@ -1,4 +1,4 @@
-/* Full-page overlays: the imprint and the changelog (ui/OverlayPage.ts). */
+/* Full-page overlays: the imprint, the changelog and the info (ui/OverlayPage.ts). */
 .overlay-page {
   display: block;
   background-color: var(--background-color);
@@ -43,7 +43,7 @@
 }
 
 /* Only the content: the close button is a div of the overlay too. */
-.changelog > .overlay-content {
+:is(.changelog, .info) > .overlay-content {
   max-width: 44em;
   margin: 0 auto;
   padding: 0 16px;
@@ -51,7 +51,7 @@
   overflow-wrap: break-word;
 }
 
-.changelog h1 {
+:is(.changelog, .info) h1 {
   font-size: 1.5rem;
 }
 
@@ -60,7 +60,7 @@
   font-style: italic;
 }
 
-.changelog h2 {
+:is(.changelog, .info) h2 {
   font-size: 1.15rem;
   margin: 1.6em 0 0.4em;
 }
@@ -72,18 +72,22 @@
   margin-left: 0.5em;
 }
 
-.changelog h3 {
+:is(.changelog, .info) h3 {
   font-size: 1rem;
 }
 
-.changelog a {
+:is(.changelog, .info) a {
   color: inherit;
 }
 
-.changelog code {
+:is(.changelog, .info) code {
   font-size: 0.9em;
 }
 
 .changelog .changelog-full {
   margin-top: 1.6em;
+}
+
+.info li {
+  margin: 0.3em 0;
 }

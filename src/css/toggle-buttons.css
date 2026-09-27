@@ -83,3 +83,15 @@ div.themes {
     width: var(--icon-size);
     height: var(--icon-size);
 }
+
+/* The info button, left of the theme button (info/Info.ts). */
+div.info-button {
+    right: calc(var(--settings-size) * 2);
+}
+
+.info-button.show {
+    --icon-size: 22px;
+
+    width: var(--icon-size);
+    height: var(--icon-size);
+}

@@ -23,6 +23,8 @@ export enum Events {
   SCREEN_CAPTURE = "screen-capture",
   SHOW_CHANGELOG = "show-changelog",
   HIDE_CHANGELOG = "hide-changelog",
+  SHOW_INFO = "show-info",
+  HIDE_INFO = "hide-info",
 }
 
 export namespace Events {

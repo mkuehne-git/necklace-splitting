@@ -34,8 +34,8 @@
     display: flex;
     align-items: center;
     min-height: var(--settings-size);
-    /* Leaves the corner to the theme and gear buttons. */
-    padding: 0 calc(var(--settings-size) * 2) 0 20px;
+    /* Leaves the corner to the info, theme and gear buttons. */
+    padding: 0 calc(var(--settings-size) * 3) 0 20px;
 }
 
 .settings-header h2 {
