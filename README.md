@@ -1,112 +1,132 @@
-![Necklace-splitting](./docs/images/necklace.png)
-# necklace-splitting
-This HTML-5 application features an explorable visualization of the [Necklace splitting problem](https://en.wikipedia.org/wiki/Necklace_splitting_problem) and its connection to the [Borsuk-Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem). 
+![Necklace Splitting: the sphere with the cut at a solution](./docs/images/necklace.png)
 
-Available on [Github Pages](https://mkuehne-git.github.io/necklace-splitting/). The application can be installed as PWA (tested on Android).
+# Necklace Splitting
 
-After watching the [3blue1brown](https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw) video [The Borsuk-Ulam theorem and stolen necklaces](https://youtu.be/yuVqxCSsE7c) a couple of times, I wondered, how the mapping of the necklace splitting onto a sphere would actually look like.
+An explorable visualization of the [necklace splitting problem](https://en.wikipedia.org/wiki/Necklace_splitting_problem) and its connection to the [Borsuk-Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem), in English and German.
 
-Each point (x,y,z) on the sphere denotes a necklace cut - note the white indicator on the image. The cut splits the necklace in maximal three segments of length (x²,y²,z²). The sign of each ordinate assigns the segment to either thief A or B.
+**[Open the app](https://mkuehne-git.github.io/necklace-splitting/)** - it runs in the browser and can be installed as an app (PWA) on phones and computers.
 
-The coloring indicates how much thief A owns per jewel type. The colors red and green are used to distinguish between the jewel types. Bright yellow (mix between red and green) for instance indicates that thief A owns the majority of both jewel types.
+After watching the [3Blue1Brown](https://www.youtube.com/@3blue1brown) video [The Borsuk-Ulam theorem and stolen necklaces](https://youtu.be/yuVqxCSsE7c) a couple of times, I wondered how the mapping of the necklace splitting onto a sphere would actually look.
 
-## Solve the Necklace Splitting Problem
-If both jewel types are equally split between the two thiefs, the length of the necklace segments assigned to each thief must be identical. The orange line around the sphere shows this solution band (enable with ***Necklace/Solution Band***). All solutions independent from the necklace configuration exist on this line only.
+## The sphere
 
-Given a first cut position, the second possible cut can be calculated directly. The solutions (enable with ***Necklace/Solutions***) for a given necklace configuration can be calculated in linear time by iterating through the jewels.
+Two thieves want to share a necklace with jewels of two kinds fairly, each getting half of each kind. Each point (x, y, z) on the sphere is a pair of cuts: they split the necklace into up to three pieces of the lengths x², y² and z². The sign of each coordinate gives its piece to thief A (+) or thief B (−).
 
-![Solving necklace-split](./docs/images/necklace-with-solution.png)
+Point at the sphere: the white marker shows the point, the necklace below shows its cuts, and the gauge how much of each kind of jewel each thief gets.
+
+The colors show how much thief A gets of each kind: red for the first kind, green for the second. Bright yellow, a mix of both, means thief A gets most of both kinds.
+
+## Solving the necklace splitting problem
+
+A split is fair when both thieves get equally long pieces of the necklace. The orange band around the sphere marks these points, whatever the jewels (*Necklace › Solution band*); every solution lies on it.
+
+Given the first cut, the second one follows, so the solutions of a necklace can be found in linear time by going through its jewels. They are marked in blue (*Necklace › Solutions*). In the picture at the top, the pointer rests on one of them: the gauge shows exactly half of each kind for each thief.
+
+![The solutions, with the Necklace settings](./docs/images/necklace-with-solution.png)
+
+The necklace is set by a number, whose binary digits are the jewels (lowest digit first), or by a text, whose characters' binary digits are the jewels.
 
 ## Octants
-The sphere can be divided into eight octants. The octants can be enumerated using the polarity of (x,y,z) as binary digit. The octants are symmetrical to the origin. Mirrowing an octant at the origin means swapping the thiefs. The octants with number 000 and 111 are not very interesting, since they assign all jewels to just one thief. The option ***Single Thief's Area*** makes it possible to show or hide these octants from the view.
 
-In contrast, the octants with number 010 and 101 show most diversity. Whenever two cuts are necessary, you will find the solutions in these octants.
+The signs of (x, y, z) divide the sphere into eight octants, numbered by the signs as binary digits. Opposite octants swap the thieves. The octants 000 and 111 give everything to one thief; *View › Single thief's area* hides them.
 
-You can extrude the octants from the sphere using the slider ***Octant Offset***.
+The octants 010 and 101 show the most variety: whenever two cuts are needed, the solutions lie there. *View › Octant offset* pulls the octants apart.
 
-![necklace-octants-removed](./docs/images/necklace-octants.png)
+![The octants pulled apart, the single thief's area hidden](./docs/images/necklace-octants.png)
 
-## Proof of Borsuk-Ulam Theorem
+## Why a solution always exists
 
-Starting at [6:19](https://youtu.be/yuVqxCSsE7c?t=379) the video starts explaining why the [Borsuk–Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem) is true.
+From [6:19](https://youtu.be/yuVqxCSsE7c?t=379) on, the video explains why the Borsuk-Ulam theorem is true. Let f(x) map the sphere continuously to the plane - here, the shares of thief A. It is enough to show that g(x) = f(x) − f(−x) has a zero: x and −x are opposite points.
 
-Let f(x) be the continous function, that maps the surface of the sphere to the 2D plane, then all we need to do is looking for the zeroes of a function g(x) = f(x) - f(-x). Since x and -x are antipodal points on the sphere, it is sufficient to show, that g(x) must have at least one zero. The function g(x) is symmetrical to the origin. 
+Along a circle around the sphere, g(x) forms a closed loop around the origin, because g is continuous and g(−x) = −g(x). Moving the circle towards a pole shrinks the loop continuously to a single point, so on the way the loop must cross the origin.
 
-If you calculate g(x) for a circle line around the sphere in the xy plane, the image of g(x) forms a continous, closed loop surrounding the origin. This is because g(x) is both continous and symmetric to the origin. 
+*View › Borsuk-Ulam shape* shows the 3D shape formed by g(x) as the circle moves.
 
-Now, if the circle line is moved along the z-axis towards one pole the closed loop around the origin created by g(x) degenerates into a single point. Since this transformation is continous, the loop must cross the origin at some point during that movement.
+> **Note:** this is a rough first view. Each point of the sphere's mesh is simply moved to g(x), which does not preserve the mesh, so it can show rendering artifacts.
 
-The option ***View/Sphere/Borsuk-Ulam*** visualizes the 3D shape, that results from the moving image of g(x). 
+## Using the app
 
-> **Note**: This is a quick and dirty prove of concept only.<br>
-The current implementation has serious flaws, because the shape of g is created by simply shifting each point form the sphere's mesh (origin) to the image location g(x). This allows for a quick, first view, but it doesn't preserve the integrity of the mesh. That may lead to unexpected rendering artifacts.
+<img src="./docs/images/necklace-phone.png" alt="The app on a phone" width="195"> <img src="./docs/images/necklace-phone-settings.png" alt="The settings on a phone" width="195">
+
+- **Settings** (gear button, or `h`): the necklace, what the view shows, the sphere's colors, a rotation animation and screen captures. The app remembers them; *Restore defaults* goes back to the original ones.
+- **About this app** (info button): the explanation above, in the app.
+- **Language**: the app follows the browser's language (English or German); *Language* at the bottom of the settings chooses one.
+- **Changelog**: the version number in the lower right corner shows what changed; after an update, the app shows once what is new.
+- The light and dark theme button follows the system until you choose one.
+
+### Keyboard
+
+| Key | Action |
+| --- | --- |
+| `h` | Open or close the settings |
+| `Alt` + `S` | Save a screen capture (what *Screen capture* in the settings chooses) |
+| `Esc` | Close the imprint, the changelog or the explanation; otherwise the settings |
+| `Tab`, `Enter`, `Space` | Reach and use every button and control |
 
 # Getting started
 
-## Online
-View live on GitHub-Pages [https://mkuehne-git.github.io/necklace-splitting/](https://mkuehne-git.github.io/necklace-splitting/)
+## Local installation
 
-## Local Installation
-* Install [Node.js](https://nodejs.org/) 24 (`nvm use` picks it from `.nvmrc`), download this repository to your local machine and run
-
-    ```bash
-    $ npm ci
-    $ npm run imprint
-    $ npm run dev
-    ```
-
-    `npm run imprint` creates `src/imprint-gen.js`, which the build needs; without an `imprint.config.json` the app simply shows no imprint.
-
-* Open [https://localhost:5173](https://localhost:5173) to launch the application. The port may differ. The development server is also reachable from other devices in your network, for example a phone, at the network address it prints. It uses a self-signed certificate, so the browser asks you to accept it first. If that does not work, use
-
-    ```bash
-    $ npm run dev:http
-    ```
-    and open [http://127.0.0.1:5173](http://127.0.0.1:5173) instead.
-
-## Build and Deploy
-
-For your own build, install the exact locked dependencies and build into `dist/`:
+Install [Node.js](https://nodejs.org/) 24 (`nvm use` picks it from `.nvmrc`), download this repository and run
 
 ```bash
-$ npm ci
-$ npm run imprint
-$ npm run build
+npm ci
+npm run imprint
+npm run dev
+```
+
+`npm run imprint` creates `src/imprint-gen.js`, which the build needs; without an `imprint.config.json` the app simply shows no imprint.
+
+Open [https://localhost:5173](https://localhost:5173); the port may differ. The development server is also reachable from other devices in your network, for example a phone, at the network address it prints. It uses a self-signed certificate, so the browser asks you to accept it first. If that does not work, use `npm run dev:http` and open [http://127.0.0.1:5173](http://127.0.0.1:5173) instead (over plain HTTP, only `localhost` has the offline and update features).
+
+## Development
+
+```bash
+npm run typecheck   # TypeScript types (the build does not check them)
+npm test            # unit and component tests (Vitest)
+npm run test:e2e    # end-to-end tests in Chromium and Firefox (Playwright); run `npm run build` afterwards
+npm run screenshots # retake the README screenshots in docs/images/
+```
+
+`CLAUDE.md` describes the source layout and conventions, `TESTING.md` the tests, `ROADMAP.md` what is planned. Every change to `main` is checked by GitHub Actions (types, tests, build); Dependabot keeps the dependencies current.
+
+## Build and deploy
+
+```bash
+npm ci
+npm run imprint
+npm run build
 ```
 
 `deploy.sh` builds the app and force-pushes `dist/` to the `gh-pages` branch, from where GitHub Pages serves it. To deploy your own fork, change the repository in its `git push` line and the base path (`/necklace-splitting/`) in `vite.config.ts` to your repository's name.
 
-# Keyboard
-
-|Key|Description|
-|---|---|
-|```h```, ```H```|Toggle visibility of control panel|
-|```CTRL + #```|Take screen capture|
-|```Esc```|Close imprint dialog|
-
 # References
 
-## Explain Necklace-Splitting
+## Explaining necklace splitting
 
-* [Sneaky Topology | The Borsuk-Ulam theorem and stolen necklaces](https://youtu.be/yuVqxCSsE7c) - Video
-* [Necklace splitting problem](https://en.wikipedia.org/wiki/Necklace_splitting_problem) - Wikipedia
-* [Borsuk–Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem) - Wikipedia
+- [Sneaky Topology | The Borsuk-Ulam theorem and stolen necklaces](https://youtu.be/yuVqxCSsE7c) - video by 3Blue1Brown
+- [Necklace splitting problem](https://en.wikipedia.org/wiki/Necklace_splitting_problem) - Wikipedia
+- [Borsuk–Ulam theorem](https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem) - Wikipedia
 
 ## Implementation
 
-* *Lewy Blue,* [Discover three.js](https://discoverthreejs.com/)
-    * [WebGLProgram](https://threejs.org/docs/#api/en/renderers/webgl/WebGLProgram) Built-in uniforms and attributes
-* *Patricio Gonzalez Vivo, Jen Lowe,* [The Book of Shaders](https://thebookofshaders.com/)
+- *Lewy Blue,* [Discover three.js](https://discoverthreejs.com/)
+    - [WebGLProgram](https://threejs.org/docs/#api/en/renderers/webgl/WebGLProgram) - built-in uniforms and attributes
+- *Patricio Gonzalez Vivo, Jen Lowe,* [The Book of Shaders](https://thebookofshaders.com/)
 
 # Acknowledgments
 
-* WebGL [three.js](https://threejs.org/)
-* Settings with [lil-gui](https://github.com/georgealways/lil-gui)
-* [Vite](https://github.com/vitejs/vite) - Next Generation Frontend Tooling
-* [vite-plugin-glsl](https://www.npmjs.com/package/vite-plugin-glsl) - Recursively imports and inlines shader chunks within GLSL files relative to their directory.
-* [@vitejs/plugin-basic-ssl](https://www.npmjs.com/package/@vitejs/plugin-basic-ssl) - A plugin to generate untrusted certificates which still allows to access the page after proceeding a wall with warning.
-* [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) - PWA Vite Plugin, used to transform the application into PWA, see `vite.config.ts`.
-* [FavIcon Generator](https://realfavicongenerator.net/) - I used this to generate the `favicons` and the related section in `index.html`. PWA icons were generated with `PWABuilder Studio` inside VS Code.
+- [three.js](https://threejs.org/) - WebGL
+- [Vite](https://vite.dev/) - frontend tooling
+- [vite-plugin-glsl](https://www.npmjs.com/package/vite-plugin-glsl) - imports and inlines shader chunks within GLSL files
+- [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) - turns the app into a PWA, see `vite.config.ts`
+- [@vitejs/plugin-basic-ssl](https://www.npmjs.com/package/@vitejs/plugin-basic-ssl) - a self-signed certificate for the development server
+- [html2canvas](https://html2canvas.hertzen.com/) - screen captures and the imprint
+- [Vitest](https://vitest.dev/), [happy-dom](https://github.com/capricorn86/happy-dom) and [Playwright](https://playwright.dev/) - tests
+- [DejaVu Sans](https://dejavu-fonts.github.io/) via [Fontsource](https://fontsource.org/)
+- [FavIcon Generator](https://realfavicongenerator.net/) - the favicons and the related section in `index.html`; the PWA icons were generated with PWABuilder Studio in VS Code.
+- The settings panel, overlays, changelog and update handling were ported from [Climate Helix](https://github.com/mkuehne-git/climate-helix), which grew out of this project.
+
 # License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/mkuehne-git/necklace-splitting/blob/main/LICENSE) file for details.

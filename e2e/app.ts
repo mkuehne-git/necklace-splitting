@@ -11,6 +11,15 @@ export const APP_VERSION: string = JSON.parse(readFileSync('package.json', 'utf8
  */
 export const NEWEST_NEWS_VERSION: string = parseChangelog(readFileSync('CHANGELOG.md', 'utf8')).find(isFunctionalChange)!.version;
 
+/**
+ * Stores a state before the app starts, as a returning user would have it. It
+ * includes the current version as seen, so What's new stays closed.
+ */
+export async function withStoredState(page: Page, state: object): Promise<void> {
+    await page.addInitScript((value) => localStorage.setItem('necklace-splitting.state', value),
+        JSON.stringify({ version: 1, lastSeenVersion: APP_VERSION, ...state }));
+}
+
 export const sphere = (page: Page) => page.locator('canvas#sphere');
 export const necklace = (page: Page) => page.locator('canvas#necklace');
 export const panel = (page: Page) => page.locator('#settings-panel');

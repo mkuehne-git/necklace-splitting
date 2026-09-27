@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.12.0 · 2026-09-27
+## v0.12.1 · 2026-09-27
+
+* The README describes the app as it is now, with new screenshots taken by a script (`npm run screenshots`). No functional change.
+
+## v0.12.0 · 2026-09-27 · [b7b390c](https://github.com/mkuehne-git/necklace-splitting/commit/b7b390c)
 
 * The app now shows the necklace only: the showcases Shader Lamp, Space Colors and Sinusoid, and the Showcase buttons in the settings, are gone.
 

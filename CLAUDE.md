@@ -21,6 +21,7 @@ npm run typecheck  # check the TypeScript types (tsc; the build does not)
 npm test           # run the unit tests (Vitest)
 npm run test:watch # run the unit tests in watch mode
 npm run test:e2e   # build and run the Playwright end-to-end tests (Chromium, Firefox)
+npm run screenshots # retake the README screenshots in docs/images/ (dark theme)
 ```
 
 ### Node.js version
@@ -34,7 +35,7 @@ The project uses the current Active LTS release of Node.js: Node 24 (24.21.0 loc
 
 The development server uses HTTPS with a local self-signed certificate. If the browser cannot trust that certificate, use `npm run dev:http` and open `http://127.0.0.1:5173/` instead. Over plain HTTP, only `localhost` and `127.0.0.1` have service workers (and with them the PWA update check); the network address does not.
 
-`tsconfig.json` is for type checking only (`noEmit`, `strict` off); Vite builds without checking types. Unit tests live in `test/` and run with `npm test`; end-to-end tests live in `e2e/` and run with `npm run test:e2e` (after UI changes; it leaves a test build in `dist/`, so run `npm run build` afterwards). `TESTING.md` describes them. There is no lint script.
+`tsconfig.json` is for type checking only (`noEmit`, `strict` off); Vite builds without checking types. Unit tests live in `test/` and run with `npm test`; end-to-end tests live in `e2e/` and run with `npm run test:e2e` (after UI changes; it leaves a test build in `dist/`, so run `npm run build` afterwards). `TESTING.md` describes them. There is no lint script. After visible UI changes, retake the README screenshots with the `screenshots` skill (`.claude/skills/screenshots/`).
 
 ## Versioning
 
