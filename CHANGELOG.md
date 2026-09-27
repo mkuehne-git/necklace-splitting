@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.12.1 · 2026-09-27
+## v0.12.2 · 2026-09-27
+
+* Add a roadmap of what remains (`ROADMAP.md`) and update the development checklist. No functional change.
+
+## v0.12.1 · 2026-09-27 · [4fc82e1](https://github.com/mkuehne-git/necklace-splitting/commit/4fc82e1)
 
 * The README describes the app as it is now, with new screenshots taken by a script (`npm run screenshots`). No functional change.
 

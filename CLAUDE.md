@@ -72,6 +72,10 @@ Commit messages are `type: summary (vX.Y.Z)` with `type` one of `feat`, `fix`, `
 - `src/mjs/create-imprint.mjs` (`npm run imprint`) encrypts the imprint text from `imprint.config.json` into `src/imprint-gen.js`. That file is private and gitignored; never stage it. `src/imprint/Imprint.ts` imports it so that Vite bundles it as its own chunk, which means the build fails without it: run `npm run imprint` once after cloning (without `imprint.config.json` it writes a stub, and the app shows no imprint).
 - `vite.config.ts` configures the production base path, HTTPS development support (off with `VITE_HTTPS=false`), the GLSL plugin, PWA generation (`registerType: 'prompt'`) and `APP_VERSION`.
 
+## Roadmap
+
+What remains after the modernization, and the decisions still open, is in `ROADMAP.md`; `MODERNIZATION.md` records how the app got here.
+
 ## Implementation Conventions
 
 - Follow the existing TypeScript style and keep changes focused on the owning module.
@@ -96,7 +100,8 @@ Dynamic imports of local modules must remain analyzable by Vite. Do not use `@vi
 
 At minimum:
 
-1. Run `npm run typecheck`, `npm test` and `npm run build`; after UI changes also `npm run test:e2e`, then `npm run build` again.
-2. Run `npm run dev` and open the reported URL.
-3. Exercise the affected interaction in both light and dark themes where relevant: the sphere (rotate, hover gauge), the necklace canvas, the settings panel, the info and changelog pages, screen capture and the imprint.
-4. Check browser console errors and verify that the PWA/service worker still registers for build-related changes.
+1. Run `npm run typecheck`, `npm test` and `npm run build`. After changes to the UI, `main.ts`, the settings, the sphere or necklace views, CSS, the service worker or `vite.config.ts`, also run `npm run test:e2e` (Chromium and Firefox), then `npm run build` again so that `dist/` does not keep the test build. The `release` skill lists the steps.
+2. For text changes, update both languages (`src/i18n/en.ts`, `de.ts`, and both info pages); the i18n tests catch missing keys, not wording.
+3. After visible changes, retake the README screenshots (`screenshots` skill) if they show the changed part.
+4. Run `npm run dev` and look at the change in a real browser: light and dark theme, a phone-sized window, and Firefox as well as Chromium. The automated tests render WebGL in software and cannot judge how the sphere looks.
+5. Check the browser console, and for build-related changes that the service worker still registers.
