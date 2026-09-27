@@ -68,6 +68,7 @@ Ported from Climate Helix in this order; each is a self-contained step.
 2. **Overlay page** (`OverlayPage.ts`) for the imprint: X at a fixed position, Escape closes. Accessible names for icon buttons.
 3. **Remembered settings** (`PersistentState.ts`, key `necklace-splitting.state`, validated fields, debounced writes) and **Restore defaults**. Worth it here: the necklace configuration, showcase and view options are lost on every reload today.
 4. **Native settings panel** replacing lil-gui (`SettingsPanel.ts`, `settingsControls.ts`, `settings.css`), footer with Imprint, Check for updates, Restore defaults, changelog. Fixes the `h` shortcut, which today keeps its own visible/hidden flag and gets out of step with the gear button.
+   *Changed in v0.12.0:* the owner removed the showcases other than the necklace, and with them the showcase control.
    *Done in v0.8.0:* the texts are in a message catalog from the start (`src/i18n/en.ts`), for step 7; the footer has no changelog link until step 5. Needs control types Climate Helix lacks: number/text inputs for the configuration number and string, a select or segmented control for the four showcases.
 5. **Changelog view and What's new** (`src/changelog/`), needs the Phase 0 changelog format and `changelogCommit` in `vite.config.ts`.
 6. **Info panel** (optional, new here): the README's explanation of the mapping, the solution band, octants and the Borsuk-Ulam view, in the app behind an info button.

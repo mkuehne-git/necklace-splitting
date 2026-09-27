@@ -20,7 +20,7 @@ test('settings and theme survive a reload', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
     await openApp(page);
     await openSettings(page);
-    await panelButton(page, 'Space Colors').click();
+    await field(page, 'Solution band').uncheck();
     await field(page, 'Jewels').fill('12');
     await field(page, 'Discrete').uncheck();
     await page.getByRole('button', { name: 'Switch to dark theme' }).click();
@@ -31,7 +31,7 @@ test('settings and theme survive a reload', async ({ page }) => {
     await openApp(page);
     await expect(page.locator('body')).toHaveClass(/\bdark\b/);
     await openSettings(page);
-    await expect(panelButton(page, 'Space Colors')).toHaveAttribute('aria-pressed', 'true');
+    await expect(field(page, 'Solution band')).not.toBeChecked();
     await expect(field(page, 'Jewels')).toHaveValue('12');
     await expect(field(page, 'Discrete')).not.toBeChecked();
 });

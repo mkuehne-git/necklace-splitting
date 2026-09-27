@@ -65,13 +65,6 @@ describe('segmented', () => {
     });
 });
 
-describe('segmented, stacked', () => {
-    it('puts the label above the buttons', () => {
-        segmented(parent, 'Showcase', [{ value: 'a', label: 'A' }], () => 'a', () => undefined, { stacked: true });
-        expect(parent.querySelector('.settings-row')!.classList.contains('stacked')).toBe(true);
-    });
-});
-
 describe('numberField', () => {
     const create = (max = 15) => {
         let value = 5;

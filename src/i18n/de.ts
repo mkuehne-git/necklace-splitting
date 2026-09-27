@@ -4,18 +4,8 @@ import type { Catalog } from './index';
 export const de: Catalog = {
     locale: 'de-DE',
     messages: {
-        'showcase.stolenNecklace': 'Gestohlene Halskette',
-        'showcase.shaderLamp': 'Shader-Lampe',
-        'showcase.spaceColors': 'Raumfarben',
-        'showcase.sinusoid': 'Sinus',
-        'showcase.stolenNecklaceShort': 'Halskette',
-        'showcase.shaderLampShort': 'Lampe',
-        'showcase.spaceColorsShort': 'Farben',
-        'showcase.sinusoidShort': 'Sinus',
-
         'settings.title': 'Einstellungen',
         'settings.necklace': 'Halskette',
-        'settings.showcase': 'Darstellung',
         'settings.jewels': 'Juwelen',
         'settings.configuration': 'Konfiguration',
         'settings.text': 'Text',

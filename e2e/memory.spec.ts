@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { field, openApp, openSettings, panelButton } from './app';
+import { field, openApp, openSection, openSettings } from './app';
 
 // Rebuilding the sphere or its material must free the old WebGL resources:
 // otherwise every settings change uses more graphics memory. The tests count the
@@ -30,19 +30,18 @@ const live = (page: Page) => page.evaluate(() => ({ ...(window as unknown as { l
 /** Waits until the view has been drawn with the latest change. */
 const settle = (page: Page) => page.waitForTimeout(300);
 
-test('switching showcases does not keep old buffers or programs', async ({ page }) => {
+test('rebuilding the sphere does not keep old buffers or programs', async ({ page }) => {
+    // Octant offset rebuilds the sphere's geometry and material (CREATE_SPHERE).
     await openApp(page);
     await openSettings(page);
-    const showcases = ['Shader Lamp', 'Space Colors', 'Sinusoid', 'Stolen Necklace'];
-    // One round first: each showcase compiles its program once.
-    for (const name of showcases) {
-        await panelButton(page, name).click();
-        await settle(page);
-    }
+    await openSection(page, 'View');
+    const offset = field(page, 'Octant offset');
+    await offset.fill('0.5');
+    await settle(page);
     const before = await live(page);
     for (let round = 0; round < 3; round++) {
-        for (const name of showcases) {
-            await panelButton(page, name).click();
+        for (const value of ['1', '2.5', '0.5']) {
+            await offset.fill(value);
             await settle(page);
         }
     }

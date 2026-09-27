@@ -53,7 +53,7 @@ export function field(page: Page, label: string): Locator {
     return panel(page).getByLabel(label, { exact: true });
 }
 
-/** A button of the settings panel by its name: a showcase, a capture target, a footer button. */
+/** A button of the settings panel by its name: a capture target, a footer button. */
 export function panelButton(page: Page, name: string): Locator {
     return panel(page).getByRole('button', { name, exact: true });
 }

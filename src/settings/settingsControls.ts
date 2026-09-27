@@ -142,14 +142,13 @@ export function textField(parent: HTMLElement, text: string, get: () => string, 
     return { update };
 }
 
-/** Buttons of which one is pressed, e.g. the showcases; `title` is a longer name, if any. */
+/** Buttons of which one is pressed, e.g. what to capture; `title` is a longer name, if any. */
 export function segmented<T extends string>(
     parent: HTMLElement,
     text: string,
     options: { value: T, label: string, title?: string }[],
     get: () => T,
     set: (value: T) => void,
-    layout: { stacked?: boolean } = {},
 ): Control {
     const group = document.createElement('div');
     group.className = 'settings-segmented';
@@ -172,8 +171,6 @@ export function segmented<T extends string>(
     });
     const div = document.createElement('div');
     div.className = 'settings-row';
-    // Stacked: the label above and the buttons across the whole width, for many or long options.
-    div.classList.toggle('stacked', layout.stacked ?? false);
     const label = document.createElement('span');
     label.textContent = text;
     div.append(label, group);

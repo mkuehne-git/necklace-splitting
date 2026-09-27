@@ -2,18 +2,8 @@
 export const en = {
     locale: 'en-US',
     messages: {
-        'showcase.stolenNecklace': 'Stolen Necklace',
-        'showcase.shaderLamp': 'Shader Lamp',
-        'showcase.spaceColors': 'Space Colors',
-        'showcase.sinusoid': 'Sinusoid',
-        'showcase.stolenNecklaceShort': 'Necklace',
-        'showcase.shaderLampShort': 'Lamp',
-        'showcase.spaceColorsShort': 'Colors',
-        'showcase.sinusoidShort': 'Sinusoid',
-
         'settings.title': 'Settings',
         'settings.necklace': 'Necklace',
-        'settings.showcase': 'Showcase',
         'settings.jewels': 'Jewels',
         'settings.configuration': 'Configuration',
         'settings.text': 'Text',

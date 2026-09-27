@@ -1,7 +1,7 @@
 import { Events } from '../Enums';
 import type { SettingsPanel } from './SettingsPanel';
 import { button, checkbox, numberField, range, section, segmented, subheading, textField, type Control } from './settingsControls';
-import { LIMITS, SETTINGS, SHOWCASES, maxConfiguration, resetAnimation, type CaptureTarget } from './settingsValues';
+import { LIMITS, SETTINGS, maxConfiguration, resetAnimation, type CaptureTarget } from './settingsValues';
 import { collectSettings, persistentState } from './PersistentState';
 import { Imprint } from '../imprint/Imprint';
 import { checkForPwaUpdates, showPwaStatus } from '../ui/PwaUpdate';
@@ -41,18 +41,13 @@ const rebuild = () => changed(Events.CREATE_SPHERE);
 const decimals = (step: number) => (String(step).split('.')[1] ?? '').length;
 const formatStep = (step: number) => (value: number) => formatNumber(value, decimals(step));
 
-/** Necklace: the showcase, the jewels and how the solutions are shown. */
+/** Necklace: the jewels and how the solutions are shown. */
 function necklaceSection(body: HTMLElement, refresh: () => void): Control[] {
     const content = section(body, t('settings.necklace'), { open: true });
     const necklace = SETTINGS.necklace;
     const flag = (text: string, key: 'discrete' | 'show_solution_band' | 'show_solutions') =>
         checkbox(content, text, () => necklace[key], (value) => { necklace[key] = value; material(); });
     return [
-        segmented(content, t('settings.showcase'),
-            SHOWCASES.map((showcase) => ({ value: String(showcase.showcase), label: t(showcase.short), title: t(showcase.name) })),
-            () => String(SETTINGS.int_mode),
-            (value) => { SETTINGS.int_mode = Number(value); rebuild(); },
-            { stacked: true }),
         range(content, t('settings.jewels'), LIMITS.number_of_jewels, () => necklace.number_of_jewels, (value) => {
             necklace.number_of_jewels = value;
             // Fewer jewels leave room for fewer configurations.

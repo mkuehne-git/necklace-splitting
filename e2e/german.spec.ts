@@ -36,7 +36,7 @@ test('a German browser gets the app in German', async ({ page }) => {
     await openSettingsGerman(page);
     await expect(panel(page).getByRole('heading', { name: 'Einstellungen' })).toBeVisible();
     await expect(panel(page).locator('summary', { hasText: 'Halskette' })).toBeVisible();
-    await expect(panel(page).getByRole('button', { name: 'Gestohlene Halskette' })).toHaveText('Halskette');
+    await expect(panel(page).getByLabel('Lösungsband', { exact: true })).toBeChecked();
     await expect(panel(page).getByRole('button', { name: 'Standardwerte wiederherstellen' })).toBeVisible();
     // German numbers: a decimal comma.
     await expect(panel(page).locator('output', { hasText: '0,010' })).toBeVisible();

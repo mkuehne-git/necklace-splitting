@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.11.0 · 2026-09-27
+## v0.12.0 · 2026-09-27
+
+* The app now shows the necklace only: the showcases Shader Lamp, Space Colors and Sinusoid, and the Showcase buttons in the settings, are gone.
+
+## v0.11.0 · 2026-09-27 · [27c7726](https://github.com/mkuehne-git/necklace-splitting/commit/27c7726)
 
 * **Deutsch:** the app is available in German - buttons, settings, messages and the explanation behind the info button. It follows the browser's language; **Language** in the settings chooses one. The changelog stays in English.
 

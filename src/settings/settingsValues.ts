@@ -1,5 +1,3 @@
-import { Showcase } from "../Enums";
-
 /** The end-to-end test build (`VITE_E2E=true`) uses a coarser sphere, so that WebGL in headless browsers stays fast. */
 const E2E_BUILD = import.meta.env.VITE_E2E === 'true';
 
@@ -12,17 +10,6 @@ const MAX_ROT = 0.5;
 
 /** Must match the u_input length in fragment.glsl */
 const MAX_JEWELS = 32;
-
-/**
- * The showcases (display modes) in the order of {@link Showcase}; each index is
- * passed to the GLSL shaders as `#define MODE_...`. The names are message keys.
- */
-const SHOWCASES = [
-  { showcase: Showcase.STOLEN_NECKLACE, name: "showcase.stolenNecklace", short: "showcase.stolenNecklaceShort" },
-  { showcase: Showcase.SHADER_LAMP, name: "showcase.shaderLamp", short: "showcase.shaderLampShort" },
-  { showcase: Showcase.SPACE_COLOR, name: "showcase.spaceColors", short: "showcase.spaceColorsShort" },
-  { showcase: Showcase.SINUSOID, name: "showcase.sinusoid", short: "showcase.sinusoidShort" },
-] as const;
 
 type Limit = { min: number; max: number; step?: number };
 
@@ -40,7 +27,6 @@ const LIMITS = {
 type CaptureTarget = "All" | "Sphere" | "Necklace";
 
 const SETTINGS = {
-  int_mode: Showcase.STOLEN_NECKLACE,
   necklace: {
     number_of_jewels: 24,
     configuration: 13579652,
@@ -98,5 +84,5 @@ function resetAnimation(): void {
   SETTINGS.animation.rotation_z = 0;
 }
 
-export { EPS, EPS_SQ, LIMITS, MAX_JEWELS, MAX_ROT, SETTINGS, SHOWCASES, maxConfiguration, resetAnimation };
+export { EPS, EPS_SQ, LIMITS, MAX_JEWELS, MAX_ROT, SETTINGS, maxConfiguration, resetAnimation };
 export type { CaptureTarget, Limit };

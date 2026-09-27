@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 import { SETTINGS } from "../settings/settingsValues";
-import { Events, Showcase } from "../Enums";
+import { Events } from "../Enums";
 import { NecklaceComponent, ComponentOptions } from "./NecklaceComponent";
 import { NecklaceModel } from "./NecklaceModel";
 
@@ -114,17 +114,11 @@ class Necklace extends NecklaceComponent {
   }
 
   get showNecklace(): boolean {
-    return (
-      SETTINGS.int_mode === Showcase.STOLEN_NECKLACE &&
-      SETTINGS.view.necklace_visible
-    );
+    return SETTINGS.view.necklace_visible;
   }
 
   get showGauge(): boolean {
-    return (
-      SETTINGS.int_mode === Showcase.STOLEN_NECKLACE &&
-      SETTINGS.view.gauge_visible
-    );
+    return SETTINGS.view.gauge_visible;
   }
 
   render(): void {

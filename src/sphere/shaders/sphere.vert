@@ -7,21 +7,13 @@ struct SphereData {
     bool valid;
 };
 
-#define M_PI 3.1415926535897932384626433832795
 
 vec3 borsuk_ulam_proof(vec3 p) {
     if(!u_show_borsuk_ulam_proof_shape) {
         return vec3(p);
     }
     vec3 x = vec3(p);
-    vec2 g_x;
-    if(u_mode == MODE_STOLEN_NECKLACE || u_mode == MODE_SHADER_LAMP) {
-        g_x = calculate_stolen_necklace(x) - calculate_stolen_necklace(-x);
-    } else if(u_mode == MODE_SPACE_COLOR) {
-        g_x = 2.0 * vec2(p.xy);
-    } else if(u_mode == MODE_SINUSOID) {
-        g_x = vec2(sin(M_PI * p.x), sin(M_PI * p.y)) - vec2(sin(M_PI * -p.x), sin(M_PI * -p.y));
-    }
+    vec2 g_x = calculate_stolen_necklace(x) - calculate_stolen_necklace(-x);
     return vec3(g_x, x.z);
 }
 

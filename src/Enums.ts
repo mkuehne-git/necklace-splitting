@@ -1,10 +1,3 @@
-export enum Showcase {
-  STOLEN_NECKLACE = 0,
-  SHADER_LAMP,
-  SPACE_COLOR,
-  SINUSOID,
-}
-
 export enum Events {
   SETTINGS_CHANGED = "settings-changed",
   CHANGE_THEME = "change-theme",

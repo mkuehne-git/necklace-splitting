@@ -1,4 +1,3 @@
-#define M_PI 3.1415926535897932384626433832795
 #include uniform;
 #include varying;
 #include functions;
@@ -96,28 +95,15 @@ void main() {
         gl_FragColor = scale_color(v_pos);
     }
 
-    // Don't use switch not supported on MAC-M1
-    if(u_mode == MODE_STOLEN_NECKLACE || u_mode == MODE_SHADER_LAMP) {
-        if(isActiveRegion() && isOnSphere(v_sphereData_p, v_sphereData_octant, v_sphereData_valid)) {
-            vec2 thief_a = calculate_stolen_necklace(v_pos);
-            vec2 thief_b = vec2(1.0) - thief_a;
-            vec3 color = vec3(thief_a, 0.0);
-            if(u_mode == MODE_SHADER_LAMP) {
-                color = ((thief_a - thief_b).xyy * 0.5) + vec3(0.5);
-            }
-            if(u_show_solutions && isSolutionArea(thief_a, thief_b)) {
-                color = deltaColor(thief_a, thief_b);
-            }
-            color = calculateSolutionArea(color, v_pos);
-            fragColorWithIntersect(color);
+    if(isActiveRegion() && isOnSphere(v_sphereData_p, v_sphereData_octant, v_sphereData_valid)) {
+        // Red and green: thief A's share of each kind of jewel.
+        vec2 thief_a = calculate_stolen_necklace(v_pos);
+        vec2 thief_b = vec2(1.0) - thief_a;
+        vec3 color = vec3(thief_a, 0.0);
+        if(u_show_solutions && isSolutionArea(thief_a, thief_b)) {
+            color = deltaColor(thief_a, thief_b);
         }
-        return;
-    } else if(u_mode == MODE_SPACE_COLOR) {
-        fragColorWithIntersect(v_pos);
-        return;
-    } else if(u_mode == MODE_SINUSOID && isValidSphereData()) {
-        vec3 color = vec3(sin(M_PI * v_pos.x), sin(M_PI * v_pos.y), sin(M_PI * v_pos.z));
+        color = calculateSolutionArea(color, v_pos);
         fragColorWithIntersect(color);
     }
-    return;
 }

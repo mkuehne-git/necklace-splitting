@@ -10,7 +10,7 @@ for (const [name, viewport] of [['desktop', { width: 1280, height: 800 }], ['pho
         const errors = await openApp(page);
         await infoButton(page).click();
         await expect(overlay(page).locator('h1')).toHaveText('Necklace Splitting');
-        await expect(overlay(page).locator('h2')).toHaveText(['The sphere', 'Solutions', 'Octants', 'Why a solution always exists', 'Showcases']);
+        await expect(overlay(page).locator('h2')).toHaveText(['The sphere', 'Solutions', 'Octants', 'Why a solution always exists']);
         await overlay(page).getByRole('button', { name: 'Close' }).click();
         await expect(overlay(page)).toHaveCount(0);
         expect(errors).toEqual([]);

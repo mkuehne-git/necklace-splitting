@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { Events, Showcase } from "../Enums";
+import { Events } from "../Enums";
 import { EPS_SQ, MAX_JEWELS, SETTINGS } from "../settings/settingsValues";
 import { NecklaceModel } from "../necklace/NecklaceModel";
 import { ComponentOptions, NecklaceComponent } from "../necklace/NecklaceComponent";
@@ -251,17 +251,12 @@ class Sphere extends NecklaceComponent {
   get defines() {
     return {
       MAX_JEWELS: Math.max(1, this.model.necklace.length),
-      MODE_STOLEN_NECKLACE: Showcase.STOLEN_NECKLACE,
-      MODE_SHADER_LAMP: Showcase.SHADER_LAMP,
-      MODE_SPACE_COLOR: Showcase.SPACE_COLOR,
-      MODE_SINUSOID: Showcase.SINUSOID,
     };
   }
 
   get uniforms() {
     const offset = SETTINGS.sphere.offset_octant / SETTINGS.sphere.radius;
     return {
-      u_mode: { type: "i", value: SETTINGS.int_mode },
       u_necklace_discrete: {
         type: "b",
         value: SETTINGS.necklace.discrete,

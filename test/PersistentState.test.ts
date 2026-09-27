@@ -35,7 +35,6 @@ describe("parseState", () => {
     const state = parseState(JSON.stringify({
       version: 1,
       settings: {
-        int_mode: 2,
         "necklace.number_of_jewels": 12,
         "necklace.discrete": "yes",
       "necklace.epsilon": 0.5,
@@ -51,7 +50,7 @@ describe("parseState", () => {
       other: true,
     }));
     expect(state).toEqual({
-      settings: { int_mode: 2, "necklace.number_of_jewels": 12, "necklace.string": "AB", "color.alpha": 0.5 },
+      settings: { "necklace.number_of_jewels": 12, "necklace.string": "AB", "color.alpha": 0.5 },
       theme: "dark",
       camera: { position: [1, 2, 3], target: [0, 0, 0], up: [0, 1, 0] },
     });
@@ -71,22 +70,21 @@ describe("parseState", () => {
     expect(camera({ position: [1, 2], target: [0, 0, 0], up: [0, 1, 0] })).toBeUndefined();
   });
 
-  it("accepts only whole numbers in range for the showcase and the jewels", () => {
+  it("accepts only whole numbers in range for the jewels and the segments", () => {
     const settings = (value: object) => parseState(JSON.stringify({ version: 1, settings: value })).settings;
-    expect(settings({ int_mode: 1.5, "necklace.number_of_jewels": 33 })).toEqual({});
-    expect(settings({ int_mode: 4, "necklace.number_of_jewels": -1 })).toEqual({});
-    expect(settings({ int_mode: 3, "necklace.number_of_jewels": 32 })).toEqual({ int_mode: 3, "necklace.number_of_jewels": 32 });
+    expect(settings({ "sphere.segments": 64.5, "necklace.number_of_jewels": 33 })).toEqual({});
+    expect(settings({ "sphere.segments": 2, "necklace.number_of_jewels": -1 })).toEqual({});
+    expect(settings({ "sphere.segments": 64, "necklace.number_of_jewels": 32 })).toEqual({ "sphere.segments": 64, "necklace.number_of_jewels": 32 });
   });
 });
 
 describe("applySettings and collectSettings", () => {
   it("round-trip the remembered settings", () => {
-    applySettings({ int_mode: 1, "necklace.number_of_jewels": 10, "view.axes_visible": false, "animation.rotation_y": 0.3 });
-    expect(SETTINGS.int_mode).toBe(1);
+    applySettings({ "necklace.number_of_jewels": 10, "view.axes_visible": false, "animation.rotation_y": 0.3 });
     expect(SETTINGS.necklace.number_of_jewels).toBe(10);
     expect(SETTINGS.view.axes_visible).toBe(false);
     const collected = collectSettings();
-    expect(collected).toMatchObject({ int_mode: 1, "necklace.number_of_jewels": 10, "view.axes_visible": false, "animation.rotation_y": 0.3 });
+    expect(collected).toMatchObject({ "necklace.number_of_jewels": 10, "view.axes_visible": false, "animation.rotation_y": 0.3 });
     expect(collected).not.toHaveProperty("animation.run");
   });
 

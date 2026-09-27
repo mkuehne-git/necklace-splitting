@@ -60,17 +60,6 @@ test('h opens and closes the settings, but not while typing; Escape closes them'
     await expect(page.getByRole('button', { name: 'Open settings' })).toBeVisible();
 });
 
-test('a showcase changes the sphere', async ({ page }) => {
-    await openApp(page);
-    await openSettings(page);
-    const before = await pixels(sphere(page));
-    await expect(panelButton(page, 'Stolen Necklace')).toHaveAttribute('aria-pressed', 'true');
-    await panelButton(page, 'Shader Lamp').click();
-    await expectChanged(sphere(page), before);
-    await expect(panelButton(page, 'Shader Lamp')).toHaveAttribute('aria-pressed', 'true');
-    await expect(panelButton(page, 'Stolen Necklace')).toHaveAttribute('aria-pressed', 'false');
-});
-
 test('a new necklace configuration changes necklace and sphere', async ({ page }) => {
     await openApp(page);
     await openSettings(page);

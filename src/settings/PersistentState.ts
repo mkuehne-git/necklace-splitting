@@ -1,4 +1,4 @@
-import { LIMITS, MAX_JEWELS, SETTINGS, SHOWCASES, type Limit } from "./settingsValues";
+import { LIMITS, MAX_JEWELS, SETTINGS, type Limit } from "./settingsValues";
 
 const STORAGE_KEY = "necklace-splitting.state";
 const STATE_VERSION = 1;
@@ -46,7 +46,6 @@ const vector3: Validator<Vector3> = (value) =>
  * rotation itself (`animation.run`) and the FPS monitor are not remembered.
  */
 const SETTING_FIELDS: Record<string, Validator<number | string | boolean>> = {
-  int_mode: integer(0, SHOWCASES.length - 1),
   "necklace.number_of_jewels": limited(LIMITS.number_of_jewels),
   "necklace.configuration": integer(0, 2 ** MAX_JEWELS - 1),
   "necklace.string": string,
