@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/necklace-splitting/sw.js', { scope: '/necklace-splitting/' })})}
