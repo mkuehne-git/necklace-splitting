@@ -24,11 +24,13 @@ class Imprint {
     new ClassMutationObserver(document.body, () => this.redraw());
     document.body.addEventListener(Events.SHOW_IMPRINT.toString(), (e) => this.show());
     document.body.addEventListener(Events.HIDE_IMPRINT.toString(), (e) => this.hide());
-    document.body.addEventListener("keydown", (e) => {
+    // Capture phase: lil-gui stops keydown events inside its panel from bubbling,
+    // and the Imprint button there keeps the focus after opening the imprint.
+    window.addEventListener("keydown", (e) => {
       if (e.key === "Esc" || e.key === "Escape") {
         this.hide();
       }
-    });
+    }, { capture: true });
   }
   private redraw() {
     if (this.div !== undefined) {

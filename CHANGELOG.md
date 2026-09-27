@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.24 · 2026-09-27
+## v0.4.25 · 2026-09-27
+
+* Fix: Escape closes the imprint even while the settings panel is open.
+
+## v0.4.24 · 2026-09-27 · [e4e6ec3](https://github.com/mkuehne-git/necklace-splitting/commit/e4e6ec3)
 
 * Development: `npm run dev` serves over HTTPS and is reachable from other devices, replacing `npm run expose`; `npm run dev:http` serves over plain HTTP. No functional change.
 
