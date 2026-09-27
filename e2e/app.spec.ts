@@ -140,3 +140,17 @@ test('the settings panel fits a phone without scrolling sideways', async ({ page
     const body = panel(page).locator('.settings-body');
     expect(await body.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
 });
+
+test('controls the browser draws follow the app theme, not the system (v0.8.1)', async ({ page }) => {
+    // A dark system with the app switched to light: checkboxes, number fields and
+    // scrollbars must be light.
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await openApp(page);
+    await page.getByRole('button', { name: 'Switch to light theme' }).click();
+    await expect(page.locator('body')).toHaveClass(/\blight\b/);
+    await openSettings(page);
+    await expect(field(page, 'Configuration')).toHaveCSS('color-scheme', 'light');
+    await expect(field(page, 'Discrete')).toHaveCSS('background-color', 'rgb(46, 46, 46)');
+    await page.getByRole('button', { name: 'Switch to dark theme' }).click();
+    await expect(field(page, 'Configuration')).toHaveCSS('color-scheme', 'dark');
+});

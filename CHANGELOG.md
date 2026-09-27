@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.8.0 · 2026-09-27
+## v0.8.1 · 2026-09-27
+
+* Fix: checkboxes, number fields and scrollbars follow the app's theme. When the system used the dark theme and the app the light one, some of them were drawn dark.
+
+## v0.8.0 · 2026-09-27 · [5cc438d](https://github.com/mkuehne-git/necklace-splitting/commit/5cc438d)
 
 * **New settings panel:** the settings open in a panel on the right (full screen on phones) with clear sections - Necklace, View, Animation, Screen capture and Advanced - and larger controls that are easier to use on touch screens.
   * The four showcases are buttons at the top of the Necklace section.

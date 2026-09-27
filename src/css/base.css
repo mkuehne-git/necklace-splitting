@@ -38,6 +38,16 @@
   color: var(--text-color);
 }
 
+/* Form controls the browser draws (checkboxes, number fields, scrollbars)
+   follow the app's theme, not the system's: the theme switcher can differ from it. */
+body.light {
+  color-scheme: light;
+}
+
+body.dark {
+  color-scheme: dark;
+}
+
 * {
   box-sizing: border-box;
 }
