@@ -1,5 +1,7 @@
 # Modernization Plan
 
+> **Done:** phases 0 to 8 were carried out from v0.4.14 to v1.0.0 (2026-09-27). The notes marked *Done*, *Decided* or *Changed* below record where the work deviated from the plan; what remains is in `ROADMAP.md`.
+
 This plan carries the overhaul of Climate Helix (`~/dev/climate-helix`, v0.7 → v2.1.0 between 2026-09-16 and 2026-09-27, 81 commits) over to Necklace Splitting. Climate Helix grew out of this project (same `SVGToggleButton`, `ThemesSwitcher`, `ScreenCapture`, `Imprint`, `ClassMutationObserver`, lil-gui settings, `deploy.sh`), so most of its newer modules can be ported rather than rewritten.
 
 Work through the phases in order. Each step is one commit with a version bump and a changelog entry; the owner approves every commit. The early phases build a safety net (current dependencies, type checking, tests, CI) before the refactors and features that depend on it.
