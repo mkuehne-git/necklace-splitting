@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.8.1 · 2026-09-27
+## v0.9.0 · 2026-09-27
+
+* **Changelog:** click the version number in the lower right corner, or at the bottom of the settings, to see what changed in each version.
+* **What's new:** after an update, the app shows once what changed since you last used it.
+
+## v0.8.1 · 2026-09-27 · [fdade8b](https://github.com/mkuehne-git/necklace-splitting/commit/fdade8b)
 
 * Fix: checkboxes, number fields and scrollbars follow the app's theme. When the system used the dark theme and the app the light one, some of them were drawn dark.
 

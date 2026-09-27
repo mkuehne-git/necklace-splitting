@@ -10,8 +10,11 @@ async function cutAt(page: Page, x: number, y: number): Promise<void> {
     await page.waitForTimeout(300);
 }
 
-/** Waits until the delayed write has happened. */
-const saved = (page: Page) => expect.poll(() => page.evaluate(() => localStorage.getItem('necklace-splitting.state'))).not.toBeNull();
+/** The stored state, parsed. */
+const stored = (page: Page) => page.evaluate(() => JSON.parse(localStorage.getItem('necklace-splitting.state') ?? '{}'));
+
+/** Waits until the delayed write of the settings has happened. */
+const saved = (page: Page) => expect.poll(async () => (await stored(page)).settings).toBeDefined();
 
 test('settings and theme survive a reload', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
@@ -66,7 +69,8 @@ test('Restore defaults forgets the settings', async ({ page }) => {
     await openApp(page);
     await openSettings(page);
     await expect(field(page, 'Jewels')).toHaveValue('24');
-    expect(await page.evaluate(() => localStorage.getItem('necklace-splitting.state'))).toBeNull();
+    // Only the version whose news were seen is kept, so What's new does not come back.
+    expect(await stored(page)).toEqual({ version: 1, lastSeenVersion: expect.any(String) });
 });
 
 test('Restore defaults keeps the settings when not confirmed', async ({ page }) => {
@@ -77,5 +81,5 @@ test('Restore defaults keeps the settings when not confirmed', async ({ page }) 
     page.once('dialog', (dialog) => dialog.dismiss());
     await panelButton(page, 'Restore defaults').click();
     await expect(field(page, 'Jewels')).toHaveValue('12');
-    expect(await page.evaluate(() => localStorage.getItem('necklace-splitting.state'))).not.toBeNull();
+    expect((await stored(page)).settings).toBeDefined();
 });

@@ -63,10 +63,24 @@ body {
   overflow: hidden;
 }
 
+/* The version label; it opens the changelog. */
 #version-info {
   position: absolute;
-  right: 8px;
-  bottom: 2px;
+  right: 0;
+  bottom: 0;
+  /* A larger hit area than the small label, for fingers. */
+  padding: 8px;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
   font-size: x-small;
   opacity: 0.5;
+  cursor: pointer;
+}
+
+#version-info:hover,
+#version-info:focus-visible {
+  opacity: 1;
+  text-decoration: underline;
 }

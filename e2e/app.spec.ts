@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { expectChanged, field, necklace, openApp, openSection, openSettings, panel, panelButton, pixels, sphere } from './app';
+import { APP_VERSION, expectChanged, field, necklace, openApp, openSection, openSettings, panel, panelButton, pixels, sphere } from './app';
 
 test('loads without errors and shows the sphere and the necklace', async ({ page }) => {
     const errors = await openApp(page);
@@ -119,12 +119,12 @@ test('fewer jewels clamp the configuration, and it cannot exceed them', async ({
     await expect(field(page, 'Configuration')).toHaveValue('15');
 });
 
-test('the footer offers Imprint, Check for updates and Restore defaults, in this order', async ({ page }) => {
+test('the footer offers Imprint, Check for updates, Restore defaults and the changelog, in this order', async ({ page }) => {
     await openApp(page);
     await openSettings(page);
     const names = await panel(page).locator('.settings-footer button:visible').allTextContents();
     // Without the private imprint (the stub) there is no Imprint button.
-    expect(names.filter((name) => name !== 'Imprint')).toEqual(['Check for updates', 'Restore defaults']);
+    expect(names.filter((name) => name !== 'Imprint')).toEqual(['Check for updates', 'Restore defaults', `v${APP_VERSION} · Changelog`]);
     if (names.includes('Imprint')) {
         expect(names[0]).toBe('Imprint');
     }

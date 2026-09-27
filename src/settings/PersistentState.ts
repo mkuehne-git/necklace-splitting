@@ -15,6 +15,8 @@ type StoredState = {
   /** Only set once the user switched the theme; until then it follows the system. */
   theme?: "light" | "dark";
   camera?: { position: Vector3; target: Vector3; up: Vector3 };
+  /** The app version whose news were shown last (What's new); kept by Restore defaults. */
+  lastSeenVersion?: string;
 };
 
 type Validator<T> = (value: unknown) => T | undefined;
@@ -146,7 +148,9 @@ function parseState(text: string | null): StoredState {
   const necklaceSource = oneOf(["number", "string"] as const)(json.necklaceSource);
   const theme = oneOf(["light", "dark"] as const)(json.theme);
   const camera = validateCamera(json.camera);
+  const lastSeenVersion = typeof json.lastSeenVersion === "string" && /^\d+\.\d+\.\d+$/.test(json.lastSeenVersion) ? json.lastSeenVersion : undefined;
   if (settings) state.settings = settings;
+  if (lastSeenVersion) state.lastSeenVersion = lastSeenVersion;
   if (necklaceSource) state.necklaceSource = necklaceSource;
   if (theme) state.theme = theme;
   if (camera) state.camera = camera;
@@ -173,6 +177,7 @@ class PersistentState {
   #state: StoredState;
   #timer: ReturnType<typeof setTimeout> | undefined;
   #enabled = true;
+  #hadStoredState = false;
 
   constructor(storage: Storage | undefined = localStorageOrUndefined()) {
     this.#storage = storage;
@@ -191,6 +196,11 @@ class PersistentState {
     return this.#state;
   }
 
+  /** Whether anything was stored before this visit, even if none of it was readable: the app was used before. */
+  get hadStoredState(): boolean {
+    return this.#hadStoredState;
+  }
+
   update(changes: Partial<StoredState>): void {
     Object.assign(this.#state, changes);
     this.scheduleSave();
@@ -206,19 +216,30 @@ class PersistentState {
     this.save();
   }
 
-  /** Forgets the stored state and stops saving, so a reload starts with the defaults. */
+  /**
+   * Forgets the stored state and stops saving, so a reload starts with the
+   * defaults. Only the last seen version stays, so What's new is not shown again.
+   */
   clear(): void {
     this.#enabled = false;
     clearTimeout(this.#timer);
     this.#timer = undefined;
+    const { lastSeenVersion } = this.#state;
     this.#state = {};
-    this.withStorage((storage) => storage.removeItem(STORAGE_KEY));
+    this.withStorage((storage) => {
+      storage.removeItem(STORAGE_KEY);
+      if (lastSeenVersion !== undefined) {
+        storage.setItem(STORAGE_KEY, JSON.stringify({ version: STATE_VERSION, lastSeenVersion }));
+      }
+    });
   }
 
   private load(): StoredState {
     let state: StoredState = {};
     this.withStorage((storage) => {
-      state = parseState(storage.getItem(STORAGE_KEY));
+      const text = storage.getItem(STORAGE_KEY);
+      this.#hadStoredState = text !== null;
+      state = parseState(text);
     });
     return state;
   }

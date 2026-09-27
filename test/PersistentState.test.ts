@@ -57,6 +57,13 @@ describe("parseState", () => {
     });
   });
 
+  it("keeps a last seen version only in x.y.z form", () => {
+    const seen = (value: unknown) => parseState(JSON.stringify({ version: 1, lastSeenVersion: value })).lastSeenVersion;
+    expect(seen("0.8.1")).toBe("0.8.1");
+    expect(seen("0.8")).toBeUndefined();
+    expect(seen(81)).toBeUndefined();
+  });
+
   it("drops a camera looking at its own position or without an up direction", () => {
     const camera = (value: object) => parseState(JSON.stringify({ version: 1, camera: value })).camera;
     expect(camera({ position: [1, 2, 3], target: [1, 2, 3], up: [0, 1, 0] })).toBeUndefined();
@@ -129,6 +136,17 @@ describe("PersistentState", () => {
     vi.advanceTimersByTime(300);
     state.flush();
     expect(storage.getItem(STORAGE_KEY)).toBeNull();
+  });
+
+  it("keeps the last seen version on clear, so What's new is not shown again", () => {
+    const storage = memoryStorage({ [STORAGE_KEY]: JSON.stringify({ version: 1, theme: "dark", lastSeenVersion: "0.8.1" }) });
+    new PersistentState(storage).clear();
+    expect(stored(storage)).toEqual({ version: 1, lastSeenVersion: "0.8.1" });
+  });
+
+  it("tells whether anything was stored before this visit", () => {
+    expect(new PersistentState(memoryStorage()).hadStoredState).toBe(false);
+    expect(new PersistentState(memoryStorage({ [STORAGE_KEY]: "{broken" })).hadStoredState).toBe(true);
   });
 
   it("works for the visit without storage, or when storage throws", () => {

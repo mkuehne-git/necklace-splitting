@@ -21,6 +21,8 @@ export enum Events {
   UPDATE_SPHERE_MATERIAL = "update-material",
   NECKLACE_CUT = "necklace-cut",
   SCREEN_CAPTURE = "screen-capture",
+  SHOW_CHANGELOG = "show-changelog",
+  HIDE_CHANGELOG = "hide-changelog",
 }
 
 export namespace Events {

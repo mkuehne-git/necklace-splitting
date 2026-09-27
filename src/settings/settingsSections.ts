@@ -177,7 +177,8 @@ function footerButton(label: string, onClick: () => void): HTMLButtonElement {
 
 /**
  * The app functions, in the panel's footer: Imprint (shown once the private
- * imprint has loaded, see Imprint.ts), Check for updates, and Restore defaults.
+ * imprint has loaded, see Imprint.ts), Check for updates, Restore defaults, and
+ * the version with the changelog.
  */
 function appFunctions(footer: HTMLElement): void {
     const imprint = new Imprint();
@@ -203,5 +204,11 @@ function appFunctions(footer: HTMLElement): void {
     });
     restore.classList.add('danger');
 
-    footer.append(buttons, restore);
+    const version = document.createElement('div');
+    version.className = 'settings-version';
+    const changelog = footerButton(`v${APP_VERSION} · ${t('changelog.heading')}`, () => Events.dispatchEvent(Events.SHOW_CHANGELOG));
+    changelog.className = 'settings-link';
+    version.appendChild(changelog);
+
+    footer.append(buttons, restore, version);
 }

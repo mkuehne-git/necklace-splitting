@@ -65,6 +65,13 @@ export const en = {
         'button.darkTheme': 'Switch to dark theme',
         'button.close': 'Close',
 
+        'version.title': 'Show the changelog',
+        'changelog.heading': 'Changelog',
+        /** Shown below the changelog and What's new headings when the entries are not in this language; empty in English. */
+        'changelog.note': '',
+        'whatsNew.heading': "What's new",
+        'whatsNew.fullChangelog': 'Full changelog',
+
         'pwa.updateTitle': 'Update available',
         'pwa.updateMessage': 'A new version of Necklace Splitting is ready. Reload to apply the update?',
         'pwa.reload': 'Reload',

@@ -21,8 +21,8 @@ If the previous version was never committed (it is still in the working tree), e
 
 - Version: `npm version X.Y.Z --no-git-tag-version`. It updates `package.json` and both version fields in `package-lock.json` and nothing else; do not search-and-replace the old version in the lockfile, where dependencies can share it.
 - `CHANGELOG.md`: a new `## vX.Y.Z · YYYY-MM-DD` section at the top (today's date), one bullet per change.
-- Add the commit to the previous entry, which is the version committed at `HEAD`: `## vA.B.C · YYYY-MM-DD · [abc1234](https://github.com/mkuehne-git/necklace-splitting/commit/abc1234)`, with `git rev-parse --short=7 HEAD`. A commit cannot contain its own hash, so the new entry stays without one.
-- Write for users of the app: what changed and why it matters, not which functions moved. Name fixed bugs by their symptom. Say "No functional change." for test, docs and refactor-only versions.
+- Add the commit to the previous entry, which is the version committed at `HEAD`: `## vA.B.C · YYYY-MM-DD · [abc1234](https://github.com/mkuehne-git/necklace-splitting/commit/abc1234)`, with `git rev-parse --short=7 HEAD`. A commit cannot contain its own hash, so the new entry stays without one; the build adds it to the deployed app's copy (`changelogCommit` in `vite.config.ts`). `test/changelogFormat.test.ts` checks the format.
+- Write for users of the app: what changed and why it matters, not which functions moved. Name fixed bugs by their symptom. Say "No functional change." for test, docs and refactor-only versions: What's new leaves those out.
 
 ## 3. Validate
 

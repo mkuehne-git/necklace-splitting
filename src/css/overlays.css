@@ -1,4 +1,4 @@
-/* Full-page overlays: the imprint (ui/OverlayPage.ts). */
+/* Full-page overlays: the imprint and the changelog (ui/OverlayPage.ts). */
 .overlay-page {
   display: block;
   background-color: var(--background-color);
@@ -35,4 +35,55 @@
   padding-right: 10px;
   padding-bottom: 10px;
   padding-left: 10px;
+}
+
+/* Focused on opening, for keyboard scrolling; no ring around the whole page. */
+.overlay-page:focus {
+  outline: none;
+}
+
+/* Only the content: the close button is a div of the overlay too. */
+.changelog > .overlay-content {
+  max-width: 44em;
+  margin: 0 auto;
+  padding: 0 16px;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+
+.changelog h1 {
+  font-size: 1.5rem;
+}
+
+.changelog .changelog-note {
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.changelog h2 {
+  font-size: 1.15rem;
+  margin: 1.6em 0 0.4em;
+}
+
+.changelog h2 .changelog-meta {
+  font-size: 0.8rem;
+  font-weight: normal;
+  opacity: 0.7;
+  margin-left: 0.5em;
+}
+
+.changelog h3 {
+  font-size: 1rem;
+}
+
+.changelog a {
+  color: inherit;
+}
+
+.changelog code {
+  font-size: 0.9em;
+}
+
+.changelog .changelog-full {
+  margin-top: 1.6em;
 }

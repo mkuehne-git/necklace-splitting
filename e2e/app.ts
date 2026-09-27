@@ -1,8 +1,15 @@
 import { readFileSync } from 'node:fs';
 import { expect, type Locator, type Page } from '@playwright/test';
+import { isFunctionalChange, parseChangelog } from '../src/changelog/changelogFormat';
 
 /** The app version under test. */
 export const APP_VERSION: string = JSON.parse(readFileSync('package.json', 'utf8')).version;
+
+/**
+ * The newest version What's new shows: versions marked "No functional change."
+ * are left out, so it can be older than {@link APP_VERSION}.
+ */
+export const NEWEST_NEWS_VERSION: string = parseChangelog(readFileSync('CHANGELOG.md', 'utf8')).find(isFunctionalChange)!.version;
 
 export const sphere = (page: Page) => page.locator('canvas#sphere');
 export const necklace = (page: Page) => page.locator('canvas#necklace');

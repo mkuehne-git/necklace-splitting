@@ -16,6 +16,9 @@ import { Events } from "./Enums";
 import { ScreenCapture } from './ui/ScreenCapture';
 import { initPwaUpdate } from './ui/PwaUpdate';
 import { persistentState } from './settings/PersistentState';
+import { Changelog } from './changelog/Changelog';
+import { showWhatsNewOnce } from './changelog/WhatsNew';
+import { t } from './i18n';
 import { Sphere } from './sphere/Sphere';
 import { Necklace } from './necklace/Necklace';
 import { NecklaceModel } from './necklace/NecklaceModel';
@@ -39,13 +42,19 @@ new ScreenCapture({
   Necklace: necklace.captureElement,
 });
 
-// Version info before infoIcon
-const span = document.createElement('SPAN');
-span.setAttribute('id', 'version-info');
-span.innerHTML = `v${APP_VERSION}`;
-document.body.insertAdjacentElement('beforeend', span);
+// The version label in the lower right corner opens the changelog.
+const changelog = new Changelog();
+const versionLabel = document.createElement('button');
+versionLabel.type = 'button';
+versionLabel.id = 'version-info';
+versionLabel.textContent = `v${APP_VERSION}`;
+versionLabel.title = t('version.title');
+versionLabel.addEventListener('click', () => Events.dispatchEvent(Events.SHOW_CHANGELOG));
+document.body.appendChild(versionLabel);
 switcher.initTheme();
 initPwaUpdate();
+// The changes since the version seen last, once.
+void showWhatsNewOnce(changelog, persistentState, APP_VERSION);
 
 
 // Make empty module to allow top level await
