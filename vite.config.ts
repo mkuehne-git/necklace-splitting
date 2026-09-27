@@ -99,5 +99,7 @@ export default defineConfig({
     test: {
         // Playwright's end-to-end tests will live in e2e/ and must not be picked up here.
         include: ['test/**/*.test.ts'],
+        // Pins English, whatever the machine's locale; tests of other languages switch explicitly.
+        setupFiles: ['test/setup.ts'],
     },
 });

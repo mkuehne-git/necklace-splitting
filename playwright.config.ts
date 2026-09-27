@@ -15,6 +15,8 @@ export default defineConfig({
     reporter: 'list',
     use: {
         baseURL: `http://localhost:${PORT}/necklace-splitting/`,
+        // English, whatever the machine's language; e2e/german.spec.ts switches to German.
+        locale: 'en-US',
         trace: 'retain-on-failure',
     },
     projects: [

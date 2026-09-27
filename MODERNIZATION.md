@@ -73,6 +73,7 @@ Ported from Climate Helix in this order; each is a self-contained step.
 6. **Info panel** (optional, new here): the README's explanation of the mapping, the solution band, octants and the Borsuk-Ulam view, in the app behind an info button.
    *Done in v0.10.0* as a full page (like the changelog) behind an info button in the top-right row, since the text is longer than Climate Helix's.
 7. **Localization English/German** (optional, `src/i18n/` with catalogs and `t()`): needs step 4 first, since lil-gui labels are hard to translate.
+   *Done in v0.11.0*, with the informal "du" as in Climate Helix; the German wording awaits the owner's review.
 
 ## Phase 8: Documentation (patch, then a major version if the owner wants one)
 

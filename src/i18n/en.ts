@@ -58,6 +58,9 @@ export const en = {
         'settings.imprint': 'Imprint',
         'settings.restoreDefaults': 'Restore defaults',
         'settings.restoreDefaultsConfirm': 'Restore all settings to their defaults? The app reloads.',
+        'settings.language': 'Language',
+        /** Follows the browser's language. */
+        'settings.languageAuto': 'Automatic',
 
         'button.openSettings': 'Open settings',
         'button.closeSettings': 'Close settings',

@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.10.0 · 2026-09-27
+## v0.11.0 · 2026-09-27
+
+* **Deutsch:** the app is available in German - buttons, settings, messages and the explanation behind the info button. It follows the browser's language; **Language** in the settings chooses one. The changelog stays in English.
+
+## v0.10.0 · 2026-09-27 · [c5cb1fb](https://github.com/mkuehne-git/necklace-splitting/commit/c5cb1fb)
 
 * **About this app:** the new info button at the top right explains what you see - how each point of the sphere cuts the necklace, what the colors mean, where the solutions are, the octants, and why a fair split always exists (the Borsuk-Ulam theorem) - and which settings show what.
 

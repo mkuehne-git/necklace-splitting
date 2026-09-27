@@ -1,0 +1,57 @@
+<h1>Necklace Splitting</h1>
+<p>Zwei Diebe haben eine Halskette mit Juwelen zweier Sorten gestohlen und wollen sie gerecht teilen: Jeder bekommt die Hälfte jeder Sorte.
+    Das <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Necklace_splitting_problem">Halsketten-Teilungsproblem</a> [1]
+    fragt, wie viele Schnitte sie dafür brauchen. Bei zwei Sorten reichen immer zwei Schnitte - eine Folge des
+    <a target="_blank" rel="noopener noreferrer" href="https://de.wikipedia.org/wiki/Satz_von_Borsuk-Ulam">Satzes von Borsuk-Ulam</a> [2],
+    wie das Video <a target="_blank" rel="noopener noreferrer" href="https://youtu.be/yuVqxCSsE7c">The Borsuk-Ulam theorem and stolen necklaces</a> [3] erklärt.
+    Diese App zeigt, wie sich die Halskette auf eine Kugel abbilden lässt.</p>
+
+<h2>Die Kugel</h2>
+<p>Jeder Punkt (x, y, z) der Kugel ist ein Paar von Schnitten: Sie teilen die Halskette in bis zu drei Stücke der Längen x², y² und z²,
+    die zusammen die ganze Halskette ergeben. Das Vorzeichen jeder Koordinate gibt ihr Stück Dieb A (+) oder Dieb B (−).</p>
+<p>Zeig auf die Kugel: Die weiße Markierung zeigt den Punkt, die Halskette darunter seine Schnitte und die Anzeige,
+    wie viel jeder Dieb von jeder Sorte bekommt.</p>
+<p>Die Farben zeigen, wie viel Dieb A von jeder Sorte bekommt: Rot für die erste Sorte, Grün für die zweite.
+    Helles Gelb, eine Mischung aus beiden, heißt, dass Dieb A von beiden Sorten den größten Teil bekommt.</p>
+
+<h2>Lösungen</h2>
+<p>Eine Teilung ist gerecht, wenn beide Diebe gleich lange Stücke der Halskette bekommen. Das Band um die Kugel markiert diese Punkte,
+    unabhängig von den Juwelen (<em>Halskette › Lösungsband</em>); jede Lösung liegt darauf.</p>
+<p>Die gerechten Teilungen der aktuellen Halskette sind blau markiert (<em>Halskette › Lösungen</em>; <em>Epsilon</em> legt fest,
+    wie nah an gerecht noch zählt). Aus dem ersten Schnitt folgt der zweite, daher lassen sie sich in linearer Zeit finden,
+    indem man die Juwelen einmal durchgeht.</p>
+<p>Die Halskette wird in den Einstellungen durch eine Zahl festgelegt, deren Binärziffern die Juwelen sind (niedrigste Ziffer zuerst),
+    oder durch einen Text, dessen Zeichen mit ihren Binärziffern die Juwelen ergeben. <em>Diskret</em> zählt ganze Juwelen;
+    ohne diese Option kann ein Schnitt ein Juwel teilen.</p>
+
+<h2>Oktanten</h2>
+<p>Die Vorzeichen von (x, y, z) teilen die Kugel in acht Oktanten, nummeriert mit den Vorzeichen als Binärziffern.
+    Gegenüberliegende Oktanten vertauschen die Diebe. Die Oktanten 000 und 111 geben alles einem Dieb
+    (<em>Ansicht › Bereich eines Diebs</em> blendet sie aus). Die Oktanten 010 und 101 zeigen die größte Vielfalt:
+    Wann immer zwei Schnitte nötig sind, liegen die Lösungen dort. <em>Ansicht › Oktanten-Abstand</em> zieht die Oktanten auseinander.</p>
+
+<h2>Warum es immer eine Lösung gibt</h2>
+<p>Ab <a target="_blank" rel="noopener noreferrer" href="https://youtu.be/yuVqxCSsE7c?t=379">6:19</a> erklärt das Video [3],
+    warum der Satz von Borsuk-Ulam gilt. Sei f(x) eine stetige Abbildung der Kugel in die Ebene - hier die Anteile von Dieb A.
+    Es genügt zu zeigen, dass g(x) = f(x) − f(−x) eine Nullstelle hat: x und −x sind gegenüberliegende Punkte.</p>
+<p>Entlang eines Kreises um die Kugel bildet g(x) eine geschlossene Schleife um den Ursprung, weil g stetig ist und g(−x) = −g(x) gilt.
+    Wandert der Kreis zu einem Pol, schrumpft die Schleife stetig zu einem einzigen Punkt - unterwegs muss sie also den Ursprung kreuzen.</p>
+<p><em>Ansicht › Borsuk-Ulam-Form</em> zeigt die 3D-Form, die g(x) bildet, während der Kreis wandert. Sie ist ein grober erster Eindruck:
+    Jeder Punkt des Kugelnetzes wird einfach nach g(x) verschoben, daher kann das Netz Artefakte zeigen.</p>
+
+<h2>Darstellungen</h2>
+<ul>
+    <li><em>Gestohlene Halskette</em>: die Anteile von Dieb A, wie oben beschrieben.</li>
+    <li><em>Shader-Lampe</em>: der Unterschied zwischen den Dieben für jede Sorte; eine gerechte Teilung ist das neutrale Grau.</li>
+    <li><em>Raumfarben</em> und <em>Sinus</em>: die Position auf der Kugel oder ein Sinus davon als Farbe - andere Funktionen f,
+        mit denen sich die Borsuk-Ulam-Form vergleichen lässt.</li>
+</ul>
+
+<hr>
+<h3>Quellen</h3>
+<ol>
+    <li><a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Necklace_splitting_problem">Necklace splitting problem</a> - Wikipedia (englisch)</li>
+    <li><a target="_blank" rel="noopener noreferrer" href="https://de.wikipedia.org/wiki/Satz_von_Borsuk-Ulam">Satz von Borsuk-Ulam</a> - Wikipedia</li>
+    <li><a target="_blank" rel="noopener noreferrer" href="https://youtu.be/yuVqxCSsE7c">Sneaky Topology: The Borsuk-Ulam theorem and stolen necklaces</a> - 3Blue1Brown (englisch)</li>
+    <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/mkuehne-git/necklace-splitting">Necklace Splitting auf GitHub</a></li>
+</ol>

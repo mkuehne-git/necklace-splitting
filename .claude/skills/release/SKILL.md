@@ -26,6 +26,8 @@ If the previous version was never committed (it is still in the working tree), e
 
 ## 3. Validate
 
+For UI text changes, check that `src/i18n/de.ts` and `src/i18n/info/info.de.html` were updated along with English (see `CLAUDE.md`); ask the project owner to review new German wording.
+
 Run these in order and report failures with their output - do not commit around them.
 
 1. `npm run typecheck` (tsc; Vite builds without checking types), then `npm test` (Vitest).

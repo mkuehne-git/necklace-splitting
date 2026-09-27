@@ -5,7 +5,7 @@ import { LIMITS, SETTINGS, SHOWCASES, maxConfiguration, resetAnimation, type Cap
 import { collectSettings, persistentState } from './PersistentState';
 import { Imprint } from '../imprint/Imprint';
 import { checkForPwaUpdates, showPwaStatus } from '../ui/PwaUpdate';
-import { formatNumber, t } from '../i18n';
+import { LANGUAGE_NAMES, LANGUAGES, formatNumber, t, type Language } from '../i18n';
 
 /**
  * Fills the settings panel: the sections in its body and the app functions in
@@ -176,12 +176,33 @@ function footerButton(label: string, onClick: () => void): HTMLButtonElement {
 }
 
 /**
- * The app functions, in the panel's footer: Imprint (shown once the private
- * imprint has loaded, see Imprint.ts), Check for updates, Restore defaults, and
- * the version with the changelog.
+ * The app functions, in the panel's footer: Language (Automatic follows the
+ * browser; a change is stored at once and reloads the app, because the texts
+ * are set when things are built), Imprint (shown once the private imprint has
+ * loaded, see Imprint.ts), Check for updates, Restore defaults, and the version
+ * with the changelog.
  */
 function appFunctions(footer: HTMLElement): void {
     const imprint = new Imprint();
+    const languageRow = document.createElement('div');
+    languageRow.className = 'settings-row';
+    const languageLabel = document.createElement('label');
+    languageLabel.htmlFor = 'settings-language';
+    languageLabel.textContent = t('settings.language');
+    const select = document.createElement('select');
+    select.id = 'settings-language';
+    const choices: [Language | 'auto', string][] = [['auto', t('settings.languageAuto')], ...LANGUAGES.map((language): [Language, string] => [language, LANGUAGE_NAMES[language]])];
+    for (const [value, label] of choices) {
+        select.add(new Option(label, value, false, value === (persistentState.state.language ?? 'auto')));
+    }
+    select.addEventListener('change', () => {
+        const value = select.value as Language | 'auto';
+        persistentState.update({ language: value === 'auto' ? undefined : value });
+        persistentState.flush();
+        window.location.reload();
+    });
+    languageRow.append(languageLabel, select);
+
     const buttons = document.createElement('div');
     buttons.className = 'settings-buttons';
     const imprintButton = footerButton(t('settings.imprint'), () => Events.dispatchEvent(Events.SHOW_IMPRINT));
@@ -210,5 +231,5 @@ function appFunctions(footer: HTMLElement): void {
     changelog.className = 'settings-link';
     version.appendChild(changelog);
 
-    footer.append(buttons, restore, version);
+    footer.append(languageRow, buttons, restore, version);
 }

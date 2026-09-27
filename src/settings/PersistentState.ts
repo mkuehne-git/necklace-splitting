@@ -17,6 +17,8 @@ type StoredState = {
   camera?: { position: Vector3; target: Vector3; up: Vector3 };
   /** The app version whose news were shown last (What's new); kept by Restore defaults. */
   lastSeenVersion?: string;
+  /** Only set once the user chose a language; until then it follows the browser. */
+  language?: "en" | "de";
 };
 
 type Validator<T> = (value: unknown) => T | undefined;
@@ -151,6 +153,8 @@ function parseState(text: string | null): StoredState {
   const lastSeenVersion = typeof json.lastSeenVersion === "string" && /^\d+\.\d+\.\d+$/.test(json.lastSeenVersion) ? json.lastSeenVersion : undefined;
   if (settings) state.settings = settings;
   if (lastSeenVersion) state.lastSeenVersion = lastSeenVersion;
+  const language = oneOf(["en", "de"] as const)(json.language);
+  if (language) state.language = language;
   if (necklaceSource) state.necklaceSource = necklaceSource;
   if (theme) state.theme = theme;
   if (camera) state.camera = camera;

@@ -1,9 +1,12 @@
 import { Events } from "../Enums";
 import { OverlayPage } from "../ui/OverlayPage";
 import { SVGToggleButton } from "../ui/SVGToggleButton";
-import { t } from "../i18n";
+import { language, t, type Language } from "../i18n";
 import { icon as infoIcon } from "../icons/info/infoIcon";
 import infoEn from "../i18n/info/info.html?raw";
+import infoDe from "../i18n/info/info.de.html?raw";
+
+const INFO: Record<Language, string> = { en: infoEn, de: infoDe };
 
 /**
  * The explanation of the app (the README's, for the app): opened with the info
@@ -23,7 +26,7 @@ class Info {
   }
 
   show(): void {
-    this.#page.show().innerHTML = infoEn;
+    this.#page.show().innerHTML = INFO[language()];
   }
 
   hide(): void {
