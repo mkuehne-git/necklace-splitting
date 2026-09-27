@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.34 · 2026-09-27
+## v0.4.35 · 2026-09-27
+
+* Faster start: the code for screen captures and the imprint (about 200 kB) loads when first used instead of at startup.
+
+## v0.4.34 · 2026-09-27 · [4a0c1d7](https://github.com/mkuehne-git/necklace-splitting/commit/4a0c1d7)
 
 * Add tests that changing settings does not use more and more graphics memory. No functional change.
 

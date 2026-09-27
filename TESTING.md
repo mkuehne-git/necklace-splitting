@@ -34,7 +34,7 @@ Not covered: the solution band, the solution highlighting and the octants are co
 
 ## Step 2: Components (done, v0.4.28)
 
-happy-dom tests; html2canvas is mocked, since it needs a real browser.
+happy-dom tests; html2canvas is mocked, since it needs a real browser. It is loaded with a dynamic import, so the tests wait with `vi.dynamicImportSettled()`. All code loads it through `loadHtml2canvas()`, which starts the import once: when two dynamic imports of a mocked module start at the same time, Vitest gives one of them the real module.
 
 - **`SVGToggleButton`** (`test/SVGToggleButton.test.ts`): one SVG per icon, show and toggle, and the click that is reported only when the pulse animation (`lil-gui.css`) has ended.
 - **`Imprint`** (`test/Imprint.test.ts`, `imprint-gen` mocked): the text is rendered as an image with the trailer and Close button, opens once, opens and closes through the application events, closes with Escape - also while the settings panel has the focus (regression for v0.4.25) - and redraws on resize only while open.
@@ -46,7 +46,7 @@ Playwright in Chromium and Firefox (`playwright.config.ts`, `e2e/`). `npm run te
 - **`e2e/app.spec.ts`:** the app loads without console errors; hovering the sphere cuts the necklace and hides the pointer; the theme switcher; the gear button opens and closes the settings; a showcase changes the sphere; a new configuration changes necklace and sphere; the service worker registers.
 - **`e2e/render.spec.ts`:** counts WebGL draw calls: the resting view is not drawn again; pointer moves, dragging and theme changes draw it; the rotation animation draws every frame and stops drawing when it stops (v0.4.33).
 - **`e2e/memory.spec.ts`:** counts the live WebGL buffers and shader programs: switching showcases (which rebuilds the sphere) and changing the number of jewels (a new shader program) leave as many alive as before. They fail when the `dispose()` calls in `Sphere.ts` are removed.
-- **`e2e/capture.spec.ts`:** a capture of the sphere contains the rendered sphere, also after the view has rested (the WebGL canvas keeps its drawing buffer, `ScreenCapture.ts`).
+- **`e2e/capture.spec.ts`:** a capture of the sphere contains the rendered sphere, also after the view has rested (the WebGL canvas keeps its drawing buffer, `ScreenCapture.ts`); html2canvas is loaded on the first capture, not at startup (v0.4.35).
 - **`e2e/imprint.spec.ts`:** the imprint shows as an image and closes with its button, and with Escape while the settings keep the focus (v0.4.25). Needs the private `src/imprint-gen.js`; skipped with the stub.
 
 The tests compare canvas screenshots before and after a change (`pixels` in `e2e/app.ts`). The settings panel and the icon buttons lie on top of the sphere, so they are hidden in those screenshots; otherwise opening a folder alone would count as a change.

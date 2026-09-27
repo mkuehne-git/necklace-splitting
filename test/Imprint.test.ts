@@ -35,6 +35,8 @@ describe("Imprint", () => {
   it("renders the decrypted text as an image", async () => {
     imprint.show();
     expect(overlay()!.innerHTML).toContain("Impressum");
+    // html2canvas is loaded on first use.
+    await vi.dynamicImportSettled();
     expect(html2canvas).toHaveBeenCalledOnce();
     expect(html2canvas.mock.calls[0][0]).toBe(overlay());
     finishRendering();
@@ -45,9 +47,10 @@ describe("Imprint", () => {
     expect(overlay()!.querySelector("#hide-imprint")).not.toBeNull();
   });
 
-  it("opens only once", () => {
+  it("opens only once", async () => {
     imprint.show();
     imprint.show();
+    await vi.dynamicImportSettled();
     expect(document.querySelectorAll(".imprint")).toHaveLength(1);
     expect(html2canvas).toHaveBeenCalledOnce();
   });
@@ -85,11 +88,13 @@ describe("Imprint", () => {
     expect(overlay()).not.toBeNull();
   });
 
-  it("redraws on resize while open, and not while closed", () => {
+  it("redraws on resize while open, and not while closed", async () => {
     window.dispatchEvent(new Event("resize"));
+    await vi.dynamicImportSettled();
     expect(html2canvas).not.toHaveBeenCalled();
     imprint.show();
     window.dispatchEvent(new Event("resize"));
+    await vi.dynamicImportSettled();
     expect(html2canvas).toHaveBeenCalledTimes(2);
     expect(document.querySelectorAll(".imprint")).toHaveLength(1);
   });

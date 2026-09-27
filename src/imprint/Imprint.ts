@@ -1,6 +1,5 @@
-import html2canvas from "html2canvas";
-
 import { Events } from "../Enums";
+import { loadHtml2canvas } from "../ui/loadHtml2canvas";
 import { ClassMutationObserver } from "../ui/ClassMutationObserver";
 
 const loadModule = async () => {
@@ -55,11 +54,11 @@ class Imprint {
       const width = div.scrollWidth;
       const height = div.scrollHeight;
       const backgroundColor = style.getPropertyValue("background-color");
-      html2canvas(div, {
+      loadHtml2canvas().then((html2canvas) => html2canvas(div, {
         backgroundColor,
         windowWidth: width,
         windowHeight: height,
-      }).then((canvas) => {
+      })).then((canvas) => {
         canvas.classList.add("padding");
         div.innerHTML = "";
         div.appendChild(canvas);

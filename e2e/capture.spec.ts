@@ -1,14 +1,17 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
-import { control, openApp, openFolder, openSettings, sphere } from './app';
+import { gui, openApp, openFolder, openSettings, sphere } from './app';
 
 /** Captures the chosen element with the settings' capture button and returns the downloaded PNG. */
 async function capture(page: Page, what: 'All' | 'Sphere' | 'Necklace'): Promise<Buffer> {
     await openSettings(page);
     await openFolder(page, /^Screen capture$/);
-    await control(page, new RegExp(`^${what}$`)).locator('input').check();
+    // Within the folder: "Sphere" and "Necklace" are also labels in View.
+    const folder = gui(page).locator('.lil-gui', { has: page.locator(':scope > .title', { hasText: /^Screen capture$/ }) });
+    const option = (name: RegExp) => folder.locator('.controller', { has: page.locator('.name', { hasText: name }) });
+    await option(new RegExp(`^${what}$`)).locator('input').check();
     const download = page.waitForEvent('download');
-    await control(page, /^Click or press/).locator('button').click();
+    await option(/^Click or press/).locator('button').click();
     return readFileSync(await (await download).path());
 }
 
@@ -40,4 +43,18 @@ test('a capture of the sphere contains the rendered sphere', async ({ page }) =>
     const [r, g, b] = await pixel(page, png, 0.55, 0.45);
     expect(r + g).toBeGreaterThan(300);
     expect(b).toBeLessThan(100);
+});
+
+test('html2canvas is loaded on the first capture, not at startup', async ({ page }) => {
+    const loaded: string[] = [];
+    page.on('request', (request) => {
+        if (/html2canvas-[\w-]+\.js$/.test(request.url())) {
+            loaded.push(request.url());
+        }
+    });
+    await openApp(page);
+    await page.waitForTimeout(500);
+    expect(loaded).toEqual([]);
+    await capture(page, 'Necklace');
+    expect(loaded).toHaveLength(1);
 });

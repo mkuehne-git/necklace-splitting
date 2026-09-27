@@ -1,7 +1,8 @@
-import html2canvas from "html2canvas";
-
 import { Settings, SETTINGS } from "../settings/Settings";
+import { loadHtml2canvas } from "./loadHtml2canvas";
 // This is for the screen capture. Without the WebGL content, i.e. my sphere would not be showing.
+// It must run before the renderer is created, so it stays in this module, which main.ts loads
+// at startup; only html2canvas itself is loaded on first use.
 //
 // https://stackoverflow.com/questions/55760121/html2canvas-captures-everything-except-the-content-of-an-inner-canvas
 HTMLCanvasElement.prototype.getContext = (function (origFn) {
@@ -77,7 +78,7 @@ class ScreenCapture {
     setTimeout(() => {
       const style = window.getComputedStyle(document.body);
       const backgroundColor = style.getPropertyValue("background-color");
-      html2canvas(elementToCapture, { backgroundColor }).then((canvas) => {
+      loadHtml2canvas().then((html2canvas) => html2canvas(elementToCapture, { backgroundColor })).then((canvas) => {
         const a = document.createElement("a");
         // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
         a.href = canvas.toDataURL();
