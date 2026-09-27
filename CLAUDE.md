@@ -13,8 +13,8 @@ Run these commands from the repository root:
 ```sh
 npm install        # install dependencies
 npm run imprint    # generate the private src/imprint-gen.js from imprint.config.json
-npm run dev        # start the Vite development server (localhost only)
-npm run expose     # start Vite on all interfaces over HTTPS, for testing on a phone
+npm run dev        # start the Vite development server (HTTPS, reachable from the network, e.g. a phone)
+npm run dev:http   # the same over HTTP, when the local HTTPS certificate is rejected
 npm run build      # create a production build in dist/
 npm run serve      # preview the production build
 ```
@@ -27,6 +27,8 @@ The project uses the current Active LTS release of Node.js: Node 24 (24.21.0 loc
 - Once CI exists, its `node-version` must match `.nvmrc`.
 - When adding or upgrading a dev dependency, check its `engines` field against that version.
 - Revisit this when a newer LTS starts (Node 26 in October 2026) and when the used one reaches end of life: update `.nvmrc`, the workflow and, if needed, `engines` together.
+
+The development server uses HTTPS with a local self-signed certificate. If the browser cannot trust that certificate, use `npm run dev:http` and open `http://127.0.0.1:5173/` instead.
 
 There is no type check, no test suite and no lint script yet (see `MODERNIZATION.md`, phases 2 and 3). Vite builds without checking types.
 
@@ -59,7 +61,7 @@ All sources are flat in `src/` for now; grouping them by area is phase 5 of `MOD
 - `src/SVGToggleButton.ts`, `src/ThemesSwitcher.ts`, `src/ScreenCapture.ts` (html2canvas), `src/Imprint.ts`, `src/Resizer.ts`, `src/ClassMutationObserver.ts` and `src/Stats.ts` (the optional FPS monitor) implement the surrounding UI.
 - `src/icons/` holds the SVG icons as TypeScript modules; `src/css/style.css` the styles, linked from `index.html`.
 - `src/mjs/create-imprint.mjs` (`npm run imprint`) encrypts the imprint text from `imprint.config.json` into `src/imprint-gen.js`. That file is private and gitignored; never stage it. `src/Imprint.ts` imports it so that Vite bundles it as its own chunk, which means the build fails without it: run `npm run imprint` once after cloning (without `imprint.config.json` it writes a stub, and the app shows no imprint).
-- `vite.config.ts` configures the production base path, HTTPS development support, the GLSL plugin, PWA generation (`registerType: 'autoUpdate'`) and `APP_VERSION`.
+- `vite.config.ts` configures the production base path, HTTPS development support (off with `VITE_HTTPS=false`), the GLSL plugin, PWA generation (`registerType: 'autoUpdate'`) and `APP_VERSION`.
 
 ## Implementation Conventions
 

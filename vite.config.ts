@@ -4,10 +4,12 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vite';
 const isProduction = process.env['NODE_ENV'] === 'production';
 const base = isProduction ? '/necklace-splitting/' : '/';
+// VITE_HTTPS=false (npm run dev:http) serves plain HTTP when the self-signed certificate is rejected.
+const useHttps = process.env['VITE_HTTPS'] !== 'false';
 export default defineConfig({
     base,
     plugins: [
-        basicSsl(),
+        ...(useHttps ? [basicSsl()] : []),
         glsl(),
         VitePWA({
             manifest: {

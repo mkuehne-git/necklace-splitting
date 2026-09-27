@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.23 · 2026-09-27
+## v0.4.24 · 2026-09-27
+
+* Development: `npm run dev` serves over HTTPS and is reachable from other devices, replacing `npm run expose`; `npm run dev:http` serves over plain HTTP. No functional change.
+
+## v0.4.23 · 2026-09-27 · [0f1b8cd](https://github.com/mkuehne-git/necklace-splitting/commit/0f1b8cd)
 
 * Update the build tools (Vite 6 -> 8 and its plugins). The known security advisories in the build dependencies are resolved. No functional change.
 

@@ -47,35 +47,23 @@ The current implementation has serious flaws, because the shape of g is created 
 View live on GitHub-Pages [https://mkuehne-git.github.io/necklace-splitting/](https://mkuehne-git.github.io/necklace-splitting/)
 
 ## Local Installation
-* Download this repository to your local machine and run
+* Install [Node.js](https://nodejs.org/) 24 (`nvm use` picks it from `.nvmrc`), download this repository to your local machine and run
 
     ```bash
-    $ npm install
     $ npm ci
     $ npm run imprint
     $ npm run dev
     ```
 
-    ```
-    > stolen-necklace@0.2.2 expose
-    > vite --host
+    `npm run imprint` creates `src/imprint-gen.js`, which the build needs; without an `imprint.config.json` the app simply shows no imprint.
 
-    
-      vite v3.2.3 dev server running at:
-
-      > Local: http://localhost:5173/
-      > Network: use `--host` to expose
-
-      ready in 152ms.
-    ```
-
-* Open [localhost:5173](http://localhost:5173) to launch the application. The port may differ. If you want to expose it to other clients in your network, use
+* Open [https://localhost:5173](https://localhost:5173) to launch the application. The port may differ. The development server is also reachable from other devices in your network, for example a phone, at the network address it prints. It uses a self-signed certificate, so the browser asks you to accept it first. If that does not work, use
 
     ```bash
-    $ npm run expose
-    ```  
-    instead.
-   
+    $ npm run dev:http
+    ```
+    and open [http://127.0.0.1:5173](http://127.0.0.1:5173) instead.
+
 ## Build and Deploy
 
 For your own build, install the exact locked dependencies and build into `dist/`:

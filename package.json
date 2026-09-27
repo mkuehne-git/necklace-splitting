@@ -1,13 +1,13 @@
 {
   "name": "necklace-splitting",
-  "version": "0.4.23",
+  "version": "0.4.24",
   "type": "module",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "vite",
-    "expose": "vite --host --https",
+    "dev": "vite --host",
+    "dev:http": "VITE_HTTPS=false vite --host",
     "build": "vite build",
     "serve": "vite preview",
     "imprint": "node ./src/mjs/create-imprint.mjs"
