@@ -70,9 +70,9 @@ All sources are flat in `src/` for now; grouping them by area is phase 5 of `MOD
 
 ## Deployment
 
-`deploy.sh` builds the app and force-pushes the contents of `dist/` to the `gh-pages` branch of `mkuehne-git/necklace-splitting`. Review the generated build and remote configuration before running it, and run it only when asked. A production build sets the base path to `/necklace-splitting/`; local development uses `/`. Run `npm run imprint` before building, otherwise the deployed app has no imprint.
+`deploy.sh` builds the app and force-pushes the contents of `dist/` to the `gh-pages` branch of `mkuehne-git/necklace-splitting`. Review the generated build and remote configuration before running it, and run it only when asked. A production build sets the base path to `/necklace-splitting/`; local development uses `/`. Before a deployment, build from the locked dependencies (`npm ci`) and run `npm run imprint`, otherwise the deployed app has no imprint. Check afterwards that `package-lock.json` has no uncommitted changes.
 
-Dynamic imports of local modules must remain analyzable by Vite. Do not use `@vite-ignore` for modules that need to be bundled for GitHub Pages, and verify that production builds emit their chunks under the `/necklace-splitting/` base path. `src/Imprint.ts` still breaks this rule; fixing it is phase 1 of `MODERNIZATION.md`.
+Dynamic imports of local modules must remain analyzable by Vite. Do not use `@vite-ignore` for modules that need to be bundled for GitHub Pages, and verify that production builds emit their chunks under the `/necklace-splitting/` base path. `src/Imprint.ts` still breaks this rule; fixing it is phase 1 of `MODERNIZATION.md`. `gotchas.md` collects such lessons.
 
 ## Change Validation
 

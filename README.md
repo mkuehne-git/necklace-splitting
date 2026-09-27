@@ -78,7 +78,15 @@ View live on GitHub-Pages [https://mkuehne-git.github.io/necklace-splitting/](ht
    
 ## Build and Deploy
 
-If you want to create your own build or deployment - please check out the [instructions](BUILD.md).
+For your own build, install the exact locked dependencies and build into `dist/`:
+
+```bash
+$ npm ci
+$ npm run imprint
+$ npm run build
+```
+
+`deploy.sh` builds the app and force-pushes `dist/` to the `gh-pages` branch, from where GitHub Pages serves it. To deploy your own fork, change the repository in its `git push` line and the base path (`/necklace-splitting/`) in `vite.config.ts` to your repository's name.
 
 # Keyboard
 
