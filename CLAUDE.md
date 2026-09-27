@@ -34,11 +34,13 @@ There is no type check, no test suite and no lint script yet (see `MODERNIZATION
 
 The app follows semantic versioning (`x.y.z`). Fixes, refactors, tests and docs increase `z`; new features increase `y`. Increases to `x` are decided by the project owner.
 
-Every commit is a version: update the version in `package.json` and add an entry to `CHANGELOG.md` before creating a commit.
+Every commit is a version, including test-, docs- and refactor-only commits: update the version in `package.json` (and `package-lock.json`, with `npm version X.Y.Z --no-git-tag-version`) and add an entry to `CHANGELOG.md` before creating a commit.
 
 ## Git Workflow
 
-Always ask the project owner for approval before creating a commit. Do not commit changes without explicit approval. Do not push or deploy unless asked.
+The project owner approves commits per phase of `MODERNIZATION.md`: within a phase the owner has approved, commit each step as it is done; at the end of a phase, stop and ask before starting the next one. Outside that plan, ask before every commit. Do not push or deploy unless asked.
+
+Commit messages are `type: summary (vX.Y.Z)` with `type` one of `feat`, `fix`, `test`, `docs`, `refactor`, `chore`, followed by a body that explains what changed and why. Stage files by name, never `src/imprint-gen.js` or `dist/`.
 
 ## Source Layout
 

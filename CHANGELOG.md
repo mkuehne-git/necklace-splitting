@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.15 · 2026-09-27
+## v0.4.16 · 2026-09-27
+
+* Document the versioning rule and commit message format. No functional change.
+
+## v0.4.15 · 2026-09-27 · [c910557](https://github.com/mkuehne-git/necklace-splitting/commit/c910557)
 
 * Pin the Node.js version for development (`.nvmrc`: Node 24; `engines`: 22.12 or newer). No functional change.
 
