@@ -4,7 +4,7 @@ import { Events } from "./Enums";
 import { ClassMutationObserver } from "./ClassMutationObserver";
 
 const loadModule = async () => {
-  return await import(/* @vite-ignore */ "./imprint-gen");
+  return await import("./imprint-gen");
 };
 
 const trailer = `<hr><p style="opacity: 1.0;">Dieses Impressum wurde erstellt durch <a href="https://www.impressum-generator.de" rel="nofollow">impressum-generator.de</a>.</p>`;

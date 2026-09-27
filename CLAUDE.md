@@ -58,7 +58,7 @@ All sources are flat in `src/` for now; grouping them by area is phase 5 of `MOD
 - `src/Enums.ts` holds the `Events` used between modules and the `Showcase` identifiers.
 - `src/SVGToggleButton.ts`, `src/ThemesSwitcher.ts`, `src/ScreenCapture.ts` (html2canvas), `src/Imprint.ts`, `src/Resizer.ts`, `src/ClassMutationObserver.ts` and `src/Stats.ts` (the optional FPS monitor) implement the surrounding UI.
 - `src/icons/` holds the SVG icons as TypeScript modules; `src/css/style.css` the styles, linked from `index.html`.
-- `src/mjs/create-imprint.mjs` (`npm run imprint`) encrypts the imprint text from `imprint.config.json` into `src/imprint-gen.js`. That file is private and gitignored; never stage it.
+- `src/mjs/create-imprint.mjs` (`npm run imprint`) encrypts the imprint text from `imprint.config.json` into `src/imprint-gen.js`. That file is private and gitignored; never stage it. `src/Imprint.ts` imports it so that Vite bundles it as its own chunk, which means the build fails without it: run `npm run imprint` once after cloning (without `imprint.config.json` it writes a stub, and the app shows no imprint).
 - `vite.config.ts` configures the production base path, HTTPS development support, the GLSL plugin, PWA generation (`registerType: 'autoUpdate'`) and `APP_VERSION`.
 
 ## Implementation Conventions
@@ -74,7 +74,7 @@ All sources are flat in `src/` for now; grouping them by area is phase 5 of `MOD
 
 `deploy.sh` builds the app and force-pushes the contents of `dist/` to the `gh-pages` branch of `mkuehne-git/necklace-splitting`. Review the generated build and remote configuration before running it, and run it only when asked. A production build sets the base path to `/necklace-splitting/`; local development uses `/`. Before a deployment, build from the locked dependencies (`npm ci`) and run `npm run imprint`, otherwise the deployed app has no imprint. Check afterwards that `package-lock.json` has no uncommitted changes.
 
-Dynamic imports of local modules must remain analyzable by Vite. Do not use `@vite-ignore` for modules that need to be bundled for GitHub Pages, and verify that production builds emit their chunks under the `/necklace-splitting/` base path. `src/Imprint.ts` still breaks this rule; fixing it is phase 1 of `MODERNIZATION.md`. `gotchas.md` collects such lessons.
+Dynamic imports of local modules must remain analyzable by Vite. Do not use `@vite-ignore` for modules that need to be bundled for GitHub Pages, and verify that production builds emit their chunks under the `/necklace-splitting/` base path. `gotchas.md` collects such lessons.
 
 ## Change Validation
 

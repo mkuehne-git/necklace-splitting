@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.21 · 2026-09-27
+## v0.4.22 · 2026-09-27
+
+* Fix: the imprint is bundled with the app, so it can no longer go missing on GitHub Pages.
+
+## v0.4.21 · 2026-09-27 · [459f917](https://github.com/mkuehne-git/necklace-splitting/commit/459f917)
 
 * Update three.js 0.170 -> 0.186. No functional change.
 
