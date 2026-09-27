@@ -1,6 +1,7 @@
 import { Events } from "../Enums";
 import { SVGToggleButton } from "./SVGToggleButton";
 import { persistentState } from "../settings/PersistentState";
+import { t } from "../i18n";
 import { icon as lightIcon } from "../icons/themes/lightIcon";
 import { icon as darkIcon } from "../icons/themes/darkIcon";
 
@@ -15,7 +16,7 @@ class ThemesSwitcher {
     constructor(p?: { container: Element }) {
         this.#button = new SVGToggleButton({
             container: p?.container || document.body,
-            icons: [lightIcon, darkIcon], labels: ['Switch to light theme', 'Switch to dark theme'], classToken: 'themes', event: Events.CHANGE_THEME.toString()
+            icons: [lightIcon, darkIcon], labels: [t('button.lightTheme'), t('button.darkTheme')], classToken: 'themes', event: Events.CHANGE_THEME.toString()
         });
         this.initTheme();
         this.registerOnThemeChange(document.body);

@@ -1,17 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
-import { gui, openApp, openFolder, openSettings, sphere } from './app';
+import { openApp, openSection, openSettings, panelButton, sphere } from './app';
 
 /** Captures the chosen element with the settings' capture button and returns the downloaded PNG. */
 async function capture(page: Page, what: 'All' | 'Sphere' | 'Necklace'): Promise<Buffer> {
     await openSettings(page);
-    await openFolder(page, /^Screen capture$/);
-    // Within the folder: "Sphere" and "Necklace" are also labels in View.
-    const folder = gui(page).locator('.lil-gui', { has: page.locator(':scope > .title', { hasText: /^Screen capture$/ }) });
-    const option = (name: RegExp) => folder.locator('.controller', { has: page.locator('.name', { hasText: name }) });
-    await option(new RegExp(`^${what}$`)).locator('input').check();
+    await openSection(page, 'Screen capture');
+    await panelButton(page, what).click();
     const download = page.waitForEvent('download');
-    await option(/^Click or press/).locator('button').click();
+    await panelButton(page, 'Save image (Alt+S)').click();
     return readFileSync(await (await download).path());
 }
 
@@ -57,4 +54,13 @@ test('html2canvas is loaded on the first capture, not at startup', async ({ page
     expect(loaded).toEqual([]);
     await capture(page, 'Necklace');
     expect(loaded).toHaveLength(1);
+});
+
+test('a capture of everything leaves out the open settings panel', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'light' });
+    await openApp(page);
+    const png = await capture(page, 'All');
+    // Where the panel is (on the right), the capture shows the white page instead.
+    const [r, g, b] = await pixel(page, png, 0.9, 0.3);
+    expect([r, g, b]).toEqual([255, 255, 255]);
 });

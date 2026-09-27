@@ -1,7 +1,7 @@
 /*
  * The app's styles in cascade order. main.ts imports this file first thing:
  * Vite resolves the @imports only for CSS imported from code. The icon buttons
- * (toggle-buttons.css) and the settings panel (lil-gui.css) import their own.
+ * (toggle-buttons.css) and the settings panel (settings.css) import their own.
  */
 @import './base.css';
 @import './necklace.css';

@@ -9,7 +9,7 @@
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  /* Above the settings panel and the icon buttons (z-index 2), below the PWA
+  /* Above the settings panel (6) and the icon buttons (7), below the PWA
      dialog and status (10, 20). */
   z-index: 8;
   /* Keeps the content clear of the fixed close button. */

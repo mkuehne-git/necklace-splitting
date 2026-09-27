@@ -15,6 +15,11 @@
   --thief-a-color-light: rgb(255, 127, 127);
   --thief-b-color-light: rgb(144, 238, 144);
   --gauge-color: var(--between-jewels-color);
+  --settings-border: #e3e3e3;
+  --settings-border-strong: #c9c9c9;
+  --danger-color: #b3261e;
+  /* The checkmark of a checked settings checkbox, drawn in the background color. */
+  --checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   color: var(--text-color);
 
   /* Default font, load via npm -i @fontsource/dejavu-sans */
@@ -26,6 +31,10 @@
   --between-jewels-color: #f7f7f7;
   --text-color: var(--between-jewels-color);
   --gauge-color: var(--between-jewels-color);
+  --settings-border: #3a3a3a;
+  --settings-border-strong: #5c5c5c;
+  --danger-color: #f2b8b5;
+  --checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%23212121' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   color: var(--text-color);
 }
 

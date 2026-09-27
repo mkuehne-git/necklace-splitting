@@ -1,4 +1,5 @@
-import { Settings, SETTINGS } from "../settings/Settings";
+import { Events } from "../Enums";
+import { SETTINGS, type CaptureTarget } from "../settings/settingsValues";
 import { loadHtml2canvas } from "./loadHtml2canvas";
 // This is for the screen capture. Without the WebGL content, i.e. my sphere would not be showing.
 // It must run before the renderer is created, so it stays in this module, which main.ts loads
@@ -13,74 +14,37 @@ HTMLCanvasElement.prototype.getContext = (function (origFn) {
   };
 })(HTMLCanvasElement.prototype.getContext);
 
-const CAPTURES = ["All", "Sphere", "Necklace"];
-
-type CaptureControls = {
-  all: HTMLElement | undefined,
-  sphere: HTMLElement | undefined,
-  necklace: HTMLElement | undefined
-}
-
 /**
- * Allow to take screen captures of existing DOM elements. Reacts on keyboard key 's'.
+ * Saves a screen capture of the page, the sphere or the necklace as a PNG,
+ * whichever the Screen capture setting chooses. Alt+S or the settings'
+ * button (the SCREEN_CAPTURE event) take one.
  */
 class ScreenCapture {
-  #fBeforeCapture: () => HTMLElement;
-  #optionsArray: any[];
-  #captionIndex: number;
-  constructor(
-    settings: any,
-    options: CaptureControls = {
-      all: undefined,
-      sphere: undefined,
-      necklace: undefined,
-    }
-  ) {
-    this.#fBeforeCapture = () => document.body;
-    this.#configureSettings(settings, options);
+  #elements: Record<CaptureTarget, HTMLElement>;
+
+  constructor(elements: Record<CaptureTarget, HTMLElement>) {
+    this.#elements = elements;
     document.addEventListener("keydown", (e) => {
       if (e.altKey && e.key === "s") {
-        e.stopPropagation(); 
-        e.preventDefault();       
+        e.stopPropagation();
+        e.preventDefault();
         this.capture();
       }
     });
+    document.body.addEventListener(Events.SCREEN_CAPTURE.toString(), () => this.capture());
   }
 
-  #configureSettings(settings, options) {
-    this.#optionsArray = [options.all, options.sphere, options.necklace];
-    const folder = settings.folder;
-    const property = settings.property;
-    property.selection = CAPTURES[0];
-    this.#captionIndex = 0;
-    this.#fBeforeCapture = () => {
-      return this.#optionsArray[this.#captionIndex];
-    };
-    property.on_capture_clicked = () => this.capture();
-
-    Settings.addRadioButtons(
-      folder,
-      property.selection,
-      CAPTURES,
-      (obj, prop, index) => {
-        this.#captionIndex = index;
-      }
-    );
-    folder.add(property, "on_capture_clicked").name("Click or press 'alt s'");
-  }
-
-  capture(fBeforeCapture = this.#fBeforeCapture) {
-    console.log(`screenCapture ${fBeforeCapture}`);
-    const elementToCapture = fBeforeCapture();
-    if (!elementToCapture) {
-      throw new Error("No element to capture");
-    }
+  capture(target: CaptureTarget = SETTINGS.capture): void {
+    const elementToCapture = this.#elements[target];
     setTimeout(() => {
       const style = window.getComputedStyle(document.body);
       const backgroundColor = style.getPropertyValue("background-color");
-      loadHtml2canvas().then((html2canvas) => html2canvas(elementToCapture, { backgroundColor })).then((canvas) => {
+      // The settings panel is not part of the picture.
+      loadHtml2canvas().then((html2canvas) => html2canvas(elementToCapture, {
+        backgroundColor,
+        ignoreElements: (element) => element.id === "settings-panel",
+      })).then((canvas) => {
         const a = document.createElement("a");
-        // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
         a.href = canvas.toDataURL();
         a.download = "necklace.png";
         a.click();

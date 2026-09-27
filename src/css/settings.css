@@ -1,0 +1,314 @@
+/* The settings panel (settings/SettingsPanel.ts, settingsControls.ts): on the
+   right, full screen on phones. Above the sphere, the necklace and the version
+   label, below the theme and gear buttons (7), which stay in its header's corner. */
+.settings-panel {
+    z-index: 6;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(360px, 100vw);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-left: 1px solid var(--settings-border);
+    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.08);
+    font-size: 13px;
+}
+
+.settings-panel[hidden] {
+    display: none;
+}
+
+@media (max-width: 599px) {
+    .settings-panel {
+        width: 100vw;
+        border-left: 0;
+        box-shadow: none;
+        font-size: 14px;
+    }
+}
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    min-height: var(--settings-size);
+    /* Leaves the corner to the theme and gear buttons. */
+    padding: 0 calc(var(--settings-size) * 2) 0 20px;
+}
+
+.settings-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.settings-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    border-top: 1px solid var(--settings-border);
+}
+
+.settings-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 20px 16px;
+    border-top: 1px solid var(--settings-border);
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 40px;
+}
+
+.settings-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.settings-buttons > * {
+    flex: 1 1 0;
+}
+
+.settings-panel select,
+.settings-button {
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--settings-border-strong);
+    border-radius: 8px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font: inherit;
+    cursor: pointer;
+}
+
+.settings-button.danger {
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+.settings-version {
+    text-align: center;
+}
+
+.settings-link {
+    padding: 4px;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-size: 11px;
+    opacity: 0.7;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Sections: native <details>, a chevron before the title. */
+.settings-section + .settings-section {
+    border-top: 1px solid var(--settings-border);
+}
+
+.settings-section > summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 20px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.settings-section > summary::-webkit-details-marker {
+    display: none;
+}
+
+.settings-section > summary::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform 0.15s;
+}
+
+.settings-section[open] > summary::before {
+    transform: rotate(45deg);
+}
+
+.settings-hint {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+.settings-section-content {
+    padding: 0 20px 12px;
+}
+
+.settings-subheading {
+    margin: 10px 0 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.settings-row label {
+    flex-grow: 1;
+}
+
+.settings-panel input[type="checkbox"] {
+    appearance: none;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    border: 2px solid var(--text-color);
+    border-radius: 4px;
+    background: var(--background-color) center / 14px no-repeat;
+    cursor: pointer;
+}
+
+.settings-panel input[type="checkbox"]:checked {
+    background-color: var(--text-color);
+    background-image: var(--checkmark);
+}
+
+.settings-panel input:focus-visible {
+    outline: 2px solid var(--text-color);
+    outline-offset: 2px;
+}
+
+.settings-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Like the year slider below the helix: a thin line and a ring as the knob. */
+.settings-range input {
+    appearance: none;
+    width: 140px;
+    height: 24px;
+    margin: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.settings-range input::-webkit-slider-runnable-track {
+    height: 2px;
+    /* Not opacity: in Chromium the knob is inside the track and would fade too. */
+    background: color-mix(in srgb, var(--text-color) 60%, transparent);
+}
+
+.settings-range input::-moz-range-track {
+    height: 2px;
+    /* Not opacity: in Chromium the knob is inside the track and would fade too. */
+    background: color-mix(in srgb, var(--text-color) 60%, transparent);
+}
+
+.settings-range input::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    margin-top: -7px;
+    border: 2px solid var(--text-color);
+    border-radius: 50%;
+    background: var(--background-color);
+}
+
+.settings-range input::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--text-color);
+    border-radius: 50%;
+    background: var(--background-color);
+}
+
+.settings-value {
+    min-width: 36px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.settings-panel input[type="color"] {
+    width: 40px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--settings-border-strong);
+    border-radius: 6px;
+    background: none;
+}
+
+.settings-segmented {
+    display: flex;
+    border: 1px solid var(--settings-border-strong);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.settings-segmented button {
+    min-height: 34px;
+    padding: 0 12px;
+    border: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font: inherit;
+    cursor: pointer;
+}
+
+.settings-segmented button + button {
+    border-left: 1px solid var(--settings-border-strong);
+}
+
+.settings-segmented button[aria-pressed="true"] {
+    background-color: var(--text-color);
+    color: var(--background-color);
+}
+
+.settings-button.wide {
+    width: 100%;
+    margin-top: 6px;
+}
+
+.settings-note {
+    margin: 0 0 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0.7;
+}
+
+/* A row with the label above its control, e.g. the four showcases. */
+.settings-row.stacked {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 6px 0;
+}
+
+.settings-row.stacked .settings-segmented button {
+    flex: 1 1 0;
+    padding: 0 6px;
+}
+
+.settings-panel input[type="number"],
+.settings-panel input[type="text"] {
+    width: 150px;
+    min-height: 32px;
+    padding: 0 8px;
+    border: 1px solid var(--settings-border-strong);
+    border-radius: 6px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+}

@@ -36,7 +36,7 @@ describe("SVGToggleButton", () => {
   });
 
   it("reports a click once its animation has ended", () => {
-    // lil-gui.css runs a short pulse animation on .clicked; the listener is
+    // toggle-buttons.css runs a short pulse animation on .clicked; the listener is
     // called when it ends, so the animation is visible before anything changes.
     const button = create();
     const listener = vi.fn();

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { control, expectChanged, gui, necklace, openApp, openFolder, openSettings, pixels, sphere } from './app';
+import { expectChanged, field, necklace, openApp, openSettings, panelButton, pixels, sphere } from './app';
 
 // Settings, theme and camera are remembered in Local Storage (PersistentState.ts).
 
@@ -17,13 +17,9 @@ test('settings and theme survive a reload', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
     await openApp(page);
     await openSettings(page);
-    await openFolder(page, /^Showcase:/);
-    await control(page, /^Space Colors$/).locator('input').check();
-    await openFolder(page, /^Necklace$/);
-    const jewels = control(page, /^Jewels$/).locator('input');
-    await jewels.fill('12');
-    await jewels.press('Enter');
-    await control(page, /^Discrete$/).locator('input').uncheck();
+    await panelButton(page, 'Space Colors').click();
+    await field(page, 'Jewels').fill('12');
+    await field(page, 'Discrete').uncheck();
     await page.getByRole('button', { name: 'Switch to dark theme' }).click();
     await expect(page.locator('body')).toHaveClass(/\bdark\b/);
     await saved(page);
@@ -32,18 +28,16 @@ test('settings and theme survive a reload', async ({ page }) => {
     await openApp(page);
     await expect(page.locator('body')).toHaveClass(/\bdark\b/);
     await openSettings(page);
-    await expect(gui(page).locator('.title', { hasText: 'Showcase: Space Colors' })).toBeVisible();
-    await openFolder(page, /^Necklace$/);
-    await expect(control(page, /^Jewels$/).locator('input')).toHaveValue('12');
-    await expect(control(page, /^Discrete$/).locator('input')).not.toBeChecked();
+    await expect(panelButton(page, 'Space Colors')).toHaveAttribute('aria-pressed', 'true');
+    await expect(field(page, 'Jewels')).toHaveValue('12');
+    await expect(field(page, 'Discrete')).not.toBeChecked();
 });
 
 test('a necklace entered as text is rebuilt from the text after a reload', async ({ page }) => {
     await openApp(page);
     const before = await pixels(necklace(page));
     await openSettings(page);
-    await openFolder(page, /^Necklace$/);
-    const text = control(page, /^String$/).locator('input');
+    const text = field(page, 'Text');
     await text.fill('AB');
     await text.press('Enter');
     await expectChanged(necklace(page), before);
@@ -62,17 +56,26 @@ test('a necklace entered as text is rebuilt from the text after a reload', async
 test('Restore defaults forgets the settings', async ({ page }) => {
     await openApp(page);
     await openSettings(page);
-    await openFolder(page, /^Necklace$/);
-    const jewels = control(page, /^Jewels$/).locator('input');
-    await jewels.fill('12');
-    await jewels.press('Enter');
+    await field(page, 'Jewels').fill('12');
     await saved(page);
 
-    await control(page, /^Restore defaults$/).locator('button').click();
+    // Restore defaults asks first.
+    page.once('dialog', (dialog) => dialog.accept());
+    await panelButton(page, 'Restore defaults').click();
     await page.waitForEvent('load');
     await openApp(page);
     await openSettings(page);
-    await openFolder(page, /^Necklace$/);
-    await expect(control(page, /^Jewels$/).locator('input')).toHaveValue('24');
+    await expect(field(page, 'Jewels')).toHaveValue('24');
     expect(await page.evaluate(() => localStorage.getItem('necklace-splitting.state'))).toBeNull();
+});
+
+test('Restore defaults keeps the settings when not confirmed', async ({ page }) => {
+    await openApp(page);
+    await openSettings(page);
+    await field(page, 'Jewels').fill('12');
+    await saved(page);
+    page.once('dialog', (dialog) => dialog.dismiss());
+    await panelButton(page, 'Restore defaults').click();
+    await expect(field(page, 'Jewels')).toHaveValue('12');
+    expect(await page.evaluate(() => localStorage.getItem('necklace-splitting.state'))).not.toBeNull();
 });

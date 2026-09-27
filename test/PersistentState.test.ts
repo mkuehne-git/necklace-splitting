@@ -16,7 +16,7 @@ function memoryStorage(entries: Record<string, string> = {}): Storage {
 }
 
 const stored = (storage: Storage) => JSON.parse(storage.getItem(STORAGE_KEY)!);
-const defaults = structuredClone({ ...SETTINGS, animation: { ...SETTINGS.animation, reset_speed: undefined }, imprint: undefined });
+const defaults = structuredClone(SETTINGS);
 
 afterEach(() => {
   // Back to the defaults for the next test.
@@ -38,6 +38,7 @@ describe("parseState", () => {
         int_mode: 2,
         "necklace.number_of_jewels": 12,
         "necklace.discrete": "yes",
+      "necklace.epsilon": 0.5,
         "necklace.string": "AB",
         "sphere.segments": 5000,
         "color.alpha": 0.5,
@@ -80,12 +81,6 @@ describe("applySettings and collectSettings", () => {
     const collected = collectSettings();
     expect(collected).toMatchObject({ int_mode: 1, "necklace.number_of_jewels": 10, "view.axes_visible": false, "animation.rotation_y": 0.3 });
     expect(collected).not.toHaveProperty("animation.run");
-  });
-
-  it("names the showcase after its number", () => {
-    applySettings({ int_mode: 3 });
-    expect(SETTINGS.showcase).toBe("Sinusoid");
-    expect(SETTINGS.radio).toBe("Sinusoid");
   });
 
   it("clamps a configuration that needs more jewels than there are", () => {

@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { registerSW } from 'virtual:pwa-register';
 
 let updateServiceWorker: (() => Promise<void>) | undefined;
@@ -32,17 +33,17 @@ function createPwaUpdateDialog(): void {
     content.className = 'pwa-update-content';
 
     const title = document.createElement('h2');
-    title.textContent = 'Update available';
+    title.textContent = t('pwa.updateTitle');
 
     const message = document.createElement('p');
-    message.textContent = 'A new version of Necklace Splitting is ready. Reload to apply the update?';
+    message.textContent = t('pwa.updateMessage');
 
     const actions = document.createElement('div');
     actions.className = 'pwa-update-actions';
 
     const reloadButton = document.createElement('button');
     reloadButton.type = 'button';
-    reloadButton.textContent = 'Reload';
+    reloadButton.textContent = t('pwa.reload');
     reloadButton.className = 'pwa-update-button primary';
     reloadButton.addEventListener('click', async () => {
         if (updateServiceWorker) {
@@ -52,7 +53,7 @@ function createPwaUpdateDialog(): void {
 
     const dismissButton = document.createElement('button');
     dismissButton.type = 'button';
-    dismissButton.textContent = 'Later';
+    dismissButton.textContent = t('pwa.later');
     dismissButton.className = 'pwa-update-button secondary';
     dismissButton.addEventListener('click', () => {
         dialog.classList.add('hidden');
@@ -78,7 +79,7 @@ export function initPwaUpdate(): void {
             showPwaUpdatePrompt();
         },
         onOfflineReady() {
-            console.info('Necklace Splitting is ready for offline use.');
+            console.info(t('pwa.offlineReady'));
         }
     });
 }
@@ -87,8 +88,8 @@ export async function checkForPwaUpdates(): Promise<boolean> {
     if (!('serviceWorker' in navigator)) {
         // Browsers offer service workers only on HTTPS and localhost, and not in private windows.
         const message = window.isSecureContext
-            ? 'Updates are turned off in this browser window, for example in a private window.'
-            : 'Updates need HTTPS or localhost; this page was opened over plain HTTP.';
+            ? t('pwa.unavailable')
+            : t('pwa.insecure');
         showPwaStatus(message, 'warning');
         console.info(message);
         return false;
@@ -96,7 +97,7 @@ export async function checkForPwaUpdates(): Promise<boolean> {
 
     const registrations = await navigator.serviceWorker.getRegistrations();
     if (registrations.length === 0) {
-        showPwaStatus('No service worker is registered yet.', 'warning');
+        showPwaStatus(t('pwa.notRegistered'), 'warning');
         console.info('No service worker is currently registered.');
         return false;
     }
@@ -110,11 +111,11 @@ export async function checkForPwaUpdates(): Promise<boolean> {
     }));
 
     if (hasWaiting) {
-        showPwaStatus('Update ready. Reload to apply it.', 'success');
+        showPwaStatus(t('pwa.updateReady'), 'success');
         showPwaUpdatePrompt();
         return true;
     }
 
-    showPwaStatus('No update available.', 'info');
+    showPwaStatus(t('pwa.noUpdate'), 'info');
     return false;
 }

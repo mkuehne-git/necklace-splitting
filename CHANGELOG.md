@@ -1,6 +1,16 @@
 # Changelog
 
-## v0.7.1 · 2026-09-27
+## v0.8.0 · 2026-09-27
+
+* **New settings panel:** the settings open in a panel on the right (full screen on phones) with clear sections - Necklace, View, Animation, Screen capture and Advanced - and larger controls that are easier to use on touch screens.
+  * The four showcases are buttons at the top of the Necklace section.
+  * The configuration and the necklace text are regular input fields; a configuration too large for the number of jewels is limited to the largest possible one.
+  * Imprint, Check for updates and Restore defaults are always at the bottom. Restore defaults asks before it resets anything.
+  * A screen capture of everything no longer includes the open settings panel.
+* The **h** key opens and closes the settings right from the start (before, the first press did nothing), and not while you type in a field. Escape closes them.
+* All controls can be used with the keyboard and are labelled for screen readers.
+
+## v0.7.1 · 2026-09-27 · [36466c2](https://github.com/mkuehne-git/necklace-splitting/commit/36466c2)
 
 * Fix: when updates are not available, Check for updates now names the reason - a page opened over plain HTTP, or a private window - instead of claiming the browser does not support them.
 

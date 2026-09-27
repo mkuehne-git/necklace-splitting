@@ -6,7 +6,7 @@ export const APP_VERSION: string = JSON.parse(readFileSync('package.json', 'utf8
 
 export const sphere = (page: Page) => page.locator('canvas#sphere');
 export const necklace = (page: Page) => page.locator('canvas#necklace');
-export const gui = (page: Page) => page.locator('#gui');
+export const panel = (page: Page) => page.locator('#settings-panel');
 
 /**
  * Opens the app and collects page errors and console errors. WebGL driver
@@ -26,24 +26,29 @@ export async function openApp(page: Page): Promise<string[]> {
     return errors;
 }
 
-/** Opens the lil-gui settings with the gear button; it reacts after its click animation. */
+/** Opens the settings panel with the gear button; it reacts after its click animation. */
 export async function openSettings(page: Page): Promise<void> {
-    await page.locator('.toggle-div.settings').click();
-    await expect(gui(page)).toBeVisible();
+    await page.getByRole('button', { name: 'Open settings' }).click();
+    await expect(panel(page)).toBeVisible();
 }
 
-/** A lil-gui controller by its label. */
-export function control(page: Page, name: string | RegExp): Locator {
-    return gui(page).locator('.controller', { has: page.locator('.name', { hasText: name }) });
-}
-
-/** Opens a lil-gui folder by (the start of) its title, if it is closed. */
-export async function openFolder(page: Page, title: string | RegExp): Promise<void> {
-    const folder = gui(page).locator('.lil-gui', { has: page.locator(':scope > .title', { hasText: title }) }).first();
-    if (await folder.evaluate((element) => element.classList.contains('closed'))) {
-        await folder.locator(':scope > .title').click();
+/** Opens a section of the settings panel, if it is closed. */
+export async function openSection(page: Page, name: string): Promise<void> {
+    const details = panel(page).locator('details.settings-section', { has: page.locator(':scope > summary', { hasText: name }) }).first();
+    if (!(await details.evaluate((element) => (element as HTMLDetailsElement).open))) {
+        await details.locator(':scope > summary').click();
     }
-    await expect(folder).not.toHaveClass(/\bclosed\b/);
+    await expect(details).toHaveAttribute('open', '');
+}
+
+/** A control of the settings panel by its label, e.g. a checkbox or a slider. */
+export function field(page: Page, label: string): Locator {
+    return panel(page).getByLabel(label, { exact: true });
+}
+
+/** A button of the settings panel by its name: a showcase, a capture target, a footer button. */
+export function panelButton(page: Page, name: string): Locator {
+    return panel(page).getByRole('button', { name, exact: true });
 }
 
 /**
@@ -51,7 +56,7 @@ export async function openFolder(page: Page, title: string | RegExp): Promise<vo
  * buttons lie on top of the sphere; they are hidden, so that only the canvas counts.
  */
 export async function pixels(canvas: Locator): Promise<Buffer> {
-    return canvas.screenshot({ animations: 'disabled', style: '#gui, .toggle-div { visibility: hidden !important; }' });
+    return canvas.screenshot({ animations: 'disabled', style: '#settings-panel, .toggle-div { visibility: hidden !important; }' });
 }
 
 /** Waits until the canvas looks different from `before`. */

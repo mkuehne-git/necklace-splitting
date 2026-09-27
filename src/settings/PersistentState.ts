@@ -1,4 +1,4 @@
-import { MAX_JEWELS, MAX_ROT, MODES, SETTINGS } from "./settingsValues";
+import { LIMITS, MAX_JEWELS, SETTINGS, SHOWCASES, type Limit } from "./settingsValues";
 
 const STORAGE_KEY = "necklace-splitting.state";
 const STATE_VERSION = 1;
@@ -27,6 +27,9 @@ const range = (min: number, max: number): Validator<number> => (value) =>
   typeof value === "number" && Number.isFinite(value) && value >= min && value <= max ? value : undefined;
 const integer = (min: number, max: number): Validator<number> => (value) =>
   Number.isInteger(value) ? range(min, max)(value) : undefined;
+/** Within a control's limits; whole numbers for a control that steps by 1. */
+const limited = (limit: Limit): Validator<number> =>
+  limit.step === 1 ? integer(limit.min, limit.max) : range(limit.min, limit.max);
 const oneOf = <T>(values: readonly T[]): Validator<T> => (value) =>
   values.includes(value as T) ? (value as T) : undefined;
 const vector3: Validator<Vector3> = (value) =>
@@ -39,17 +42,17 @@ const vector3: Validator<Vector3> = (value) =>
  * rotation itself (`animation.run`) and the FPS monitor are not remembered.
  */
 const SETTING_FIELDS: Record<string, Validator<number | string | boolean>> = {
-  int_mode: integer(0, MODES.length - 1),
-  "necklace.number_of_jewels": integer(0, MAX_JEWELS),
+  int_mode: integer(0, SHOWCASES.length - 1),
+  "necklace.number_of_jewels": limited(LIMITS.number_of_jewels),
   "necklace.configuration": integer(0, 2 ** MAX_JEWELS - 1),
   "necklace.string": string,
   "necklace.discrete": bool,
   "necklace.show_solution_band": bool,
   "necklace.show_solutions": bool,
-  "necklace.epsilon": range(0, 0.15),
-  "sphere.radius": range(1, 50),
-  "sphere.segments": integer(3, 511),
-  "sphere.offset_octant": range(0, 5),
+  "necklace.epsilon": limited(LIMITS.epsilon),
+  "sphere.radius": limited(LIMITS.radius),
+  "sphere.segments": limited(LIMITS.segments),
+  "sphere.offset_octant": limited(LIMITS.offset_octant),
   "sphere.use_bad_on_sphere_check": bool,
   "sphere.show_borsuk_ulam_proof_shape": bool,
   "view.necklace_visible": bool,
@@ -58,13 +61,13 @@ const SETTING_FIELDS: Record<string, Validator<number | string | boolean>> = {
   "view.axes_visible": bool,
   "view.mesh_visible": bool,
   "view.faces_visible": bool,
-  "color.scale_red": range(0, 1),
-  "color.scale_green": range(0, 1),
-  "color.scale_blue": range(0, 1),
-  "color.alpha": range(0, 1),
-  "animation.rotation_x": range(-MAX_ROT, MAX_ROT),
-  "animation.rotation_y": range(-MAX_ROT, MAX_ROT),
-  "animation.rotation_z": range(-MAX_ROT, MAX_ROT),
+  "color.scale_red": limited(LIMITS.scale),
+  "color.scale_green": limited(LIMITS.scale),
+  "color.scale_blue": limited(LIMITS.scale),
+  "color.alpha": limited(LIMITS.scale),
+  "animation.rotation_x": limited(LIMITS.rotation),
+  "animation.rotation_y": limited(LIMITS.rotation),
+  "animation.rotation_z": limited(LIMITS.rotation),
 };
 
 /** The object holding a setting and its key there, e.g. [SETTINGS.necklace, "discrete"]. */
@@ -83,7 +86,7 @@ function collectSettings(settings: object = SETTINGS): Record<string, number | s
   }));
 }
 
-/** Applies remembered settings to `settings`; the showcase names follow the showcase. */
+/** Applies remembered settings to `settings`. */
 function applySettings(stored: StoredState["settings"], settings: typeof SETTINGS = SETTINGS): void {
   for (const [path, value] of Object.entries(stored ?? {})) {
     const [owner, key] = locate(settings, path);
@@ -91,7 +94,6 @@ function applySettings(stored: StoredState["settings"], settings: typeof SETTING
   }
   // A configuration beyond the number of jewels, as the Jewels control would clamp it.
   settings.necklace.configuration = Math.min(settings.necklace.configuration, 2 ** settings.necklace.number_of_jewels - 1);
-  settings.showcase = settings.radio = MODES[settings.int_mode];
 }
 
 function validateSettings(value: unknown): StoredState["settings"] {

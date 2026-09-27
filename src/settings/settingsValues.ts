@@ -1,4 +1,4 @@
-import { Events, Showcase } from "../Enums";
+import { Showcase } from "../Enums";
 
 /** The end-to-end test build (`VITE_E2E=true`) uses a coarser sphere, so that WebGL in headless browsers stays fast. */
 const E2E_BUILD = import.meta.env.VITE_E2E === 'true';
@@ -14,22 +14,32 @@ const MAX_ROT = 0.5;
 const MAX_JEWELS = 32;
 
 /**
- * These are the different display/viewing modes. The index of each mode is mapped to a constant, which eventually will be passed
- * as
- * <pre>
- * #define MODE_...
- * </pre>
- * to the GLSL shaders.
+ * The showcases (display modes) in the order of {@link Showcase}; each index is
+ * passed to the GLSL shaders as `#define MODE_...`. The names are message keys.
  */
-const MODES = [
-  "Stolen Necklace",
-  "Shader Lamp",
-  "Space Colors",
-  "Sinusoid",
-];
+const SHOWCASES = [
+  { showcase: Showcase.STOLEN_NECKLACE, name: "showcase.stolenNecklace", short: "showcase.stolenNecklaceShort" },
+  { showcase: Showcase.SHADER_LAMP, name: "showcase.shaderLamp", short: "showcase.shaderLampShort" },
+  { showcase: Showcase.SPACE_COLOR, name: "showcase.spaceColors", short: "showcase.spaceColorsShort" },
+  { showcase: Showcase.SINUSOID, name: "showcase.sinusoid", short: "showcase.sinusoidShort" },
+] as const;
+
+type Limit = { min: number; max: number; step?: number };
+
+/** The ranges of the numeric settings, for their controls and for validating stored values. */
+const LIMITS = {
+  number_of_jewels: { min: 0, max: MAX_JEWELS, step: 1 },
+  epsilon: { min: 0, max: 0.15, step: 0.005 },
+  radius: { min: 1, max: 50, step: 1 },
+  segments: { min: 3, max: 511, step: 1 },
+  offset_octant: { min: 0, max: 5, step: 0.1 },
+  scale: { min: 0, max: 1, step: 0.01 },
+  rotation: { min: -MAX_ROT, max: MAX_ROT, step: 0.1 },
+} satisfies Record<string, Limit>;
+
+type CaptureTarget = "All" | "Sphere" | "Necklace";
 
 const SETTINGS = {
-  showcase: MODES[Showcase.STOLEN_NECKLACE],
   int_mode: Showcase.STOLEN_NECKLACE,
   necklace: {
     number_of_jewels: 24,
@@ -51,7 +61,6 @@ const SETTINGS = {
     rotation_x: 0.0,
     rotation_y: 0.0,
     rotation_z: 0.0,
-    reset_speed: resetAnimation,
     trigger_reset: false,
     run: false,
   },
@@ -70,14 +79,17 @@ const SETTINGS = {
     scale_blue: 1.0,
     alpha: 1.0,
   },
-  capture: {},
-  imprint: () => Events.dispatchEvent(Events.SHOW_IMPRINT),
-
-  radio: MODES[Showcase.STOLEN_NECKLACE],
+  capture: "All" as CaptureTarget,
   // trick for debugging without console
-  text: undefined,
+  text: undefined as string | undefined,
 };
 
+/** The largest configuration number for the current number of jewels. */
+function maxConfiguration(): number {
+  return 2 ** SETTINGS.necklace.number_of_jewels - 1;
+}
+
+/** Stops the rotation and turns the sphere back; the render loop applies it. */
 function resetAnimation(): void {
   SETTINGS.animation.trigger_reset = true;
   SETTINGS.animation.run = false;
@@ -86,4 +98,5 @@ function resetAnimation(): void {
   SETTINGS.animation.rotation_z = 0;
 }
 
-export { EPS, EPS_SQ, MAX_JEWELS, MAX_ROT, MODES, SETTINGS };
+export { EPS, EPS_SQ, LIMITS, MAX_JEWELS, MAX_ROT, SETTINGS, SHOWCASES, maxConfiguration, resetAnimation };
+export type { CaptureTarget, Limit };

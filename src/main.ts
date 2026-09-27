@@ -9,7 +9,7 @@ import './css/style.css';
 import '@fontsource/dejavu-sans';
 
 // To configure settings
-import { SETTINGS, Settings } from './settings/Settings';
+import { Settings } from './settings/Settings';
 import { ThemesSwitcher } from './ui/ThemesSwitcher';
 import { Events } from "./Enums";
 
@@ -21,8 +21,8 @@ import { Necklace } from './necklace/Necklace';
 import { NecklaceModel } from './necklace/NecklaceModel';
 
 
-// The UI to configure the settings.
-const settings = new Settings();
+// The settings, remembered ones applied, and their panel: first, since the views read them.
+new Settings();
 const switcher = new ThemesSwitcher();
 const model = new NecklaceModel();
 const sphere = new Sphere(model);
@@ -33,16 +33,11 @@ Events.dispatchEvent(persistentState.state.necklaceSource === 'string'
   ? Events.SET_NECKLACE_CONFIGURATION_BY_STRING
   : Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
 sphere.render();
-const capture = new ScreenCapture(
-  {
-    folder: settings.captureFolder,
-    property: SETTINGS.capture
-  },
-  {
-    all: document.body,
-    sphere: sphere.captureElement,
-    necklace: necklace.captureElement
-  });
+new ScreenCapture({
+  All: document.body,
+  Sphere: sphere.captureElement,
+  Necklace: necklace.captureElement,
+});
 
 // Version info before infoIcon
 const span = document.createElement('SPAN');

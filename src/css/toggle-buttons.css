@@ -13,7 +13,8 @@
 }
 
 div.toggle-div {
-    z-index: 2;
+    /* Above the settings panel (6), whose header leaves them the corner; below overlays (8). */
+    z-index: 7;
     position: absolute;
     display: grid;
 

@@ -1,5 +1,6 @@
 import { SVGToggleButton } from "./SVGToggleButton";
 import close from "../icons/settings/close.svg?raw";
+import { t } from "../i18n";
 
 /** The settings' X, under an id of its own: the settings button has an icon "close" too. */
 const closeIcon = { id: "overlay-close", svg: close };
@@ -70,7 +71,7 @@ class OverlayPage {
     private appendCloseButton(div: HTMLDivElement) {
         new SVGToggleButton({
             container: div,
-            icons: [closeIcon], labels: ["Close"], classToken: "overlay-close", event: this.#hideEvent
+            icons: [closeIcon], labels: [t("button.close")], classToken: "overlay-close", event: this.#hideEvent
         }).show(0);
         div.querySelector(":scope > .toggle-div.overlay-close")?.addEventListener("click", () => this.hide());
     }

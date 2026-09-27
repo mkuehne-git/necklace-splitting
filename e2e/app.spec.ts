@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { control, expectChanged, gui, necklace, openApp, openFolder, openSettings, pixels, sphere } from './app';
+import { expectChanged, field, necklace, openApp, openSection, openSettings, panel, panelButton, pixels, sphere } from './app';
 
 test('loads without errors and shows the sphere and the necklace', async ({ page }) => {
     const errors = await openApp(page);
     await expect(necklace(page)).toBeVisible();
-    await expect(gui(page)).toBeHidden();
+    await expect(panel(page)).toBeHidden();
     expect(errors).toEqual([]);
 });
 
@@ -36,18 +36,39 @@ test('the theme switcher toggles light and dark', async ({ page }) => {
 test('the gear button opens and closes the settings', async ({ page }) => {
     await openApp(page);
     await openSettings(page);
-    await page.locator('.toggle-div.settings').click();
-    await expect(gui(page)).toBeHidden();
+    await page.getByRole('button', { name: 'Close settings' }).click();
+    await expect(panel(page)).toBeHidden();
+});
+
+test('h opens and closes the settings, but not while typing; Escape closes them', async ({ page }) => {
+    await openApp(page);
+    // The first h works too: it used to do nothing after loading.
+    await page.keyboard.press('h');
+    await expect(panel(page)).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Close settings' })).toBeVisible();
+    const text = field(page, 'Text');
+    await text.click();
+    await page.keyboard.type('hh');
+    await expect(panel(page)).toBeVisible();
+    await expect(text).toHaveValue('hh');
+    await text.blur();
+    await page.keyboard.press('h');
+    await expect(panel(page)).toBeHidden();
+    await page.keyboard.press('h');
+    await page.keyboard.press('Escape');
+    await expect(panel(page)).toBeHidden();
+    await expect(page.getByRole('button', { name: 'Open settings' })).toBeVisible();
 });
 
 test('a showcase changes the sphere', async ({ page }) => {
     await openApp(page);
     await openSettings(page);
     const before = await pixels(sphere(page));
-    await openFolder(page, /^Showcase:/);
-    await control(page, /^Shader Lamp$/).locator('input').check();
+    await expect(panelButton(page, 'Stolen Necklace')).toHaveAttribute('aria-pressed', 'true');
+    await panelButton(page, 'Shader Lamp').click();
     await expectChanged(sphere(page), before);
-    await expect(gui(page).locator('.title', { hasText: 'Showcase: Shader Lamp' })).toBeVisible();
+    await expect(panelButton(page, 'Shader Lamp')).toHaveAttribute('aria-pressed', 'true');
+    await expect(panelButton(page, 'Stolen Necklace')).toHaveAttribute('aria-pressed', 'false');
 });
 
 test('a new necklace configuration changes necklace and sphere', async ({ page }) => {
@@ -55,8 +76,7 @@ test('a new necklace configuration changes necklace and sphere', async ({ page }
     await openSettings(page);
     const necklaceBefore = await pixels(necklace(page));
     const sphereBefore = await pixels(sphere(page));
-    await openFolder(page, /^Necklace$/);
-    const input = control(page, /^Configuration$/).locator('input');
+    const input = field(page, 'Configuration');
     await input.fill('4095');
     await input.press('Enter');
     await expectChanged(necklace(page), necklaceBefore);
@@ -73,7 +93,7 @@ test('Check for updates reports that there is none', async ({ page }) => {
     await openApp(page);
     await page.evaluate(async () => { await navigator.serviceWorker.ready; });
     await openSettings(page);
-    await control(page, /^Check for updates$/).locator('button').click();
+    await panelButton(page, 'Check for updates').click();
     await expect(page.locator('#pwa-status')).toHaveText('No update available.');
     await expect(page.locator('#pwa-update-dialog')).toBeHidden();
 });
@@ -85,6 +105,38 @@ test('the icon buttons are named for screen readers and work with the keyboard',
     const settings = page.getByRole('button', { name: 'Open settings' });
     await settings.focus();
     await page.keyboard.press('Enter');
-    await expect(gui(page)).toBeVisible();
+    await expect(panel(page)).toBeVisible();
     await expect(page.getByRole('button', { name: 'Close settings' })).toBeVisible();
+});
+
+test('fewer jewels clamp the configuration, and it cannot exceed them', async ({ page }) => {
+    await openApp(page);
+    await openSettings(page);
+    await field(page, 'Jewels').fill('4');
+    await expect(field(page, 'Configuration')).toHaveValue('15');
+    await field(page, 'Configuration').fill('99');
+    await field(page, 'Configuration').press('Enter');
+    await expect(field(page, 'Configuration')).toHaveValue('15');
+});
+
+test('the footer offers Imprint, Check for updates and Restore defaults, in this order', async ({ page }) => {
+    await openApp(page);
+    await openSettings(page);
+    const names = await panel(page).locator('.settings-footer button:visible').allTextContents();
+    // Without the private imprint (the stub) there is no Imprint button.
+    expect(names.filter((name) => name !== 'Imprint')).toEqual(['Check for updates', 'Restore defaults']);
+    if (names.includes('Imprint')) {
+        expect(names[0]).toBe('Imprint');
+    }
+});
+
+test('the settings panel fits a phone without scrolling sideways', async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 720 });
+    await openApp(page);
+    await openSettings(page);
+    for (const name of ['View', 'Animation', 'Screen capture', 'Advanced']) {
+        await openSection(page, name);
+    }
+    const body = panel(page).locator('.settings-body');
+    expect(await body.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
 });

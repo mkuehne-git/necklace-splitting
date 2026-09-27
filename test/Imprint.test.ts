@@ -92,7 +92,8 @@ describe('Imprint', () => {
     });
 
     it('closes with Escape while the settings panel has the focus (v0.4.25)', () => {
-        // lil-gui stops key events inside its panel from bubbling, and its Imprint
+        // A focused control may stop key events from bubbling: lil-gui, the settings
+        // panel before v0.8.0, did, and its Imprint
         // button keeps the focus after opening the imprint.
         imprint.show();
         const gui = document.createElement('div');

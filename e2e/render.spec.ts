@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { control, openApp, openFolder, openSettings, sphere } from './app';
+import { field, openApp, openSection, openSettings, sphere } from './app';
 
 // The sphere is drawn only when something changes (#needsRender in Sphere.ts).
 // These tests count WebGL draw calls to see whether it is drawn.
@@ -55,12 +55,11 @@ test('pointer moves, dragging and theme changes draw the view', async ({ page })
 test('the rotation animation draws every frame, and stops drawing when it stops', async ({ page }) => {
     await openApp(page);
     await openSettings(page);
-    await openFolder(page, /^View$/);
-    await openFolder(page, /^Animation$/);
-    await control(page, /^Rotate/).locator('input[type=checkbox]').check();
+    await openSection(page, 'Animation');
+    await field(page, 'Rotate').check();
     // At the default speed of 0 the sphere does not turn, but the animation still runs.
     expect(await drawCallsDuring(page, 1000)).toBeGreaterThan(10);
-    await control(page, /^Rotate/).locator('input[type=checkbox]').uncheck();
+    await field(page, 'Rotate').uncheck();
     await page.waitForTimeout(300);
     expect(await drawCallsDuring(page, 1000)).toBe(0);
 });

@@ -20,6 +20,7 @@ export enum Events {
   SET_NECKLACE_CONFIGURATION_BY_STRING = "necklace-configuration-by-string",
   UPDATE_SPHERE_MATERIAL = "update-material",
   NECKLACE_CUT = "necklace-cut",
+  SCREEN_CAPTURE = "screen-capture",
 }
 
 export namespace Events {
