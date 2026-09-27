@@ -36,6 +36,8 @@ The app follows semantic versioning (`x.y.z`). Fixes, refactors, tests and docs 
 
 Every commit is a version, including test-, docs- and refactor-only commits: update the version in `package.json` (and `package-lock.json`, with `npm version X.Y.Z --no-git-tag-version`) and add an entry to `CHANGELOG.md` before creating a commit.
 
+Changelog entries are headed `## vX.Y.Z · YYYY-MM-DD`. When the next version is added, the previous entry (the version committed at `HEAD`) gets its short hash as a link: `## vX.Y.Z · YYYY-MM-DD · [abc1234](https://github.com/mkuehne-git/necklace-splitting/commit/abc1234)`, from `git rev-parse --short=7 HEAD`. A commit cannot contain its own hash, so the newest entry stays without one. v0.1.0 and v0.2.0 predate the repository and have neither date nor hash; v0.2.4's changes are listed under v0.3.0. Write entries for users of the app: what changed and why it matters, with fixed bugs named by their symptom. Say "No functional change." for test, docs and refactor-only versions.
+
 ## Git Workflow
 
 The project owner approves commits per phase of `MODERNIZATION.md`: within a phase the owner has approved, commit each step as it is done; at the end of a phase, stop and ask before starting the next one. Outside that plan, ask before every commit. Do not push or deploy unless asked.
