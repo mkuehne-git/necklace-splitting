@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.33 · 2026-09-27
+## v0.4.34 · 2026-09-27
+
+* Add tests that changing settings does not use more and more graphics memory. No functional change.
+
+## v0.4.33 · 2026-09-27 · [8a8b2a0](https://github.com/mkuehne-git/necklace-splitting/commit/8a8b2a0)
 
 * Less battery: the 3D view is drawn again only when something changes - you turn it, point at it, change a setting, the window or the theme - and every frame only while the rotation animation runs. Before, it was redrawn at the display's full frame rate all the time.
 * The marker under the pointer follows it one frame sooner.

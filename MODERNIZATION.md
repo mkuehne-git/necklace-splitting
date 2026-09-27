@@ -57,6 +57,7 @@ Work through the phases in order. Each step is one commit with a version bump an
 
 - Render on demand (`#needsRender` as in `HelixScene.ts`): draw on control changes, pointer moves (the raycast gauge), settings/theme changes and while the rotation animation runs; stop otherwise.
 - Free old geometry/material on sphere rebuilds (`disposeMesh`).
+  *Found 2026-09-27:* `Sphere.ts` already frees both; v0.4.34 adds end-to-end tests that would catch a leak.
 - Load `html2canvas` on first use (screen capture, imprint).
 
 ## Phase 7: Features (minor versions)
