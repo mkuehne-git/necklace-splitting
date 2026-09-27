@@ -16,7 +16,7 @@ npm test            # Vitest, single run
 npm run test:watch  # Vitest in watch mode
 ```
 
-`src/imprint-gen.js` is private and gitignored. Tests that load `Imprint.ts` mock it.
+`src/imprint-gen.js` is private and gitignored. Tests that load `Imprint.ts` mock it, but Vite still has to resolve the import: without the file (as in CI) run `npm run imprint` first, which writes a stub when `imprint.config.json` is missing.
 
 ## Step 1: Pure logic (done, v0.4.27)
 
@@ -31,9 +31,12 @@ npm run test:watch  # Vitest in watch mode
 
 Not covered: the solution band, the solution highlighting and the octants are computed only in the shaders (`src/shaders/`). The model mirrors the shader's split calculation (`calculate_stolen_necklace_*` in `functions.glsl`), so a change to one must be made in the other. The octant number (`displace_octant` in `sphere.vert`) is computed but not used; octant `000` gets the number 1.
 
-## Step 2: Components (planned)
+## Step 2: Components (done, v0.4.28)
 
-happy-dom tests for `SVGToggleButton` and `Imprint` (with `imprint-gen` mocked), including Escape closing the imprint while the settings panel has the focus (v0.4.25).
+happy-dom tests; html2canvas is mocked, since it needs a real browser.
+
+- **`SVGToggleButton`** (`test/SVGToggleButton.test.ts`): one SVG per icon, show and toggle, and the click that is reported only when the pulse animation (`lil-gui.css`) has ended.
+- **`Imprint`** (`test/Imprint.test.ts`, `imprint-gen` mocked): the text is rendered as an image with the trailer and Close button, opens once, opens and closes through the application events, closes with Escape - also while the settings panel has the focus (regression for v0.4.25) - and redraws on resize only while open.
 
 ## Step 3: End-to-end (planned)
 

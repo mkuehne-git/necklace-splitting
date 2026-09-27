@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.27 · 2026-09-27
+## v0.4.28 · 2026-09-27
+
+* Add tests for the icon buttons and the imprint. No functional change.
+
+## v0.4.27 · 2026-09-27 · [f1b9399](https://github.com/mkuehne-git/necklace-splitting/commit/f1b9399)
 
 * Add unit tests for the necklace model (Vitest). No functional change.
 
