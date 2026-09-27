@@ -51,6 +51,7 @@ Work through the phases in order. Each step is one commit with a version bump an
 - Group `src/` by area: `sphere/` (Sphere, shaders), `necklace/` (Necklace, NecklaceModel, NecklaceComponent), `settings/`, `ui/` (buttons, ScreenCapture, ThemesSwitcher, Resizer, ClassMutationObserver), `imprint/`, `icons/`, `css/`. README images to `docs/images/`.
 - Split `style.css` per area, imported from `main.ts` (Vite resolves `@import`s only for CSS imported from code).
 - Split `Settings.ts` into values/defaults, sections and the settings state (as `settingsValues.ts`, `settingsSections.ts`, `Settings.ts`); keep `main.ts` a thin setup.
+  *Decided 2026-09-27:* only the values moved (`settingsValues.ts`, v0.4.27); the rest of `Settings.ts` is lil-gui panel code that step 4 of phase 7 replaces, and `main.ts` is already thin.
 
 ## Phase 6: Performance and battery (patch)
 

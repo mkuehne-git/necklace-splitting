@@ -35,6 +35,14 @@ class Sphere extends NecklaceComponent {
   #axesHelper: THREE.AxesHelper;
   #resizer: Resizer;
   #lastRender: DOMHighResTimeStamp;
+  /**
+   * The view is drawn only when something changed: the camera, the pointer, the
+   * size, the theme, the sphere or its material. Set this when adding anything
+   * else that changes the picture. The rotation animation draws every frame.
+   */
+  #needsRender = true;
+  /** Whether the rotation animation ran in the last frame, to draw once more when it stops. */
+  #wasRotating = false;
 
   constructor(
     model: NecklaceModel,
@@ -89,6 +97,8 @@ class Sphere extends NecklaceComponent {
     );
     this.#camera.position.z = 50;
     this.#orbitControls.update();
+    this.#orbitControls.addEventListener("change", () => this.#needsRender = true);
+    this.#resizer.onResize = () => this.#needsRender = true;
     this.container.addEventListener(Events.CREATE_SPHERE.toString(), () =>
       this.createSphere()
     );
@@ -96,6 +106,7 @@ class Sphere extends NecklaceComponent {
     this.container.addEventListener("mousemove", (event) => {
       mouse.x = (event.clientX / this.container.clientWidth) * 2 - 1;
       mouse.y = -(event.clientY / this.container.clientHeight) * 2 + 1;
+      this.#needsRender = true;
     });
 
     this.container.addEventListener(
@@ -116,6 +127,7 @@ class Sphere extends NecklaceComponent {
     const style = window.getComputedStyle(this.container);
     const backgroundColor = style.getPropertyValue("background-color");
     this.#scene.background = new THREE.Color(backgroundColor);
+    this.#needsRender = true;
   }
 
   get captureElement(): HTMLElement {
@@ -127,7 +139,12 @@ class Sphere extends NecklaceComponent {
       if (this.#lastRender === undefined) {
         this.#lastRender = time;
       }
-      this._render(time - this.#lastRender);
+      const rotating = SETTINGS.animation.run || SETTINGS.animation.trigger_reset;
+      if (this.#needsRender || rotating || this.#wasRotating) {
+        this.#needsRender = false;
+        this._render(time - this.#lastRender);
+      }
+      this.#wasRotating = rotating;
       this.#lastRender = time;
       requestAnimationFrame(callback);
     };
@@ -139,7 +156,7 @@ class Sphere extends NecklaceComponent {
 
     // required if controls.enableDamping or controls.autoRotate are set to true
     this.#orbitControls.update();
-    this.#renderer.render(this.#scene, this.#camera);
+    // The pointer is hit-tested before drawing, so the hover marker is drawn in the same frame.
     if (this.#sphere.visible || this.#sphereMesh.visible) {
       this.#raycaster.setFromCamera(mouse as THREE.Vector2, this.#camera);
       const intersects = this.#raycaster.intersectObject(this.#sphere);
@@ -164,6 +181,7 @@ class Sphere extends NecklaceComponent {
       this.#group.rotation.y += SETTINGS.animation.rotation_y * ROT_FACTOR;
       this.#group.rotation.z += SETTINGS.animation.rotation_z * ROT_FACTOR;
     }
+    this.#renderer.render(this.#scene, this.#camera);
     stats.end();
   }
 
@@ -295,6 +313,7 @@ class Sphere extends NecklaceComponent {
     }
     this.#sphere.material = this.createSphereMaterial();
     this.#sphereMesh.material.transparent = SETTINGS.color.alpha != 1.0;
+    this.#needsRender = true;
     Events.dispatchEvent(Events.MODEL_CHANGED);
   }
 
@@ -303,6 +322,7 @@ class Sphere extends NecklaceComponent {
     this.#sphereMesh.visible = SETTINGS.view.mesh_visible;
     this.#sphere.visible = SETTINGS.view.faces_visible;
     stats["visible"](SETTINGS.view.stats_monitor_visible);
+    this.#needsRender = true;
     Events.dispatchEvent(Events.MODEL_CHANGED);
   }
 }

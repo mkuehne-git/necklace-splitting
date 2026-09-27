@@ -44,6 +44,8 @@ happy-dom tests; html2canvas is mocked, since it needs a real browser.
 Playwright in Chromium and Firefox (`playwright.config.ts`, `e2e/`). `npm run test:e2e` builds with `VITE_E2E=true` (32 instead of 128 sphere segments, `settingsValues.ts`) and serves it with `vite preview` over HTTP, where browsers allow the service worker. **Run `npm run build` afterwards**, so that `dist/` does not keep the test build.
 
 - **`e2e/app.spec.ts`:** the app loads without console errors; hovering the sphere cuts the necklace and hides the pointer; the theme switcher; the gear button opens and closes the settings; a showcase changes the sphere; a new configuration changes necklace and sphere; the service worker registers.
+- **`e2e/render.spec.ts`:** counts WebGL draw calls: the resting view is not drawn again; pointer moves, dragging and theme changes draw it; the rotation animation draws every frame and stops drawing when it stops (v0.4.33).
+- **`e2e/capture.spec.ts`:** a capture of the sphere contains the rendered sphere, also after the view has rested (the WebGL canvas keeps its drawing buffer, `ScreenCapture.ts`).
 - **`e2e/imprint.spec.ts`:** the imprint shows as an image and closes with its button, and with Escape while the settings keep the focus (v0.4.25). Needs the private `src/imprint-gen.js`; skipped with the stub.
 
 The tests compare canvas screenshots before and after a change (`pixels` in `e2e/app.ts`). The settings panel and the icon buttons lie on top of the sphere, so they are hidden in those screenshots; otherwise opening a folder alone would count as a change.
