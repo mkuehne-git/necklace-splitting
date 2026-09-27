@@ -1,5 +1,28 @@
 var e=`# Changelog
 
+## v1.0.0 · 2026-09-27 · [a63045a](https://github.com/mkuehne-git/necklace-splitting/commit/a63045a)
+
+Necklace Splitting 1.0 is a thoroughly renewed app. What changed since the version that was online until September 2026 (v0.4.13):
+
+* **New settings:** the gear icon opens a panel on the right (full screen on phones) with the sections Necklace, View, Animation, Screen capture and Advanced. The controls are larger, work with touch, mouse and keyboard, and follow the light and dark theme. The **h** key opens and closes the panel.
+* **Remembered:** your settings, the necklace, the theme and the view of the sphere are still there when you come back; **Restore defaults** starts over.
+* **About this app:** the info button explains how the sphere maps the necklace, where the solutions are, the octants and why a fair split always exists.
+* **Deutsch:** the app is available in English and German.
+* **Changelog and What's new:** the version number in the corner shows what changed; after an update, the app tells you once what is new.
+* **Updates on your terms:** the app asks before it reloads into a new version, and **Check for updates** looks for one.
+* **Less battery, faster start:** the sphere is only drawn when something changes, and screen captures load when first used.
+* **Necklace only:** the other showcases (Shader Lamp, Space Colors, Sinusoid) are gone.
+
+Details in the entries v0.4.14 to v0.12.2 below.
+
+## v0.12.2 · 2026-09-27 · [d525bd8](https://github.com/mkuehne-git/necklace-splitting/commit/d525bd8)
+
+* Add a roadmap of what remains (\`ROADMAP.md\`) and update the development checklist. No functional change.
+
+## v0.12.1 · 2026-09-27 · [4fc82e1](https://github.com/mkuehne-git/necklace-splitting/commit/4fc82e1)
+
+* The README describes the app as it is now, with new screenshots taken by a script (\`npm run screenshots\`). No functional change.
+
 ## v0.12.0 · 2026-09-27 · [b7b390c](https://github.com/mkuehne-git/necklace-splitting/commit/b7b390c)
 
 * The app now shows the necklace only: the showcases Shader Lamp, Space Colors and Sinusoid, and the Showcase buttons in the settings, are gone.
