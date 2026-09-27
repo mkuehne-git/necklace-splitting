@@ -18,6 +18,8 @@ npm run dev:http   # the same over HTTP, when the local HTTPS certificate is rej
 npm run build      # create a production build in dist/
 npm run serve      # preview the production build
 npm run typecheck  # check the TypeScript types (tsc; the build does not)
+npm test           # run the unit tests (Vitest)
+npm run test:watch # run the unit tests in watch mode
 ```
 
 ### Node.js version
@@ -31,7 +33,7 @@ The project uses the current Active LTS release of Node.js: Node 24 (24.21.0 loc
 
 The development server uses HTTPS with a local self-signed certificate. If the browser cannot trust that certificate, use `npm run dev:http` and open `http://127.0.0.1:5173/` instead.
 
-`tsconfig.json` is for type checking only (`noEmit`, `strict` off); Vite builds without checking types. There is no test suite and no lint script yet (see `MODERNIZATION.md`, phase 3).
+`tsconfig.json` is for type checking only (`noEmit`, `strict` off); Vite builds without checking types. Unit tests live in `test/` and run with `npm test`; `TESTING.md` describes them and the remaining test steps. There is no lint script.
 
 ## Versioning
 
@@ -54,10 +56,10 @@ Commit messages are `type: summary (vX.Y.Z)` with `type` one of `feat`, `fix`, `
 All sources are flat in `src/` for now; grouping them by area is phase 5 of `MODERNIZATION.md`. The README images are in `src/images/`.
 
 - `src/main.ts` sets up the app: settings, theme switcher, model, sphere, necklace, screen capture and the version label.
-- `src/NecklaceModel.ts` is the logic: the necklace configuration (from a number or a string of `0`/`1`), the segment lengths and thief assignment for a cut, and the linear-time search for solutions.
+- `src/NecklaceModel.ts` is the logic: the necklace configuration (from a number, lowest bit first, or from the bits of a string's characters), and the segment lengths and thief assignment for a cut. The shaders (`src/shaders/functions.glsl`) compute the same split for every point of the sphere; change both together.
 - `src/Sphere.ts` is the 3D view: renderer, camera, `OrbitControls`, the sphere mesh with its GLSL shaders (`src/shaders/`, loaded through `vite-plugin-glsl`), the solution band, the raycast gauge that picks the cut under the pointer, and the render loop. The loop currently runs `requestAnimationFrame` continuously.
 - `src/Necklace.ts` draws the necklace and the current cut on a 2D canvas. `src/NecklaceComponent.ts` is the shared base class (container, canvas, model, theme observer).
-- `src/Settings.ts` owns `SETTINGS` and builds the lil-gui panel (Necklace, View with Sphere/Other Controls/Color/Animation, Screen capture, the showcases). Settings are not remembered across reloads. `src/SettingsButton.ts` is the gear button that opens it; `src/css/lil-gui.css` themes it.
+- `src/settingsValues.ts` holds `SETTINGS` with its defaults, the showcase names (`MODES`), `EPS` and `MAX_JEWELS`. `src/Settings.ts` builds the lil-gui panel (Necklace, View with Sphere/Other Controls/Color/Animation, Screen capture, the showcases). Settings are not remembered across reloads. `src/SettingsButton.ts` is the gear button that opens it; `src/css/lil-gui.css` themes it.
 - `src/Enums.ts` holds the `Events` used between modules and the `Showcase` identifiers.
 - `src/SVGToggleButton.ts`, `src/ThemesSwitcher.ts`, `src/ScreenCapture.ts` (html2canvas), `src/Imprint.ts`, `src/Resizer.ts`, `src/ClassMutationObserver.ts` and `src/Stats.ts` (the optional FPS monitor) implement the surrounding UI.
 - `src/icons/` holds the SVG icons as TypeScript modules; `src/css/style.css` the styles, linked from `index.html`.
@@ -83,7 +85,7 @@ Dynamic imports of local modules must remain analyzable by Vite. Do not use `@vi
 
 At minimum:
 
-1. Run `npm run typecheck` and `npm run build`.
+1. Run `npm run typecheck`, `npm test` and `npm run build`.
 2. Run `npm run dev` and open the reported URL.
 3. Exercise the affected interaction in both light and dark themes where relevant: the sphere (rotate, hover gauge), the necklace canvas, the settings panel, the showcases, screen capture and the imprint.
 4. Check browser console errors and verify that the PWA/service worker still registers for build-related changes.

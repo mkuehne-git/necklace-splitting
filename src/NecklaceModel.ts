@@ -1,6 +1,6 @@
 import { Vector2, Vector3 } from "three";
 
-import { EPS, Settings, SETTINGS } from "./Settings";
+import { EPS, SETTINGS } from "./settingsValues";
 import { Events } from "./Enums";
 
 function fract(x: number): number {

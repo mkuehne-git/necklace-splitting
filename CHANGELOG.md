@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.26 · 2026-09-27
+## v0.4.27 · 2026-09-27
+
+* Add unit tests for the necklace model (Vitest). No functional change.
+
+## v0.4.26 · 2026-09-27 · [482cbb5](https://github.com/mkuehne-git/necklace-splitting/commit/482cbb5)
 
 * Add a TypeScript type check (`npm run typecheck`) and fix the errors it found. No functional change.
 

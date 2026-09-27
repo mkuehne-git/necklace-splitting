@@ -26,11 +26,12 @@ If the previous version was never committed (it is still in the working tree), e
 
 ## 3. Validate
 
-Run what exists and report failures with their output - do not commit around them. Extend this list as `MODERNIZATION.md` adds the tools (unit and e2e tests in phase 3).
+Run what exists and report failures with their output - do not commit around them. Extend this list as `TESTING.md` adds the tools (end-to-end tests in its step 3).
 
-1. `npm run typecheck` (tsc; Vite builds without checking types), then `npm run build`.
-2. For build-related changes (dependencies, `vite.config.ts`, imports): check that `dist/assets/` holds the expected chunks, and for the imprint that `src/imprint-gen.js` was bundled.
-3. For visual changes, say what still needs a manual look in a real browser (light and dark theme, phone width, Firefox), as `CLAUDE.md` asks.
+1. `npm run typecheck` (tsc; Vite builds without checking types), then `npm test` (Vitest).
+2. `npm run build`.
+3. For build-related changes (dependencies, `vite.config.ts`, imports): check that `dist/assets/` holds the expected chunks, and for the imprint that `src/imprint-gen.js` was bundled.
+4. For visual changes, say what still needs a manual look in a real browser (light and dark theme, phone width, Firefox), as `CLAUDE.md` asks.
 
 ## 4. Check the working tree
 

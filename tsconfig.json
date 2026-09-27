@@ -14,5 +14,5 @@
     "strict": false,
     "resolveJsonModule": true
   },
-  "include": ["src", "glsl.d.ts", "vite-env.d.ts", "vite.config.ts"]
+  "include": ["src", "test", "glsl.d.ts", "vite-env.d.ts", "vite.config.ts"]
 }
