@@ -1,3 +1,5 @@
+import type * as THREE from "three";
+
 class Resizer {
   constructor(
     container: HTMLElement,

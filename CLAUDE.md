@@ -17,6 +17,7 @@ npm run dev        # start the Vite development server (HTTPS, reachable from th
 npm run dev:http   # the same over HTTP, when the local HTTPS certificate is rejected
 npm run build      # create a production build in dist/
 npm run serve      # preview the production build
+npm run typecheck  # check the TypeScript types (tsc; the build does not)
 ```
 
 ### Node.js version
@@ -30,7 +31,7 @@ The project uses the current Active LTS release of Node.js: Node 24 (24.21.0 loc
 
 The development server uses HTTPS with a local self-signed certificate. If the browser cannot trust that certificate, use `npm run dev:http` and open `http://127.0.0.1:5173/` instead.
 
-There is no type check, no test suite and no lint script yet (see `MODERNIZATION.md`, phases 2 and 3). Vite builds without checking types.
+`tsconfig.json` is for type checking only (`noEmit`, `strict` off); Vite builds without checking types. There is no test suite and no lint script yet (see `MODERNIZATION.md`, phase 3).
 
 ## Versioning
 
@@ -82,7 +83,7 @@ Dynamic imports of local modules must remain analyzable by Vite. Do not use `@vi
 
 At minimum:
 
-1. Run `npm run build`.
+1. Run `npm run typecheck` and `npm run build`.
 2. Run `npm run dev` and open the reported URL.
 3. Exercise the affected interaction in both light and dark themes where relevant: the sphere (rotate, hover gauge), the necklace canvas, the settings panel, the showcases, screen capture and the imprint.
 4. Check browser console errors and verify that the PWA/service worker still registers for build-related changes.

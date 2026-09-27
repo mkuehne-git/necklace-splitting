@@ -1,0 +1,18 @@
+{
+  // Type checking only (`npm run typecheck`): Vite builds without it.
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["vite/client", "node"],
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "allowJs": true,
+    "checkJs": false,
+    "strict": false,
+    "resolveJsonModule": true
+  },
+  "include": ["src", "glsl.d.ts", "vite-env.d.ts", "vite.config.ts"]
+}

@@ -83,4 +83,5 @@ abstract class NecklaceComponent {
   abstract render(): void;
 }
 
-export { NecklaceComponent, ComponentOptions };
+export { NecklaceComponent };
+export type { ComponentOptions };

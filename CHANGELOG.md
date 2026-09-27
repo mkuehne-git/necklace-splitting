@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.25 · 2026-09-27
+## v0.4.26 · 2026-09-27
+
+* Add a TypeScript type check (`npm run typecheck`) and fix the errors it found. No functional change.
+
+## v0.4.25 · 2026-09-27 · [eb36339](https://github.com/mkuehne-git/necklace-splitting/commit/eb36339)
 
 * Fix: Escape closes the imprint even while the settings panel is open.
 
