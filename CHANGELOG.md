@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.14 · 2026-09-27
+## v0.4.15 · 2026-09-27
+
+* Pin the Node.js version for development (`.nvmrc`: Node 24; `engines`: 22.12 or newer). No functional change.
+
+## v0.4.14 · 2026-09-27 · [1d07b86](https://github.com/mkuehne-git/necklace-splitting/commit/1d07b86)
 
 * Add project instructions (`CLAUDE.md`) and the modernization plan (`MODERNIZATION.md`). No functional change.
 

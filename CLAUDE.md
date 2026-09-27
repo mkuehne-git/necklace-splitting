@@ -19,6 +19,15 @@ npm run build      # create a production build in dist/
 npm run serve      # preview the production build
 ```
 
+### Node.js version
+
+The project uses the current Active LTS release of Node.js: Node 24 (24.21.0 locally as of September 2026). Climate Helix ran on the out-of-support Node 23 until npm crashed while installing Vitest; keep the version current here too.
+
+- `.nvmrc` selects Node 24 for `nvm use`; `engines` in `package.json` states the minimum (22.12, which Vite 8 and Vitest need).
+- Once CI exists, its `node-version` must match `.nvmrc`.
+- When adding or upgrading a dev dependency, check its `engines` field against that version.
+- Revisit this when a newer LTS starts (Node 26 in October 2026) and when the used one reaches end of life: update `.nvmrc`, the workflow and, if needed, `engines` together.
+
 There is no type check, no test suite and no lint script yet (see `MODERNIZATION.md`, phases 2 and 3). Vite builds without checking types.
 
 ## Versioning
