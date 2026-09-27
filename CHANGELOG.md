@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.18 · 2026-09-27
+## v0.4.19 · 2026-09-27
+
+* Add a release checklist for preparing each version. No functional change.
+
+## v0.4.18 · 2026-09-27 · [2094412](https://github.com/mkuehne-git/necklace-splitting/commit/2094412)
 
 * The build and deployment instructions moved from `BUILD.md` into the README. No functional change.
 
