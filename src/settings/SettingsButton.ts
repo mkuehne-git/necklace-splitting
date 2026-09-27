@@ -12,7 +12,7 @@ class SettingsButton {
 
     constructor(gui: GUI) {
         this.#status = true;
-        this.#button = new SVGToggleButton({ icons: [openIcon, closeIcon], classToken: 'settings', event: Events.SETTINGS_CHANGED });
+        this.#button = new SVGToggleButton({ icons: [openIcon, closeIcon], labels: ['Open settings', 'Close settings'], classToken: 'settings', event: Events.SETTINGS_CHANGED });
         this.#gui = gui;
         this.#gui.hide();
         this.#button.show(this.#status ? 0 : 1);

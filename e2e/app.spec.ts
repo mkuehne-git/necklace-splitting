@@ -77,3 +77,14 @@ test('Check for updates reports that there is none', async ({ page }) => {
     await expect(page.locator('#pwa-status')).toHaveText('No update available.');
     await expect(page.locator('#pwa-update-dialog')).toBeHidden();
 });
+
+test('the icon buttons are named for screen readers and work with the keyboard', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'light' });
+    await openApp(page);
+    await expect(page.getByRole('button', { name: 'Switch to dark theme' })).toBeVisible();
+    const settings = page.getByRole('button', { name: 'Open settings' });
+    await settings.focus();
+    await page.keyboard.press('Enter');
+    await expect(gui(page)).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Close settings' })).toBeVisible();
+});

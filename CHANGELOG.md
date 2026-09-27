@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.5.0 · 2026-09-27
+## v0.6.0 · 2026-09-27
+
+* **The imprint closes with an X** at the top right, where the settings button is. It stays in view while you scroll, and is there right away, before the imprint has finished loading. Escape still closes it.
+* The settings and theme buttons can be used with the keyboard (Tab, then Enter or Space), and screen readers announce what they do.
+
+## v0.5.0 · 2026-09-27 · [79b3f18](https://github.com/mkuehne-git/necklace-splitting/commit/79b3f18)
 
 * **Updates on your terms:** when a new version of the app is available, it asks whether to reload now or later, instead of switching to the new version on its own.
 * **Check for updates** in the settings looks for a new version right away and tells you whether there is one.

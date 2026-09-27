@@ -65,4 +65,32 @@ describe("SVGToggleButton", () => {
     div().dispatchEvent(new Event("animationend"));
     expect(listener).toHaveBeenCalledOnce();
   });
+
+  it("is a focusable button named after the icon shown", () => {
+    const button = new SVGToggleButton({ container, icons: [icon("open"), icon("close")], labels: ["Open settings", "Close settings"], classToken: "test", event: "e" });
+    button.show(0);
+    expect(div().getAttribute("role")).toBe("button");
+    expect(div().tabIndex).toBe(0);
+    expect(div().getAttribute("aria-label")).toBe("Open settings");
+    button.toggle();
+    expect(div().getAttribute("aria-label")).toBe("Close settings");
+    button.select(0);
+    expect(div().getAttribute("aria-label")).toBe("Open settings");
+    expect(shown()).toEqual(["open-icon"]);
+  });
+
+  it("has no name without labels", () => {
+    create().show(0);
+    expect(div().hasAttribute("aria-label")).toBe(false);
+  });
+
+  it("clicks on Enter and Space", () => {
+    create().show(0);
+    const click = vi.fn();
+    div().addEventListener("click", click);
+    div().dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+    div().dispatchEvent(new KeyboardEvent("keydown", { key: " " }));
+    div().dispatchEvent(new KeyboardEvent("keydown", { key: "a" }));
+    expect(click).toHaveBeenCalledTimes(2);
+  });
 });

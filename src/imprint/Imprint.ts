@@ -1,14 +1,13 @@
 import { Events } from "../Enums";
-import { loadHtml2canvas } from "../ui/loadHtml2canvas";
 import { ClassMutationObserver } from "../ui/ClassMutationObserver";
+import { OverlayPage } from "../ui/OverlayPage";
+import { loadHtml2canvas } from "../ui/loadHtml2canvas";
 
 const loadModule = async () => {
-  return await import("../imprint-gen");
+    return await import("../imprint-gen");
 };
 
 const trailer = `<hr><p style="opacity: 1.0;">Dieses Impressum wurde erstellt durch <a href="https://www.impressum-generator.de" rel="nofollow">impressum-generator.de</a>.</p>`;
-const closeBtn = `<hr><div class="center" width=100%>
-<button id="hide-imprint" onclick="document.body.dispatchEvent(new Event('${Events.HIDE_IMPRINT.toString()}', { bubbles: true }))">Close</button></div>`;
 
 /**
  * This class generates an imprint, if the file './imprint-gen.js' can be imported. The imprint will
@@ -16,64 +15,84 @@ const closeBtn = `<hr><div class="center" width=100%>
  * agents reading the HTML source.
  */
 class Imprint {
-  private decryptedAES: () => string;
-  private div: HTMLDivElement;
-  constructor() {
-    window.addEventListener("resize", () => this.redraw());
-    new ClassMutationObserver(document.body, () => this.redraw());
-    document.body.addEventListener(Events.SHOW_IMPRINT.toString(), (e) => this.show());
-    document.body.addEventListener(Events.HIDE_IMPRINT.toString(), (e) => this.hide());
-    // Capture phase: lil-gui stops keydown events inside its panel from bubbling,
-    // and the Imprint button there keeps the focus after opening the imprint.
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Esc" || e.key === "Escape") {
-        this.hide();
-      }
-    }, { capture: true });
-  }
-  private redraw() {
-    if (this.div !== undefined) {
-      this.hide();
-      this.show();
+    private decryptedAES: () => string;
+    private page = new OverlayPage("imprint", Events.HIDE_IMPRINT.toString(),
+        () => window.clearTimeout(this.resizeTimer));
+    private loading: Promise<boolean> | undefined;
+    private resizeTimer: number | undefined;
+    constructor() {
+        // Debounced: dragging a window edge fires a burst of resize events, and
+        // each redraw starts a full html2canvas render.
+        window.addEventListener("resize", () => {
+            window.clearTimeout(this.resizeTimer);
+            this.resizeTimer = window.setTimeout(() => this.redraw(), 250);
+        });
+        new ClassMutationObserver(document.body, () => this.redraw());
+        document.body.addEventListener(Events.SHOW_IMPRINT.toString(), (e) => this.show());
+        document.body.addEventListener(Events.HIDE_IMPRINT.toString(), (e) => this.hide());
     }
-  }
+    private redraw() {
+        if (this.page.isOpen) {
+            this.hide();
+            this.show();
+        }
+    }
 
-  async isAvailable(): Promise<boolean> {
-    const m = await loadModule();
-    this.decryptedAES = m.decryptedAES;
-    return this.decryptedAES() !== undefined;
-  }
-  show() {
-    if (this.div === undefined) {
-      this.div = document.createElement("div");
-      const div = this.div;
-      div.classList.add("imprint");
-      div.innerHTML = this.decryptedAES();
-      document.body.appendChild(div);
-      const style = window.getComputedStyle(document.body);
-      const width = div.scrollWidth;
-      const height = div.scrollHeight;
-      const backgroundColor = style.getPropertyValue("background-color");
-      loadHtml2canvas().then((html2canvas) => html2canvas(div, {
-        backgroundColor,
-        windowWidth: width,
-        windowHeight: height,
-      })).then((canvas) => {
-        canvas.classList.add("padding");
-        div.innerHTML = "";
-        div.appendChild(canvas);
+    async isAvailable(): Promise<boolean> {
+        if (this.decryptedAES !== undefined) {
+            return true;
+        }
+        if (this.loading !== undefined) {
+            return this.loading;
+        }
+        this.loading = loadModule().then((m) => {
+            this.decryptedAES = m.decryptedAES;
+            return this.decryptedAES() !== undefined;
+        });
+        return this.loading;
+    }
+    show() {
+        if (this.decryptedAES === undefined) {
+            void this.isAvailable().then((available) => {
+                if (available) {
+                    this.show();
+                }
+            });
+            return;
+        }
+        if (!this.page.isOpen) {
+            // The page's close button is available while html2canvas is still
+            // rendering (or if it fails).
+            const content = this.page.show();
+            const imprintHTML = this.decryptedAES();
+            content.innerHTML = imprintHTML;
+            const style = window.getComputedStyle(document.body);
+            const width = content.scrollWidth;
+            const height = content.scrollHeight;
+            const backgroundColor = style.getPropertyValue("background-color");
+            loadHtml2canvas().then((html2canvas) => html2canvas(content, {
+                backgroundColor,
+                windowWidth: width,
+                windowHeight: height,
+            })).then((canvas) => {
+                canvas.classList.add("padding");
+                content.innerHTML = "";
+                content.appendChild(canvas);
+                this.appendTrailer(content);
+            }).catch(() => {
+                content.innerHTML = imprintHTML;
+                this.appendTrailer(content);
+            });
+        }
+    }
+    private appendTrailer(div: HTMLDivElement) {
         const p = document.createElement("p");
         p.classList.add("padding");
-        p.innerHTML = trailer + closeBtn;
+        p.innerHTML = trailer;
         div.appendChild(p);
-      });
     }
-  }
-  hide() {
-    if (this.div !== undefined) {
-      document.body.removeChild(this.div);
-      this.div = undefined as any;
+    hide() {
+        this.page.hide();
     }
-  }
 }
 export { Imprint };
