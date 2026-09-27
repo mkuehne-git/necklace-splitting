@@ -28,7 +28,7 @@ npm run test:e2e   # build and run the Playwright end-to-end tests (Chromium, Fi
 The project uses the current Active LTS release of Node.js: Node 24 (24.21.0 locally as of September 2026). Climate Helix ran on the out-of-support Node 23 until npm crashed while installing Vitest; keep the version current here too.
 
 - `.nvmrc` selects Node 24 for `nvm use`; `engines` in `package.json` states the minimum (22.12, which Vite 8 and Vitest need).
-- Once CI exists, its `node-version` must match `.nvmrc`.
+- The CI workflow's `node-version` (`.github/workflows/ci.yml`) must match `.nvmrc`.
 - When adding or upgrading a dev dependency, check its `engines` field against that version.
 - Revisit this when a newer LTS starts (Node 26 in October 2026) and when the used one reaches end of life: update `.nvmrc`, the workflow and, if needed, `engines` together.
 
@@ -75,6 +75,10 @@ All sources are flat in `src/` for now; grouping them by area is phase 5 of `MOD
 - Keep static assets in `public/` and import them using the project's existing Vite asset patterns.
 - Preserve the PWA base path and offline behavior when modifying `vite.config.ts` or asset URLs.
 - Do not edit generated output in `dist/` or `dev-dist/` as a source change; regenerate it with the build when needed.
+
+## Continuous Integration
+
+`.github/workflows/ci.yml` runs on every push to `main` and every pull request: `npm ci`, a stub `src/imprint-gen.js`, `npm run typecheck`, `npm test` and `npm run build`. It does not deploy and does not run the end-to-end tests. Dependabot (`.github/dependabot.yml`) opens weekly pull requests for npm, in groups (runtime, build tooling including `vite-plugin-glsl`, test tooling), and for the GitHub Actions; CI checks each of them. A Dependabot pull request still needs a version bump and changelog entry before it is merged (see Versioning).
 
 ## Deployment
 

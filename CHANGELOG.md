@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.29 · 2026-09-27
+## v0.4.30 · 2026-09-27
+
+* Check types, tests and the build on GitHub for every change, and keep the dependencies up to date with Dependabot. No functional change.
+
+## v0.4.29 · 2026-09-27 · [3dbd43d](https://github.com/mkuehne-git/necklace-splitting/commit/3dbd43d)
 
 * Add end-to-end tests in Chromium and Firefox (Playwright). No functional change.
 

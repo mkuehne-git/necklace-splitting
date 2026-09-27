@@ -1,0 +1,46 @@
+name: CI
+
+# Unit tests and a production build for every push to main and every pull
+# request (including Dependabot's). It does not deploy: deployment stays a
+# manual `deploy.sh` run. The Playwright end-to-end tests run locally only
+# (see TESTING.md).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      # Keep in line with the local Node version, see "Node.js version" in CLAUDE.md.
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # src/imprint-gen.js holds the private imprint and is gitignored, but
+      # src/Imprint.ts imports it statically so Vite bundles it. This stub only
+      # lets the import resolve; this build is never deployed.
+      - name: Stub the private imprint module
+        run: echo 'export const decryptedAES = () => undefined;' > src/imprint-gen.js
+
+      - name: Check types
+        run: npm run typecheck
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Run production build
+        run: npm run build
