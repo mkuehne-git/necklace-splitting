@@ -26,16 +26,17 @@ If the previous version was never committed (it is still in the working tree), e
 
 ## 3. Validate
 
-Run what exists and report failures with their output - do not commit around them. Extend this list as `TESTING.md` adds the tools (end-to-end tests in its step 3).
+Run these in order and report failures with their output - do not commit around them.
 
 1. `npm run typecheck` (tsc; Vite builds without checking types), then `npm test` (Vitest).
 2. `npm run build`.
-3. For build-related changes (dependencies, `vite.config.ts`, imports): check that `dist/assets/` holds the expected chunks, and for the imprint that `src/imprint-gen.js` was bundled.
-4. For visual changes, say what still needs a manual look in a real browser (light and dark theme, phone width, Firefox), as `CLAUDE.md` asks.
+3. `npm run test:e2e` when the change touches the UI, `main.ts`, `Settings.ts`, the sphere or necklace views, CSS, the service worker or `vite.config.ts`. It builds with `VITE_E2E=true` (coarser sphere), so **run `npm run build` again afterwards** - otherwise `dist/` holds the test build.
+4. For build-related changes (dependencies, `vite.config.ts`, imports): check that `dist/assets/` holds the expected chunks, and for the imprint that `src/imprint-gen.js` was bundled.
+5. For visual changes, say what still needs a manual look in a real browser (light and dark theme, phone width, Firefox), as `CLAUDE.md` asks.
 
 ## 4. Check the working tree
 
-- `git status --short`: every changed and new file must belong to this change. Watch for leftovers such as scratch files or a stray `package-lock.json` change.
+- `git status --short`: every changed and new file must belong to this change. Watch for leftovers such as `test-results/`, scratch files or a stray `package-lock.json` change.
 - Never stage `src/imprint-gen.js` (private, gitignored) or `dist/`.
 - If a dependency was added: check its `engines` field against the Node version in `.nvmrc` (see "Node.js version" in `CLAUDE.md`), and check that the lockfile only gained the expected packages.
 

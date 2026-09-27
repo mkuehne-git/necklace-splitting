@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.4.28 · 2026-09-27
+## v0.4.29 · 2026-09-27
+
+* Add end-to-end tests in Chromium and Firefox (Playwright). No functional change.
+
+## v0.4.28 · 2026-09-27 · [72752c5](https://github.com/mkuehne-git/necklace-splitting/commit/72752c5)
 
 * Add tests for the icon buttons and the imprint. No functional change.
 

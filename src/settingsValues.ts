@@ -1,5 +1,8 @@
 import { Events, Showcase } from "./Enums";
 
+/** The end-to-end test build (`VITE_E2E=true`) uses a coarser sphere, so that WebGL in headless browsers stays fast. */
+const E2E_BUILD = import.meta.env.VITE_E2E === 'true';
+
 /** Vectors whose distance is less that EPS are treated equal. */
 const EPS = 0.001;
 const EPS_SQ = EPS * EPS;
@@ -36,7 +39,7 @@ const SETTINGS = {
   },
   sphere: {
     radius: 15,
-    segments: 128,
+    segments: E2E_BUILD ? 32 : 128,
     offset_octant: 0.0,
     use_bad_on_sphere_check: false,
     show_borsuk_ulam_proof_shape: false,

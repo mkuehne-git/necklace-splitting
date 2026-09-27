@@ -111,3 +111,7 @@ imprint.config.json
 
 # Dynamic import, generated
 imprint-gen.js
+
+# Playwright
+test-results/
+playwright-report/

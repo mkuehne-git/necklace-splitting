@@ -14,6 +14,7 @@ Vitest reuses `vite.config.ts`, so the GLSL plugin, TypeScript and asset handlin
 ```sh
 npm test            # Vitest, single run
 npm run test:watch  # Vitest in watch mode
+npm run test:e2e    # Playwright against a production build (vite preview)
 ```
 
 `src/imprint-gen.js` is private and gitignored. Tests that load `Imprint.ts` mock it, but Vite still has to resolve the import: without the file (as in CI) run `npm run imprint` first, which writes a stub when `imprint.config.json` is missing.
@@ -38,6 +39,13 @@ happy-dom tests; html2canvas is mocked, since it needs a real browser.
 - **`SVGToggleButton`** (`test/SVGToggleButton.test.ts`): one SVG per icon, show and toggle, and the click that is reported only when the pulse animation (`lil-gui.css`) has ended.
 - **`Imprint`** (`test/Imprint.test.ts`, `imprint-gen` mocked): the text is rendered as an image with the trailer and Close button, opens once, opens and closes through the application events, closes with Escape - also while the settings panel has the focus (regression for v0.4.25) - and redraws on resize only while open.
 
-## Step 3: End-to-end (planned)
+## Step 3: End-to-end (done, v0.4.29)
 
-Playwright (Chromium and Firefox) against `vite preview`: the app loads without console errors, settings change the view, theme switch, the imprint opens and closes. A `VITE_E2E` build with fewer sphere segments keeps WebGL in headless browsers fast; rebuild normally afterwards so `deploy.sh` never ships the test build.
+Playwright in Chromium and Firefox (`playwright.config.ts`, `e2e/`). `npm run test:e2e` builds with `VITE_E2E=true` (32 instead of 128 sphere segments, `settingsValues.ts`) and serves it with `vite preview` over HTTP, where browsers allow the service worker. **Run `npm run build` afterwards**, so that `dist/` does not keep the test build.
+
+- **`e2e/app.spec.ts`:** the app loads without console errors; hovering the sphere cuts the necklace and hides the pointer; the theme switcher; the gear button opens and closes the settings; a showcase changes the sphere; a new configuration changes necklace and sphere; the service worker registers.
+- **`e2e/imprint.spec.ts`:** the imprint shows as an image and closes with its button, and with Escape while the settings keep the focus (v0.4.25). Needs the private `src/imprint-gen.js`; skipped with the stub.
+
+The tests compare canvas screenshots before and after a change (`pixels` in `e2e/app.ts`). The settings panel and the icon buttons lie on top of the sphere, so they are hidden in those screenshots; otherwise opening a folder alone would count as a change.
+
+Not covered: the `h` shortcut. It keeps its own visible/hidden flag, which starts out wrong (the first `h` after loading does nothing) and gets out of step with the gear button. The native settings panel (`MODERNIZATION.md`, phase 7) replaces it.
