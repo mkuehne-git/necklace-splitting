@@ -1,5 +1,6 @@
 import { Events } from "../Enums";
 import { SVGToggleButton } from "./SVGToggleButton";
+import { persistentState } from "../settings/PersistentState";
 import { icon as lightIcon } from "../icons/themes/lightIcon";
 import { icon as darkIcon } from "../icons/themes/darkIcon";
 
@@ -37,6 +38,10 @@ class ThemesSwitcher {
      * @returns {@code false} is dark mode, {@code true} light mode
      */
     preferredTheme(): boolean {
+        const stored = persistentState.state.theme;
+        if (stored !== undefined) {
+            return stored === DARK_THEME;
+        }
         return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
 
@@ -55,6 +60,7 @@ class ThemesSwitcher {
         }
         this.#theme = !this.#theme;
         this.#button.toggle();
+        persistentState.update({ theme: newThemeStyle });
 
         Events.dispatchEvent(Events.THEME_CHANGED);
     }

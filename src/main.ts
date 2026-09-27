@@ -15,6 +15,7 @@ import { Events } from "./Enums";
 
 import { ScreenCapture } from './ui/ScreenCapture';
 import { initPwaUpdate } from './ui/PwaUpdate';
+import { persistentState } from './settings/PersistentState';
 import { Sphere } from './sphere/Sphere';
 import { Necklace } from './necklace/Necklace';
 import { NecklaceModel } from './necklace/NecklaceModel';
@@ -27,7 +28,10 @@ const model = new NecklaceModel();
 const sphere = new Sphere(model);
 const necklace = new Necklace(model);
 
-Events.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
+// The necklace as it was defined last: by the configuration number or by the text.
+Events.dispatchEvent(persistentState.state.necklaceSource === 'string'
+  ? Events.SET_NECKLACE_CONFIGURATION_BY_STRING
+  : Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
 sphere.render();
 const capture = new ScreenCapture(
   {

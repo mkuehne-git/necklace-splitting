@@ -6,7 +6,8 @@ import { Imprint } from "../imprint/Imprint";
 import '../css/lil-gui.css';
 
 import { SettingsButton } from "./SettingsButton";
-import { EPS, EPS_SQ, MAX_JEWELS, MODES, SETTINGS } from "./settingsValues";
+import { EPS, EPS_SQ, MAX_JEWELS, MAX_ROT, MODES, SETTINGS } from "./settingsValues";
+import { applySettings, collectSettings, persistentState } from "./PersistentState";
 import { checkForPwaUpdates, showPwaStatus } from "../ui/PwaUpdate";
 
 class Settings {
@@ -60,6 +61,8 @@ class Settings {
   }
 
   constructor() {
+    // The remembered settings, before the controls show them.
+    applySettings(persistentState.state.settings);
     this.#gui = new GUI();
     this.#gui.domElement.id = "gui";
 
@@ -71,6 +74,19 @@ class Settings {
     this.createViewFolder();
     this.createCaptureFolder();
     this.createUpdateButton();
+    this.createRestoreButton();
+    // Every control reports its changes here, also those in folders.
+    this.#gui.onChange(() => persistentState.update({ settings: collectSettings() }));
+  }
+
+  createRestoreButton(): void {
+    const actions = {
+      restoreDefaults: () => {
+        persistentState.clear();
+        window.location.reload();
+      },
+    };
+    this.#gui.add(actions, "restoreDefaults").name("Restore defaults");
   }
 
   createUpdateButton(): void {
@@ -147,15 +163,17 @@ class Settings {
         1
       )
       .name("Configuration")
-      .onChange(() =>
-        Events.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER)
-      );
+      .onChange(() => {
+        persistentState.update({ necklaceSource: "number" });
+        Events.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
+      });
     folder
       .add(SETTINGS.necklace, "string")
       .name("String")
-      .onChange(() =>
-        Events.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_STRING)
-      );
+      .onChange(() => {
+        persistentState.update({ necklaceSource: "string" });
+        Events.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_STRING);
+      });
     folder
       .add(SETTINGS.necklace, "discrete")
       .name("Discrete")
@@ -264,7 +282,6 @@ class Settings {
 
   createAnimationSubFolder(parent) {
     const folder = parent.addFolder("Animation");
-    const MAX_ROT = 0.5;
     folder.add(SETTINGS.animation, "run").name("Rotate [Hz]").listen();
     folder
       .add(SETTINGS.animation, "rotation_x", -MAX_ROT, MAX_ROT, 0.1)

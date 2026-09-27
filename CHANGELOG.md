@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.6.0 · 2026-09-27
+## v0.7.0 · 2026-09-27
+
+* **Your settings are remembered:** the showcase, the necklace (also one entered as text), the view, color and rotation settings, the theme and the camera position are still there after a reload or when you open the app again.
+* **Restore defaults** in the settings goes back to the original settings.
+
+## v0.6.0 · 2026-09-27 · [354381a](https://github.com/mkuehne-git/necklace-splitting/commit/354381a)
 
 * **The imprint closes with an X** at the top right, where the settings button is. It stays in view while you scroll, and is there right away, before the imprint has finished loading. Escape still closes it.
 * The settings and theme buttons can be used with the keyboard (Tab, then Enter or Space), and screen readers announce what they do.

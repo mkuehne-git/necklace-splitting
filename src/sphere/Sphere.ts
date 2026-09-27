@@ -6,6 +6,7 @@ import { EPS_SQ, MAX_JEWELS, SETTINGS } from "../settings/settingsValues";
 import { NecklaceModel } from "../necklace/NecklaceModel";
 import { ComponentOptions, NecklaceComponent } from "../necklace/NecklaceComponent";
 import { Resizer } from "./Resizer";
+import { persistentState } from "../settings/PersistentState";
 import { stats } from "./Stats";
 
 // The GLSL shaders
@@ -96,8 +97,23 @@ class Sphere extends NecklaceComponent {
       this.#renderer.domElement
     );
     this.#camera.position.z = 50;
+    const stored = persistentState.state.camera;
+    if (stored) {
+      this.#camera.position.fromArray(stored.position);
+      this.#camera.up.fromArray(stored.up);
+      this.#orbitControls.target.fromArray(stored.target);
+    }
     this.#orbitControls.update();
-    this.#orbitControls.addEventListener("change", () => this.#needsRender = true);
+    this.#orbitControls.addEventListener("change", () => {
+      this.#needsRender = true;
+      persistentState.update({
+        camera: {
+          position: this.#camera.position.toArray(),
+          target: this.#orbitControls.target.toArray(),
+          up: this.#camera.up.toArray(),
+        },
+      });
+    });
     this.#resizer.onResize = () => this.#needsRender = true;
     this.container.addEventListener(Events.CREATE_SPHERE.toString(), () =>
       this.createSphere()

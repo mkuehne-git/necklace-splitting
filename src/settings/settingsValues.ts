@@ -7,6 +7,9 @@ const E2E_BUILD = import.meta.env.VITE_E2E === 'true';
 const EPS = 0.001;
 const EPS_SQ = EPS * EPS;
 
+/** The fastest rotation of the animation, per axis, in Hz. */
+const MAX_ROT = 0.5;
+
 /** Must match the u_input length in fragment.glsl */
 const MAX_JEWELS = 32;
 
@@ -83,4 +86,4 @@ function resetAnimation(): void {
   SETTINGS.animation.rotation_z = 0;
 }
 
-export { EPS, EPS_SQ, MAX_JEWELS, MODES, SETTINGS };
+export { EPS, EPS_SQ, MAX_JEWELS, MAX_ROT, MODES, SETTINGS };
