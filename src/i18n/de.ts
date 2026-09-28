@@ -20,7 +20,7 @@ export const de: Catalog = {
         'settings.gauge': 'Anzeige',
         'settings.mesh': 'Gitternetz',
         'settings.faces': 'Flächen',
-        'settings.octantOffset': 'Oktanten-Abstand',
+        'settings.spreadOctants': 'Oktanten spreizen',
         'settings.borsukUlam': 'Borsuk-Ulam-Form',
         'settings.colors': 'Farben',
         'settings.red': 'Rot',

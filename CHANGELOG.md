@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.0.3 · 2026-09-28
+## v1.0.4 · 2026-09-28
+
+* **Settings:** *View › Octant offset* is now called *Spread octants* (German: *Oktanten spreizen*), which says what the slider does: it moves the octants away from the origin.
+
+## v1.0.3 · 2026-09-28 · [36d7635](https://github.com/mkuehne-git/necklace-splitting/commit/36d7635)
 
 * **Settings:** *View › Single thief's area* is now called *Undivided octants* (German: *Ungeteilte Oktanten*). The octants 000 and 111 give the whole necklace to one thief; the new name says what the checkbox shows or hides.
 

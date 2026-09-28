@@ -31,11 +31,11 @@ const live = (page: Page) => page.evaluate(() => ({ ...(window as unknown as { l
 const settle = (page: Page) => page.waitForTimeout(300);
 
 test('rebuilding the sphere does not keep old buffers or programs', async ({ page }) => {
-    // Octant offset rebuilds the sphere's geometry and material (CREATE_SPHERE).
+    // Spread octants rebuilds the sphere's geometry and material (CREATE_SPHERE).
     await openApp(page);
     await openSettings(page);
     await openSection(page, 'View');
-    const offset = field(page, 'Octant offset');
+    const offset = field(page, 'Spread octants');
     await offset.fill('0.5');
     await settle(page);
     const before = await live(page);

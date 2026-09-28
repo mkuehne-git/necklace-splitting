@@ -18,7 +18,7 @@ export const en = {
         'settings.gauge': 'Gauge',
         'settings.mesh': 'Mesh',
         'settings.faces': 'Faces',
-        'settings.octantOffset': 'Octant offset',
+        'settings.spreadOctants': 'Spread octants',
         'settings.borsukUlam': 'Borsuk-Ulam shape',
         'settings.colors': 'Colors',
         'settings.red': 'Red',

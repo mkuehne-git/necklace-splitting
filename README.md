@@ -38,7 +38,7 @@ The necklace is set by a number, whose binary digits are the jewels (lowest digi
 
 The signs of $(x, y, z)$ divide the sphere into eight octants, numbered by the signs as binary digits. Opposite octants swap the thieves. The octants 000 and 111 give everything to one thief: the necklace stays undivided. *View › Undivided octants* hides them.
 
-The octants 010 and 101 show the most variety: whenever two cuts are needed, the solutions lie there. *View › Octant offset* pulls the octants apart.
+The octants 010 and 101 show the most variety: whenever two cuts are needed, the solutions lie there. *View › Spread octants* pulls the octants away from the origin.
 
 ![The octants pulled apart, the undivided octants hidden](./docs/images/necklace-octants.png)
 

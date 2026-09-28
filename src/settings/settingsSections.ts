@@ -88,7 +88,7 @@ function viewSection(body: HTMLElement): Control[] {
         shown(t('settings.gauge'), 'gauge_visible'),
         shown(t('settings.mesh'), 'mesh_visible'),
         shown(t('settings.faces'), 'faces_visible'),
-        range(content, t('settings.octantOffset'), LIMITS.offset_octant, () => SETTINGS.sphere.offset_octant,
+        range(content, t('settings.spreadOctants'), LIMITS.offset_octant, () => SETTINGS.sphere.offset_octant,
             (value) => { SETTINGS.sphere.offset_octant = value; rebuild(); }, formatStep(LIMITS.offset_octant.step)),
         checkbox(content, t('settings.borsukUlam'), () => SETTINGS.sphere.show_borsuk_ulam_proof_shape,
             (value) => { SETTINGS.sphere.show_borsuk_ulam_proof_shape = value; material(); }),
