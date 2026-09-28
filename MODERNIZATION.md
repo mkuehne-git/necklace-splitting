@@ -76,7 +76,7 @@ Ported from Climate Helix in this order; each is a self-contained step.
 6. **Info panel** (optional, new here): the README's explanation of the mapping, the solution band, octants and the Borsuk-Ulam view, in the app behind an info button.
    *Done in v0.10.0* as a full page (like the changelog) behind an info button in the top-right row, since the text is longer than Climate Helix's.
 7. **Localization English/German** (optional, `src/i18n/` with catalogs and `t()`): needs step 4 first, since lil-gui labels are hard to translate.
-   *Done in v0.11.0*, with the informal "du" as in Climate Helix; the German wording awaits the owner's review.
+   *Done in v0.11.0*, with the informal "du" as in Climate Helix; the owner reviewed the German wording in v1.0.1 to v1.0.5.
 
 ## Phase 8: Documentation (patch, then a major version if the owner wants one)
 
@@ -95,10 +95,10 @@ Ported from Climate Helix in this order; each is a self-contained step.
 
 ## Decisions for the owner
 
-Decided 2026-09-27: the owner accepted the plan with its recommendations - copy the Climate Helix modules (1) and replace lil-gui after Phase 6 (2). Also decided 2026-09-27: yes to the info panel and to German (3), so the native settings panel is built with translatable texts. Items 4 and 5 are open.
+Decided 2026-09-27: the owner accepted the plan with its recommendations - copy the Climate Helix modules (1) and replace lil-gui after Phase 6 (2). Also decided 2026-09-27: yes to the info panel and to German (3), so the native settings panel is built with translatable texts. Item 4 was decided 2026-09-28: OrbitControls stay, see `ROADMAP.md`. Item 5 is open.
 
 1. **Share code or copy it?** The common UI modules could live in a shared package, but for two small apps copying the Climate Helix versions and letting them diverge is simpler. Recommendation: copy.
 2. **Replace lil-gui?** It is the largest step (8 folders, ~40 controls) and the prerequisite for localization. Recommendation: yes, after Phase 6.
 3. **German localization and an in-app info panel** - wanted?
-4. **OrbitControls or TrackballControls?** Climate Helix switched for free rotation; for a sphere with a raycast gauge, OrbitControls may stay the better fit.
+4. **OrbitControls or TrackballControls?** Climate Helix switched for free rotation; for a sphere with a raycast gauge, OrbitControls may stay the better fit. Decided: they stay.
 5. **The Borsuk-Ulam shape's mesh artifacts** (README note) are out of scope here unless wanted as a later feature.

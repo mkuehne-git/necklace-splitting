@@ -4,9 +4,11 @@ What remains after the modernization (`MODERNIZATION.md`, phases 0 to 8, v0.4.14
 
 ## Waiting for the owner
 
-1. **German wording.** The owner revised the German info page (`src/i18n/info/info.de.html`, v1.0.1 to v1.0.2) and renamed "Bereich eines Diebs" to "Ungeteilte Oktanten" (v1.0.3), "Oktanten-Abstand" to "Oktanten spreizen" (v1.0.4) and "Anzeige" to "Fairness-Anzeige" (v1.0.5). The other German settings texts (`src/i18n/de.ts`) have not been reviewed as a whole yet. Ask the owner which passages are wrong rather than guessing; the style is the informal "du", as in Climate Helix.
-2. **OrbitControls or TrackballControls** (decision 4 in `MODERNIZATION.md`). Climate Helix switched to trackball controls for free rotation. With OrbitControls the sphere cannot be turned over its poles, but the up direction stays stable, which suits the raycast gauge. Open; the app keeps OrbitControls until decided.
-3. **The Borsuk-Ulam shape's mesh artifacts** (decision 5). The shape moves each vertex of the sphere to g(x), which does not preserve the mesh (see the note in the README). A proper shape would need its own geometry. Out of scope unless wanted as a feature.
+1. **The Borsuk-Ulam shape's mesh artifacts** (decision 5). The shape moves each vertex of the sphere to g(x), which does not preserve the mesh (see the note in the README). A proper shape would need its own geometry. Out of scope unless wanted as a feature.
+
+## Decided
+
+- **OrbitControls stay** (decision 4 in `MODERNIZATION.md`, decided 2026-09-28). Climate Helix switched to TrackballControls because a helix gains from turning freely about every axis. A sphere does not: OrbitControls reach every point of it (straight down onto both poles), and the Rotate animation turns it about all three axes. OrbitControls keep the vertical axis vertical, so the axes and octants the explanation names stay where the viewer expects them. TrackballControls would let the view roll and tip over, and their momentum needs an update every frame, which works against drawing only on change (`#needsRender` in `Sphere.ts`). The pointer's hit test works the same with both.
 
 ## Maintenance
 
