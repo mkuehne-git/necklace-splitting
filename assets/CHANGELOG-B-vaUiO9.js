@@ -1,5 +1,12 @@
 var e=`# Changelog
 
+## v1.1.0 · 2026-09-28 · [f3da2a8](https://github.com/mkuehne-git/necklace-splitting/commit/f3da2a8)
+
+* **Spread octants:** the octants now come apart cleanly. The dark walls, black patches and stair-shaped notches that appeared between them are gone, and the mesh (*Advanced › Mesh*) spreads with them.
+* **Pointing at spread octants:** the white marker and the fairness meter now follow the pointer. Before, they showed the cut of a point on the closed sphere, off by the spread.
+* **Faster:** *Spread octants* and *Undivided octants* move or hide the octants without rebuilding the sphere.
+* **Advanced:** *Simple on-sphere check* is gone; it only worked around the old artifacts.
+
 ## v1.0.8 · 2026-09-28 · [bcf7c5f](https://github.com/mkuehne-git/necklace-splitting/commit/bcf7c5f)
 
 * No functional change. Two old images that nothing used were removed from the repository, and the notes for developers were tidied up.
