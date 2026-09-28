@@ -1,5 +1,9 @@
 var e=`# Changelog
 
+## v1.0.6 · 2026-09-28 · [0ce5604](https://github.com/mkuehne-git/necklace-splitting/commit/0ce5604)
+
+* **Settings:** *Mesh*, *Faces* and the *Colors* of the sphere moved from *View* to *Advanced*. *View* now holds only what helps to explore the necklace splitting; the drawing details are one section further down.
+
 ## v1.0.5 · 2026-09-28 · [d153e32](https://github.com/mkuehne-git/necklace-splitting/commit/d153e32)
 
 * **Settings:** *View › Gauge* is now called *Fairness meter* (German: *Fairness-Anzeige*), after what it measures: how fair the current split is.
