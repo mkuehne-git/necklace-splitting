@@ -16,7 +16,7 @@ $$x^2 + y^2 + z^2 = 1.$$
 
 The sign of each coordinate gives its piece to thief A ($+$) or thief B ($-$).
 
-Point at the sphere: the white marker shows the point, the necklace below shows its cuts, and the gauge how much of each kind of jewel each thief gets.
+Point at the sphere: the white marker shows the point, the necklace below it the cuts, and the fairness meter how fair the split is. One line per thief shows how much of each kind of jewel that thief gets; the dotted arc marks a fair share, and the outer arc turns from red to green as the split gets fairer.
 
 The colors on the sphere show how much thief A gets of each kind: red for the first kind, green for the second. Bright yellow, a mix of both, means thief A gets most of both kinds.
 
@@ -28,7 +28,7 @@ $$\sum_{c \in \lbrace x, y, z \rbrace,\ c > 0} c^2 = \frac{1}{2}.$$
 
 The orange band around the sphere marks these points. Whatever the jewels, every solution lies on the band (*Necklace › Solution band*).
 
-The fair splits of the current necklace are marked in blue (*Necklace › Solutions*; *Epsilon* sets how far from an exact solution a split still counts as fair). They can be found in linear time: place the first cut after each jewel in turn; the second cut then follows directly, since the piece between the cuts must be half the necklace. In the picture at the top, the pointer rests on one of the solutions: the gauge shows exactly half of each kind for each thief.
+The fair splits of the current necklace are marked in blue (*Necklace › Solutions*; *Epsilon* sets how far from an exact solution a split still counts as fair). They can be found in linear time: place the first cut after each jewel in turn; the second cut then follows directly, since the piece between the cuts must be half the necklace. In the picture at the top, the pointer rests on one of the solutions: the fairness meter shows exactly half of each kind for each thief.
 
 ![The solutions, with the Necklace settings](./docs/images/necklace-with-solution.png)
 

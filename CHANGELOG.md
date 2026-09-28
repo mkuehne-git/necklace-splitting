@@ -1,6 +1,11 @@
 # Changelog
 
-## v1.0.4 · 2026-09-28
+## v1.0.5 · 2026-09-28
+
+* **Settings:** *View › Gauge* is now called *Fairness meter* (German: *Fairness-Anzeige*), after what it measures: how fair the current split is.
+* **About this app:** explains the parts of the fairness meter: one line per thief, the dotted arc for a fair share, and the outer arc that turns from red to green as the split gets fairer.
+
+## v1.0.4 · 2026-09-28 · [63f3c42](https://github.com/mkuehne-git/necklace-splitting/commit/63f3c42)
 
 * **Settings:** *View › Octant offset* is now called *Spread octants* (German: *Oktanten spreizen*), which says what the slider does: it moves the octants away from the origin.
 

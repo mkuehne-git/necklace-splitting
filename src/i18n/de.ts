@@ -17,7 +17,7 @@ export const de: Catalog = {
         'settings.undividedOctants': 'Ungeteilte Oktanten',
         'settings.axes': 'Achsen',
         'settings.necklaceVisible': 'Halskette',
-        'settings.gauge': 'Anzeige',
+        'settings.fairnessMeter': 'Fairness-Anzeige',
         'settings.mesh': 'Gitternetz',
         'settings.faces': 'Flächen',
         'settings.spreadOctants': 'Oktanten spreizen',

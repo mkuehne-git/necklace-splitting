@@ -85,7 +85,7 @@ function viewSection(body: HTMLElement): Control[] {
             (value) => { view.show_single_thiefs_region = value; material(); }),
         shown(t('settings.axes'), 'axes_visible'),
         shown(t('settings.necklaceVisible'), 'necklace_visible'),
-        shown(t('settings.gauge'), 'gauge_visible'),
+        shown(t('settings.fairnessMeter'), 'gauge_visible'),
         shown(t('settings.mesh'), 'mesh_visible'),
         shown(t('settings.faces'), 'faces_visible'),
         range(content, t('settings.spreadOctants'), LIMITS.offset_octant, () => SETTINGS.sphere.offset_octant,

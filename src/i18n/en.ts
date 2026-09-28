@@ -15,7 +15,7 @@ export const en = {
         'settings.undividedOctants': 'Undivided octants',
         'settings.axes': 'Axes',
         'settings.necklaceVisible': 'Necklace',
-        'settings.gauge': 'Gauge',
+        'settings.fairnessMeter': 'Fairness meter',
         'settings.mesh': 'Mesh',
         'settings.faces': 'Faces',
         'settings.spreadOctants': 'Spread octants',

@@ -9,7 +9,7 @@ The README shows five screenshots in `docs/images/`. `npm run screenshots` retak
 
 | Image | Shows | Viewport |
 | --- | --- | --- |
-| `necklace.png` | The sphere seen from (1, −1, 1), the pointer on a solution: the gauge shows a fair split | 1366 x 632 |
+| `necklace.png` | The sphere seen from (1, −1, 1), the pointer on a solution: the fairness meter shows a fair split | 1366 x 632 |
 | `necklace-with-solution.png` | The same, with the settings open at Necklace | 1366 x 632 |
 | `necklace-octants.png` | Octants spread 1.6, undivided octants hidden, settings open at View | 1366 x 632 |
 | `necklace-phone.png` | The app on a phone, the pointer on a solution | 390 x 844 |
@@ -19,7 +19,7 @@ The README shows five screenshots in `docs/images/`. `npm run screenshots` retak
 
 ## 1. When
 
-- A visible change to the sphere, the necklace, the gauge or the settings panel that a screenshot shows.
+- A visible change to the sphere, the necklace, the fairness meter or the settings panel that a screenshot shows.
 - A version bump that the screenshots should show: the version label is in every image. Retake them **after** updating `package.json`.
 - Not for every patch release: an outdated version label alone is no reason.
 
@@ -33,7 +33,7 @@ The README shows five screenshots in `docs/images/`. `npm run screenshots` retak
 
 Open every changed image (the Read tool shows images) and check:
 
-- The white marker sits on a blue solution marker in `necklace.png` and `necklace-phone.png`, and the gauge is split exactly in half.
+- The white marker sits on a blue solution marker in `necklace.png` and `necklace-phone.png`, and the fairness meter shows an exactly fair split.
 - The sphere is not cropped (the phone uses the default camera distance, 50).
 - The version label shows the new version.
 
