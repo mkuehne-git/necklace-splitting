@@ -62,7 +62,7 @@ must have at least one zero. Along a circle around the sphere, $g$ forms a close
 
 <img src="./docs/images/necklace-phone.png" alt="The app on a phone" width="195"> <img src="./docs/images/necklace-phone-settings.png" alt="The settings on a phone" width="195">
 
-- **Settings** (gear button, or `h`): the necklace, what the view shows, the sphere's colors, a rotation animation and screen captures. The app remembers them; *Restore defaults* goes back to the original ones.
+- **Settings** (gear button, or `h`): the necklace, what the view shows, a rotation animation and screen captures; *Advanced* holds the sphere's mesh and colors. The app remembers them; *Restore defaults* goes back to the original ones.
 - **About this app** (info button): the explanation above, in the app.
 - **Language**: the app follows the browser's language (English or German); *Language* at the bottom of the settings chooses one.
 - **Changelog**: the version number in the lower right corner shows what changed; after an update, the app shows once what is new.

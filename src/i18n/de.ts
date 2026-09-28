@@ -40,7 +40,7 @@ export const de: Catalog = {
         'settings.captureNecklace': 'Halskette',
         'settings.captureButton': 'Bild speichern (Alt+S)',
         'settings.advanced': 'Erweitert',
-        'settings.advancedHint': 'Kugel, Monitor',
+        'settings.advancedHint': 'Kugel, Farben, Monitor',
         'settings.advancedNote': 'Die Standardwerte passen für die meisten Geräte. Mehr Segmente zeichnen eine glattere Kugel, brauchen aber ein schnelleres Gerät.',
         'settings.radius': 'Radius',
         'settings.segments': 'Segmente',

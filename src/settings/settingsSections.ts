@@ -74,37 +74,23 @@ function necklaceSection(body: HTMLElement, refresh: () => void): Control[] {
     ];
 }
 
-/** View: what is shown of the sphere and the necklace, and the sphere's colors. */
+/** View: what is shown of the sphere and the necklace. */
 function viewSection(body: HTMLElement): Control[] {
     const content = section(body, t('settings.view'));
     const view = SETTINGS.view;
-    const shown = (text: string, key: 'axes_visible' | 'necklace_visible' | 'gauge_visible' | 'mesh_visible' | 'faces_visible') =>
+    const shown = (text: string, key: 'axes_visible' | 'necklace_visible' | 'gauge_visible') =>
         checkbox(content, text, () => view[key], (value) => { view[key] = value; visibility(); });
-    const controls = [
+    return [
         checkbox(content, t('settings.undividedOctants'), () => view.show_single_thiefs_region,
             (value) => { view.show_single_thiefs_region = value; material(); }),
         shown(t('settings.axes'), 'axes_visible'),
         shown(t('settings.necklaceVisible'), 'necklace_visible'),
         shown(t('settings.fairnessMeter'), 'gauge_visible'),
-        shown(t('settings.mesh'), 'mesh_visible'),
-        shown(t('settings.faces'), 'faces_visible'),
         range(content, t('settings.spreadOctants'), LIMITS.offset_octant, () => SETTINGS.sphere.offset_octant,
             (value) => { SETTINGS.sphere.offset_octant = value; rebuild(); }, formatStep(LIMITS.offset_octant.step)),
         checkbox(content, t('settings.borsukUlam'), () => SETTINGS.sphere.show_borsuk_ulam_proof_shape,
             (value) => { SETTINGS.sphere.show_borsuk_ulam_proof_shape = value; material(); }),
     ];
-    subheading(content, t('settings.colors'));
-    const color = SETTINGS.color;
-    const scale = (text: string, key: 'scale_red' | 'scale_green' | 'scale_blue' | 'alpha', apply: () => void) =>
-        range(content, text, LIMITS.scale, () => color[key], (value) => { color[key] = value; apply(); }, formatStep(LIMITS.scale.step));
-    controls.push(
-        scale(t('settings.red'), 'scale_red', material),
-        scale(t('settings.green'), 'scale_green', material),
-        scale(t('settings.blue'), 'scale_blue', material),
-        // Opacity changes the wireframe's transparency too, which needs a rebuild.
-        scale(t('settings.alpha'), 'alpha', rebuild),
-    );
-    return controls;
 }
 
 /** Animation: the rotation of the sphere; the render loop reads these every frame. */
@@ -143,7 +129,7 @@ function captureSection(body: HTMLElement): Control[] {
     return [target];
 }
 
-/** Advanced, collapsed: the sphere's mesh and the frame rate monitor - the defaults suit most devices. */
+/** Advanced, collapsed: the sphere's mesh and colors and the frame rate monitor - the defaults suit most devices. */
 function advancedSection(body: HTMLElement): Control[] {
     const content = section(body, t('settings.advanced'), { hint: t('settings.advancedHint') });
     const note = document.createElement('p');
@@ -151,14 +137,30 @@ function advancedSection(body: HTMLElement): Control[] {
     note.textContent = t('settings.advancedNote');
     content.appendChild(note);
     const sphere = SETTINGS.sphere;
-    return [
+    const view = SETTINGS.view;
+    const shown = (text: string, key: 'mesh_visible' | 'faces_visible' | 'stats_monitor_visible') =>
+        checkbox(content, text, () => view[key], (value) => { view[key] = value; visibility(); });
+    const controls = [
         range(content, t('settings.radius'), LIMITS.radius, () => sphere.radius, (value) => { sphere.radius = value; rebuild(); }),
         range(content, t('settings.segments'), LIMITS.segments, () => sphere.segments, (value) => { sphere.segments = value; rebuild(); }),
+        shown(t('settings.mesh'), 'mesh_visible'),
+        shown(t('settings.faces'), 'faces_visible'),
         checkbox(content, t('settings.badCheck'), () => sphere.use_bad_on_sphere_check,
             (value) => { sphere.use_bad_on_sphere_check = value; material(); }),
-        checkbox(content, t('settings.fpsMonitor'), () => SETTINGS.view.stats_monitor_visible,
-            (value) => { SETTINGS.view.stats_monitor_visible = value; Events.dispatchEvent(Events.UPDATE_VISIBLE); }),
+        shown(t('settings.fpsMonitor'), 'stats_monitor_visible'),
     ];
+    subheading(content, t('settings.colors'));
+    const color = SETTINGS.color;
+    const scale = (text: string, key: 'scale_red' | 'scale_green' | 'scale_blue' | 'alpha', apply: () => void) =>
+        range(content, text, LIMITS.scale, () => color[key], (value) => { color[key] = value; apply(); }, formatStep(LIMITS.scale.step));
+    controls.push(
+        scale(t('settings.red'), 'scale_red', material),
+        scale(t('settings.green'), 'scale_green', material),
+        scale(t('settings.blue'), 'scale_blue', material),
+        // Opacity changes the wireframe's transparency too, which needs a rebuild.
+        scale(t('settings.alpha'), 'alpha', rebuild),
+    );
+    return controls;
 }
 
 function footerButton(label: string, onClick: () => void): HTMLButtonElement {

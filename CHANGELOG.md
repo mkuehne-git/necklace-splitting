@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.0.5 · 2026-09-28
+## v1.0.6 · 2026-09-28
+
+* **Settings:** *Mesh*, *Faces* and the *Colors* of the sphere moved from *View* to *Advanced*. *View* now holds only what helps to explore the necklace splitting; the drawing details are one section further down.
+
+## v1.0.5 · 2026-09-28 · [d153e32](https://github.com/mkuehne-git/necklace-splitting/commit/d153e32)
 
 * **Settings:** *View › Gauge* is now called *Fairness meter* (German: *Fairness-Anzeige*), after what it measures: how fair the current split is.
 * **About this app:** explains the parts of the fairness meter: one line per thief, the dotted arc for a fair share, and the outer arc that turns from red to green as the split gets fairer.

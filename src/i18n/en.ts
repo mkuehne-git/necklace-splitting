@@ -38,7 +38,7 @@ export const en = {
         'settings.captureNecklace': 'Necklace',
         'settings.captureButton': 'Save image (Alt+S)',
         'settings.advanced': 'Advanced',
-        'settings.advancedHint': 'Sphere, monitor',
+        'settings.advancedHint': 'Sphere, colors, monitor',
         'settings.advancedNote': 'The defaults suit most devices. More segments draw a smoother sphere, but need a faster device.',
         'settings.radius': 'Radius',
         'settings.segments': 'Segments',
