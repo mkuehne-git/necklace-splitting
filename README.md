@@ -26,7 +26,7 @@ A split can only be fair if both thieves get equally long pieces of the necklace
 
 $$\sum_{c \in \lbrace x, y, z \rbrace,\ c > 0} c^2 = \frac{1}{2}.$$
 
-The orange band around the sphere marks these points, whatever the jewels (*Necklace › Solution band*); every solution lies on it.
+The orange band around the sphere marks these points. Whatever the jewels, every solution lies on the band (*Necklace › Solution band*).
 
 The fair splits of the current necklace are marked in blue (*Necklace › Solutions*; *Epsilon* sets how far from an exact solution a split still counts as fair). They can be found in linear time: place the first cut after each jewel in turn; the second cut then follows directly, since the piece between the cuts must be half the necklace. In the picture at the top, the pointer rests on one of the solutions: the gauge shows exactly half of each kind for each thief.
 
@@ -48,11 +48,11 @@ From [6:19](https://youtu.be/yuVqxCSsE7c?t=379) on, the video explains why the B
 
 $$f: S^2 \to \mathbb{R}^2$$
 
-be a continuous map of the sphere to the plane - here, the shares of each kind of jewel that thief A gets. The opposite point $-\mathbf{x}$ makes the same cuts with the thieves swapped, so $f(-\mathbf{x})$ is what thief B gets, and a split is fair exactly when $f(\mathbf{x}) = f(-\mathbf{x})$. It is therefore enough to show that
+be a continuous map of the sphere to the plane - here, the shares of each kind of jewel that thief A gets. The opposite point $-\mathbf{x}$ makes the same cuts with the thieves swapped, so $f(-\mathbf{x})$ is what thief B gets. A split is fair exactly when $f(\mathbf{x}) = f(-\mathbf{x})$. We have to prove that there is at least one such point. In other words, the auxiliary function
 
 $$g(\mathbf{x}) = f(\mathbf{x}) - f(-\mathbf{x})$$
 
-has a zero. Along a circle around the sphere, $g$ forms a closed loop around the origin, because $g$ is continuous and $g(-\mathbf{x}) = -g(\mathbf{x})$. Moving the circle towards a pole shrinks the loop continuously to a single point, so on the way the loop must cross the origin.
+must have at least one zero. Along a circle around the sphere, $g$ forms a closed loop around the origin, because $g$ is continuous and $g(-\mathbf{x}) = -g(\mathbf{x})$. Moving the circle towards a pole shrinks the loop continuously to a single point, so on the way the loop must cross the origin.
 
 *View › Borsuk-Ulam shape* shows the 3D shape formed by $g(\mathbf{x})$ as the circle moves.
 

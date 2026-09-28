@@ -16,7 +16,7 @@
 
 <h2>Lösungen</h2>
 <p>Eine gerechte Teilung kann es nur geben, wenn beide Diebe gleich lange Stücke der Halskette bekommen. Das orange Lösungsband um die Kugel visualisiert dies.
-    Unabhängig von der konkreten Verteilung der Juwelen-Typen (<em>Halskette › Lösungsband</em>); jede Lösung liegt auf dem Lösungsband.</p>
+    Unabhängig von der konkreten Verteilung der Juwelen-Typen gilt: Alle Lösungen des Teilungsproblems liegen auf dem Lösungsband (<em>Halskette › Lösungsband</em>).</p>
 <p>Die gerechten Teilungen der aktuellen Halskette sind blau markiert (<em>Halskette › Lösungen</em>; <em>Epsilon</em> legt die Umgebung um die exakte Lösung fest,
     innerhalb derer die Teilung noch als gerecht gilt). Die Lösung lässt sich in linearer Zeit finden, indem man nach jedem Juwel den ersten Teilungsschnitt durchführt.
     Der zweite Schnitt lässt sich dann direkt berechnen.</p>
@@ -33,8 +33,9 @@
 <h2>Warum es immer eine Lösung gibt</h2>
 <p>Ab <a target="_blank" rel="noopener noreferrer" href="https://youtu.be/yuVqxCSsE7c?t=379">6:19</a> erklärt das Video [3],
     warum der Satz von Borsuk-Ulam gilt. Sei f(x) eine stetige Abbildung der Kugel in die Ebene - hier die Anteile von Dieb A.
-    Der gegenüberliegende Punkt −x ergibt dieselben Schnitte mit vertauschten Dieben, f(−x) ist also der Anteil von Dieb B,
-    und eine Teilung ist genau dann gerecht, wenn f(x) = f(−x) gilt. Es genügt daher zu zeigen, dass g(x) = f(x) − f(−x) eine Nullstelle hat.</p>
+    Der gegenüberliegende Punkt −x ergibt dieselben Schnitte mit vertauschten Dieben, f(−x) ist also der Anteil von Dieb B.
+    Eine Teilung ist genau dann gerecht, wenn f(x) = f(−x) gilt. Wir müssen beweisen, dass es mindestens einen solchen Punkt gibt.
+    Anders formuliert: Die Hilfsfunktion g(x) = f(x) − f(−x) muss mindestens eine Nullstelle haben.</p>
 <p>Entlang eines Kreises um die Kugel bildet g(x) eine geschlossene Schleife um den Ursprung, weil g stetig ist und g(−x) = −g(x) gilt.
     Wandert der Kreis zu einem Pol, schrumpft die Schleife stetig zu einem einzigen Punkt - unterwegs muss sie also den Ursprung kreuzen.</p>
 <p><em>Ansicht › Borsuk-Ulam-Form</em> zeigt die 3D-Form, die g(x) bildet, während der Kreis wandert. Sie ist ein grober erster Eindruck:

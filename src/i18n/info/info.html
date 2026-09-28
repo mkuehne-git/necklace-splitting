@@ -15,8 +15,8 @@
     Bright yellow, a mix of both, means thief A gets most of both kinds.</p>
 
 <h2>Solutions</h2>
-<p>A split can only be fair if both thieves get equally long pieces of the necklace. The orange band around the sphere marks these points,
-    whatever the jewels (<em>Necklace › Solution band</em>); every solution lies on it.</p>
+<p>A split can only be fair if both thieves get equally long pieces of the necklace. The orange band around the sphere marks these points.
+    Whatever the jewels, every solution lies on the band (<em>Necklace › Solution band</em>).</p>
 <p>The fair splits of the current necklace are marked in blue (<em>Necklace › Solutions</em>; <em>Epsilon</em> sets how far from an exact solution
     a split still counts as fair). They can be found in linear time: place the first cut after each jewel in turn; the second cut then follows directly.</p>
 <p>The necklace is set in the settings by a number, whose binary digits are the jewels (lowest digit first), or by a text,
@@ -31,8 +31,9 @@
 <h2>Why a solution always exists</h2>
 <p>From <a target="_blank" rel="noopener noreferrer" href="https://youtu.be/yuVqxCSsE7c?t=379">6:19</a> on, the video [3] explains why the
     Borsuk-Ulam theorem is true. Let f(x) map the sphere continuously to the plane - here, the shares of thief A.
-    The opposite point −x makes the same cuts with the thieves swapped, so f(−x) is what thief B gets, and a split is fair
-    exactly when f(x) = f(−x). It is therefore enough to show that g(x) = f(x) − f(−x) has a zero.</p>
+    The opposite point −x makes the same cuts with the thieves swapped, so f(−x) is what thief B gets.
+    A split is fair exactly when f(x) = f(−x). We have to prove that there is at least one such point.
+    In other words, the auxiliary function g(x) = f(x) − f(−x) must have at least one zero.</p>
 <p>Along a circle around the sphere, g(x) forms a closed loop around the origin, because g is continuous and g(−x) = −g(x).
     Moving the circle towards a pole shrinks the loop continuously to a single point, so on the way the loop must cross the origin.</p>
 <p><em>View › Borsuk-Ulam shape</em> shows the 3D shape formed by g(x) as the circle moves. It is a rough first view:

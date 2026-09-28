@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.0.1 · 2026-09-28
+## v1.0.2 · 2026-09-28
+
+* **About this app:** the argument for why a fair split always exists is laid out step by step: what has to be proved, and how the auxiliary function g(x) expresses it. The solution band is described more clearly.
+
+## v1.0.1 · 2026-09-28 · [64d97f6](https://github.com/mkuehne-git/necklace-splitting/commit/64d97f6)
 
 * **About this app:** the explanation is clearer and more precise. Equally long pieces are now named as a condition a fair split needs, not as enough for one; the band is called by its color; *Epsilon* and how the solutions are found are explained better; and the proof now says why a zero of g(x) is a fair split. The German text was revised throughout.
 
