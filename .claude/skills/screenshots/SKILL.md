@@ -11,7 +11,7 @@ The README shows five screenshots in `docs/images/`. `npm run screenshots` retak
 | --- | --- | --- |
 | `necklace.png` | The sphere seen from (1, −1, 1), the pointer on a solution: the gauge shows a fair split | 1366 x 632 |
 | `necklace-with-solution.png` | The same, with the settings open at Necklace | 1366 x 632 |
-| `necklace-octants.png` | Octant offset 1.6, single thief's area hidden, settings open at View | 1366 x 632 |
+| `necklace-octants.png` | Octant offset 1.6, undivided octants hidden, settings open at View | 1366 x 632 |
 | `necklace-phone.png` | The app on a phone, the pointer on a solution | 390 x 844 |
 | `necklace-phone-settings.png` | The settings on a phone | 390 x 844 |
 

@@ -81,7 +81,7 @@ function viewSection(body: HTMLElement): Control[] {
     const shown = (text: string, key: 'axes_visible' | 'necklace_visible' | 'gauge_visible' | 'mesh_visible' | 'faces_visible') =>
         checkbox(content, text, () => view[key], (value) => { view[key] = value; visibility(); });
     const controls = [
-        checkbox(content, t('settings.singleThiefsArea'), () => view.show_single_thiefs_region,
+        checkbox(content, t('settings.undividedOctants'), () => view.show_single_thiefs_region,
             (value) => { view.show_single_thiefs_region = value; material(); }),
         shown(t('settings.axes'), 'axes_visible'),
         shown(t('settings.necklaceVisible'), 'necklace_visible'),

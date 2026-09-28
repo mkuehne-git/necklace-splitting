@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.0.2 · 2026-09-28
+## v1.0.3 · 2026-09-28
+
+* **Settings:** *View › Single thief's area* is now called *Undivided octants* (German: *Ungeteilte Oktanten*). The octants 000 and 111 give the whole necklace to one thief; the new name says what the checkbox shows or hides.
+
+## v1.0.2 · 2026-09-28 · [a7bc821](https://github.com/mkuehne-git/necklace-splitting/commit/a7bc821)
 
 * **About this app:** the argument for why a fair split always exists is laid out step by step: what has to be proved, and how the auxiliary function g(x) expresses it. The solution band is described more clearly.
 

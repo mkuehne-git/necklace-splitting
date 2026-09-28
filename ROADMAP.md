@@ -4,7 +4,7 @@ What remains after the modernization (`MODERNIZATION.md`, phases 0 to 8, v0.4.14
 
 ## Waiting for the owner
 
-1. **German wording.** The owner found the German info page (`src/i18n/info/info.de.html`) partly broken German. The German settings texts (`src/i18n/de.ts`) have not been reviewed yet either; terms that were uncertain: "Bereich eines Diebs" (single thief's area), "Oktanten-Abstand", "Anzeige" (the gauge). Ask the owner which passages are wrong rather than guessing; the style is the informal "du", as in Climate Helix.
+1. **German wording.** The owner revised the German info page (`src/i18n/info/info.de.html`, v1.0.1 to v1.0.2) and renamed "Bereich eines Diebs" to "Ungeteilte Oktanten" (v1.0.3). The German settings texts (`src/i18n/de.ts`) have not been reviewed as a whole yet; terms that were uncertain: "Oktanten-Abstand", "Anzeige" (the gauge). Ask the owner which passages are wrong rather than guessing; the style is the informal "du", as in Climate Helix.
 2. **OrbitControls or TrackballControls** (decision 4 in `MODERNIZATION.md`). Climate Helix switched to trackball controls for free rotation. With OrbitControls the sphere cannot be turned over its poles, but the up direction stays stable, which suits the raycast gauge. Open; the app keeps OrbitControls until decided.
 3. **The Borsuk-Ulam shape's mesh artifacts** (decision 5). The shape moves each vertex of the sphere to g(x), which does not preserve the mesh (see the note in the README). A proper shape would need its own geometry. Out of scope unless wanted as a feature.
 

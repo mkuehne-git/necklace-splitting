@@ -12,7 +12,7 @@ export const en = {
         'settings.solutions': 'Solutions',
         'settings.epsilon': 'Epsilon',
         'settings.view': 'View',
-        'settings.singleThiefsArea': 'Single thief\'s area',
+        'settings.undividedOctants': 'Undivided octants',
         'settings.axes': 'Axes',
         'settings.necklaceVisible': 'Necklace',
         'settings.gauge': 'Gauge',

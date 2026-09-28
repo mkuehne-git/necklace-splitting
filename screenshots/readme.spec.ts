@@ -78,7 +78,7 @@ test('the octants pulled apart', async ({ page }) => {
     await openSettings(page);
     await page.locator('#settings-panel summary', { hasText: 'Necklace' }).click();
     await openSection(page, 'View');
-    await expect(field(page, 'Single thief\'s area')).not.toBeChecked();
+    await expect(field(page, 'Undivided octants')).not.toBeChecked();
     await page.mouse.move(1, 1);
     await shoot(page, 'necklace-octants');
 });

@@ -14,7 +14,7 @@ export const de: Catalog = {
         'settings.solutions': 'Lösungen',
         'settings.epsilon': 'Epsilon',
         'settings.view': 'Ansicht',
-        'settings.singleThiefsArea': 'Bereich eines Diebs',
+        'settings.undividedOctants': 'Ungeteilte Oktanten',
         'settings.axes': 'Achsen',
         'settings.necklaceVisible': 'Halskette',
         'settings.gauge': 'Anzeige',
