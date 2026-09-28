@@ -1,5 +1,9 @@
 var e=`# Changelog
 
+## v1.0.7 · 2026-09-28 · [ab904ec](https://github.com/mkuehne-git/necklace-splitting/commit/ab904ec)
+
+* No functional change. The sphere keeps its current way of turning by drag; the decision is recorded in the roadmap.
+
 ## v1.0.6 · 2026-09-28 · [0ce5604](https://github.com/mkuehne-git/necklace-splitting/commit/0ce5604)
 
 * **Settings:** *Mesh*, *Faces* and the *Colors* of the sphere moved from *View* to *Advanced*. *View* now holds only what helps to explore the necklace splitting; the drawing details are one section further down.
