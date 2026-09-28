@@ -1,27 +1,27 @@
 <h1>Necklace Splitting</h1>
-<p>Zwei Diebe haben eine Halskette mit Juwelen zweier Sorten gestohlen und wollen sie gerecht teilen: Jeder bekommt die Hälfte jeder Sorte.
-    Das <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Necklace_splitting_problem">Halsketten-Teilungsproblem</a> [1]
-    fragt, wie viele Schnitte sie dafür brauchen. Bei zwei Sorten reichen immer zwei Schnitte - eine Folge des
+<p>Zwei Diebe haben eine Halskette, die aus zwei Arten von Juwelen besteht, und wollen sie gerecht teilen: Jeder bekommt die Hälfte jeder Sorte.
+    Bei dem <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Necklace_splitting_problem">Halsketten-Teilungsproblem</a> [1]
+    geht es um die Frage: Wie viele Schnitte werden dafür minimal benötigt? Bei zwei Sorten reichen immer zwei Schnitte - eine Folge des
     <a target="_blank" rel="noopener noreferrer" href="https://de.wikipedia.org/wiki/Satz_von_Borsuk-Ulam">Satzes von Borsuk-Ulam</a> [2],
     wie das Video <a target="_blank" rel="noopener noreferrer" href="https://youtu.be/yuVqxCSsE7c">The Borsuk-Ulam theorem and stolen necklaces</a> [3] erklärt.
     Diese App zeigt, wie sich die Halskette auf eine Kugel abbilden lässt.</p>
 
 <h2>Die Kugel</h2>
 <p>Jeder Punkt (x, y, z) der Kugel ist ein Paar von Schnitten: Sie teilen die Halskette in bis zu drei Stücke der Längen x², y² und z²,
-    die zusammen die ganze Halskette ergeben. Das Vorzeichen jeder Koordinate gibt ihr Stück Dieb A (+) oder Dieb B (−).</p>
-<p>Zeig auf die Kugel: Die weiße Markierung zeigt den Punkt, die Halskette darunter seine Schnitte und die Anzeige,
-    wie viel jeder Dieb von jeder Sorte bekommt.</p>
-<p>Die Farben zeigen, wie viel Dieb A von jeder Sorte bekommt: Rot für die erste Sorte, Grün für die zweite.
-    Helles Gelb, eine Mischung aus beiden, heißt, dass Dieb A von beiden Sorten den größten Teil bekommt.</p>
+    die zusammen die ganze Halskette ergeben. Das Vorzeichen jeder Koordinate gibt die zugehörige Teilkette Dieb A (+) oder Dieb B (−).</p>
+<p>Positionsmarker auf der Kugel: Die weiße Markierung zeigt auf einen Punkt der Kugeloberfläche, die Halskette darunter seine Schnitte, gefolgt von einer Anzeige,
+    die darstellt, wie viel jeder Dieb von jedem Juwelen-Typ bekommt.</p>
+<p>Die Farben auf der Kugeloberfläche visualisieren, wie viel Dieb A von jedem Juwelen-Typ bekommt: Rot für die erste Sorte, Grün für die zweite.
+    Helles Gelb, eine Mischung aus beiden Farben, bedeutet, dass Dieb A von beiden Juwelen-Typen den größten Teil bekommt.</p>
 
 <h2>Lösungen</h2>
-<p>Eine Teilung ist gerecht, wenn beide Diebe gleich lange Stücke der Halskette bekommen. Das Band um die Kugel markiert diese Punkte,
-    unabhängig von den Juwelen (<em>Halskette › Lösungsband</em>); jede Lösung liegt darauf.</p>
-<p>Die gerechten Teilungen der aktuellen Halskette sind blau markiert (<em>Halskette › Lösungen</em>; <em>Epsilon</em> legt fest,
-    wie nah an gerecht noch zählt). Aus dem ersten Schnitt folgt der zweite, daher lassen sie sich in linearer Zeit finden,
-    indem man die Juwelen einmal durchgeht.</p>
-<p>Die Halskette wird in den Einstellungen durch eine Zahl festgelegt, deren Binärziffern die Juwelen sind (niedrigste Ziffer zuerst),
-    oder durch einen Text, dessen Zeichen mit ihren Binärziffern die Juwelen ergeben. <em>Diskret</em> zählt ganze Juwelen;
+<p>Eine gerechte Teilung kann es nur geben, wenn beide Diebe gleich lange Stücke der Halskette bekommen. Das orange Lösungsband um die Kugel visualisiert dies.
+    Unabhängig von der konkreten Verteilung der Juwelen-Typen (<em>Halskette › Lösungsband</em>); jede Lösung liegt auf dem Lösungsband.</p>
+<p>Die gerechten Teilungen der aktuellen Halskette sind blau markiert (<em>Halskette › Lösungen</em>; <em>Epsilon</em> legt die Umgebung um die exakte Lösung fest,
+    innerhalb derer die Teilung noch als gerecht gilt). Die Lösung lässt sich in linearer Zeit finden, indem man nach jedem Juwel den ersten Teilungsschnitt durchführt.
+    Der zweite Schnitt lässt sich dann direkt berechnen.</p>
+<p>Die Halskette wird in den Einstellungen durch eine Zahl festgelegt, deren Binärziffern die Juwelen repräsentieren (niedrigste Ziffer zuerst),
+    oder durch einen Text, dessen Zeichen mit ihren Binärziffern die Juwelensequenz ergeben. <em>Diskret</em> zählt ganze Juwelen;
     ohne diese Option kann ein Schnitt ein Juwel teilen.</p>
 
 <h2>Oktanten</h2>
@@ -33,7 +33,8 @@
 <h2>Warum es immer eine Lösung gibt</h2>
 <p>Ab <a target="_blank" rel="noopener noreferrer" href="https://youtu.be/yuVqxCSsE7c?t=379">6:19</a> erklärt das Video [3],
     warum der Satz von Borsuk-Ulam gilt. Sei f(x) eine stetige Abbildung der Kugel in die Ebene - hier die Anteile von Dieb A.
-    Es genügt zu zeigen, dass g(x) = f(x) − f(−x) eine Nullstelle hat: x und −x sind gegenüberliegende Punkte.</p>
+    Der gegenüberliegende Punkt −x ergibt dieselben Schnitte mit vertauschten Dieben, f(−x) ist also der Anteil von Dieb B,
+    und eine Teilung ist genau dann gerecht, wenn f(x) = f(−x) gilt. Es genügt daher zu zeigen, dass g(x) = f(x) − f(−x) eine Nullstelle hat.</p>
 <p>Entlang eines Kreises um die Kugel bildet g(x) eine geschlossene Schleife um den Ursprung, weil g stetig ist und g(−x) = −g(x) gilt.
     Wandert der Kreis zu einem Pol, schrumpft die Schleife stetig zu einem einzigen Punkt - unterwegs muss sie also den Ursprung kreuzen.</p>
 <p><em>Ansicht › Borsuk-Ulam-Form</em> zeigt die 3D-Form, die g(x) bildet, während der Kreis wandert. Sie ist ein grober erster Eindruck:

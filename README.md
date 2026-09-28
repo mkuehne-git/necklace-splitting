@@ -10,25 +10,33 @@ After watching the [3Blue1Brown](https://www.youtube.com/@3blue1brown) video [Th
 
 ## The sphere
 
-Two thieves want to share a necklace with jewels of two kinds fairly, each getting half of each kind. Each point (x, y, z) on the sphere is a pair of cuts: they split the necklace into up to three pieces of the lengths x², y² and z². The sign of each coordinate gives its piece to thief A (+) or thief B (−).
+Two thieves want to share a necklace with jewels of two kinds fairly, each getting half of each kind. The necklace has length 1, and each point $(x, y, z)$ on the unit sphere is a pair of cuts: they split the necklace into up to three pieces of the lengths $x^2$, $y^2$ and $z^2$, which add up to the whole necklace because
+
+$$x^2 + y^2 + z^2 = 1.$$
+
+The sign of each coordinate gives its piece to thief A ($+$) or thief B ($-$).
 
 Point at the sphere: the white marker shows the point, the necklace below shows its cuts, and the gauge how much of each kind of jewel each thief gets.
 
-The colors show how much thief A gets of each kind: red for the first kind, green for the second. Bright yellow, a mix of both, means thief A gets most of both kinds.
+The colors on the sphere show how much thief A gets of each kind: red for the first kind, green for the second. Bright yellow, a mix of both, means thief A gets most of both kinds.
 
 ## Solving the necklace splitting problem
 
-A split is fair when both thieves get equally long pieces of the necklace. The orange band around the sphere marks these points, whatever the jewels (*Necklace › Solution band*); every solution lies on it.
+A split can only be fair if both thieves get equally long pieces of the necklace, that is, if the pieces of thief A add up to half of it:
 
-Given the first cut, the second one follows, so the solutions of a necklace can be found in linear time by going through its jewels. They are marked in blue (*Necklace › Solutions*). In the picture at the top, the pointer rests on one of them: the gauge shows exactly half of each kind for each thief.
+$$\sum_{c \in \lbrace x, y, z \rbrace,\ c > 0} c^2 = \frac{1}{2}.$$
+
+The orange band around the sphere marks these points, whatever the jewels (*Necklace › Solution band*); every solution lies on it.
+
+The fair splits of the current necklace are marked in blue (*Necklace › Solutions*; *Epsilon* sets how far from an exact solution a split still counts as fair). They can be found in linear time: place the first cut after each jewel in turn; the second cut then follows directly, since the piece between the cuts must be half the necklace. In the picture at the top, the pointer rests on one of the solutions: the gauge shows exactly half of each kind for each thief.
 
 ![The solutions, with the Necklace settings](./docs/images/necklace-with-solution.png)
 
-The necklace is set by a number, whose binary digits are the jewels (lowest digit first), or by a text, whose characters' binary digits are the jewels.
+The necklace is set by a number, whose binary digits are the jewels (lowest digit first), or by a text, whose characters' binary digits are the jewels. *Discrete* counts whole jewels; without it, a cut can split a jewel.
 
 ## Octants
 
-The signs of (x, y, z) divide the sphere into eight octants, numbered by the signs as binary digits. Opposite octants swap the thieves. The octants 000 and 111 give everything to one thief; *View › Single thief's area* hides them.
+The signs of $(x, y, z)$ divide the sphere into eight octants, numbered by the signs as binary digits. Opposite octants swap the thieves. The octants 000 and 111 give everything to one thief; *View › Single thief's area* hides them.
 
 The octants 010 and 101 show the most variety: whenever two cuts are needed, the solutions lie there. *View › Octant offset* pulls the octants apart.
 
@@ -36,13 +44,19 @@ The octants 010 and 101 show the most variety: whenever two cuts are needed, the
 
 ## Why a solution always exists
 
-From [6:19](https://youtu.be/yuVqxCSsE7c?t=379) on, the video explains why the Borsuk-Ulam theorem is true. Let f(x) map the sphere continuously to the plane - here, the shares of thief A. It is enough to show that g(x) = f(x) − f(−x) has a zero: x and −x are opposite points.
+From [6:19](https://youtu.be/yuVqxCSsE7c?t=379) on, the video explains why the Borsuk-Ulam theorem is true. Let
 
-Along a circle around the sphere, g(x) forms a closed loop around the origin, because g is continuous and g(−x) = −g(x). Moving the circle towards a pole shrinks the loop continuously to a single point, so on the way the loop must cross the origin.
+$$f: S^2 \to \mathbb{R}^2$$
 
-*View › Borsuk-Ulam shape* shows the 3D shape formed by g(x) as the circle moves.
+be a continuous map of the sphere to the plane - here, the shares of each kind of jewel that thief A gets. The opposite point $-\mathbf{x}$ makes the same cuts with the thieves swapped, so $f(-\mathbf{x})$ is what thief B gets, and a split is fair exactly when $f(\mathbf{x}) = f(-\mathbf{x})$. It is therefore enough to show that
 
-> **Note:** this is a rough first view. Each point of the sphere's mesh is simply moved to g(x), which does not preserve the mesh, so it can show rendering artifacts.
+$$g(\mathbf{x}) = f(\mathbf{x}) - f(-\mathbf{x})$$
+
+has a zero. Along a circle around the sphere, $g$ forms a closed loop around the origin, because $g$ is continuous and $g(-\mathbf{x}) = -g(\mathbf{x})$. Moving the circle towards a pole shrinks the loop continuously to a single point, so on the way the loop must cross the origin.
+
+*View › Borsuk-Ulam shape* shows the 3D shape formed by $g(\mathbf{x})$ as the circle moves.
+
+> **Note:** this is a rough first view. Each point of the sphere's mesh is simply moved to $g(\mathbf{x})$, which does not preserve the mesh, so it can show rendering artifacts.
 
 ## Using the app
 

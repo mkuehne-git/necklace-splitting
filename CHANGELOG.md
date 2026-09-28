@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.0.0 · 2026-09-27
+## v1.0.1 · 2026-09-28
+
+* **About this app:** the explanation is clearer and more precise. Equally long pieces are now named as a condition a fair split needs, not as enough for one; the band is called by its color; *Epsilon* and how the solutions are found are explained better; and the proof now says why a zero of g(x) is a fair split. The German text was revised throughout.
+
+## v1.0.0 · 2026-09-27 · [a63045a](https://github.com/mkuehne-git/necklace-splitting/commit/a63045a)
 
 Necklace Splitting 1.0 is a thoroughly renewed app. What changed since the version that was online until September 2026 (v0.4.13):
 

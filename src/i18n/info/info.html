@@ -1,7 +1,7 @@
 <h1>Necklace Splitting</h1>
 <p>Two thieves have stolen a necklace with jewels of two kinds and want to share it fairly: each gets half of each kind of jewel.
     The <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Necklace_splitting_problem">necklace splitting problem</a> [1]
-    asks how many cuts they need. With two kinds of jewels, two cuts are always enough - a consequence of the
+    asks for the smallest number of cuts they need. With two kinds of jewels, two cuts are always enough - a consequence of the
     <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem">Borsuk-Ulam theorem</a> [2],
     as the video <a target="_blank" rel="noopener noreferrer" href="https://youtu.be/yuVqxCSsE7c">The Borsuk-Ulam theorem and stolen necklaces</a> [3] explains.
     This app shows how the necklace maps onto a sphere.</p>
@@ -11,14 +11,14 @@
     which add up to the whole necklace. The sign of each coordinate gives its piece to thief A (+) or thief B (−).</p>
 <p>Point at the sphere: the white marker shows the point, the necklace below shows its cuts, and the gauge how much of each kind of jewel
     each thief gets.</p>
-<p>The colors show how much thief A gets of each kind of jewel: red for the first kind, green for the second.
+<p>The colors on the sphere show how much thief A gets of each kind of jewel: red for the first kind, green for the second.
     Bright yellow, a mix of both, means thief A gets most of both kinds.</p>
 
 <h2>Solutions</h2>
-<p>A split is fair when both thieves get equally long pieces of the necklace. The band around the sphere marks these points,
+<p>A split can only be fair if both thieves get equally long pieces of the necklace. The orange band around the sphere marks these points,
     whatever the jewels (<em>Necklace › Solution band</em>); every solution lies on it.</p>
-<p>The fair splits of the current necklace are marked in blue (<em>Necklace › Solutions</em>; <em>Epsilon</em> sets how close to fair counts).
-    Given the first cut, the second one follows, so they can be found in linear time by going through the jewels.</p>
+<p>The fair splits of the current necklace are marked in blue (<em>Necklace › Solutions</em>; <em>Epsilon</em> sets how far from an exact solution
+    a split still counts as fair). They can be found in linear time: place the first cut after each jewel in turn; the second cut then follows directly.</p>
 <p>The necklace is set in the settings by a number, whose binary digits are the jewels (lowest digit first), or by a text,
     whose characters' binary digits are the jewels. <em>Discrete</em> counts whole jewels; without it, a cut can split a jewel.</p>
 
@@ -31,7 +31,8 @@
 <h2>Why a solution always exists</h2>
 <p>From <a target="_blank" rel="noopener noreferrer" href="https://youtu.be/yuVqxCSsE7c?t=379">6:19</a> on, the video [3] explains why the
     Borsuk-Ulam theorem is true. Let f(x) map the sphere continuously to the plane - here, the shares of thief A.
-    It is enough to show that g(x) = f(x) − f(−x) has a zero: x and −x are opposite points.</p>
+    The opposite point −x makes the same cuts with the thieves swapped, so f(−x) is what thief B gets, and a split is fair
+    exactly when f(x) = f(−x). It is therefore enough to show that g(x) = f(x) − f(−x) has a zero.</p>
 <p>Along a circle around the sphere, g(x) forms a closed loop around the origin, because g is continuous and g(−x) = −g(x).
     Moving the circle towards a pole shrinks the loop continuously to a single point, so on the way the loop must cross the origin.</p>
 <p><em>View › Borsuk-Ulam shape</em> shows the 3D shape formed by g(x) as the circle moves. It is a rough first view:
