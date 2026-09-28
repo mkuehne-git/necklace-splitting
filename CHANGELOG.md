@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.0.7 · 2026-09-28
+## v1.0.8 · 2026-09-28
+
+* No functional change. Two old images that nothing used were removed from the repository, and the notes for developers were tidied up.
+
+## v1.0.7 · 2026-09-28 · [ab904ec](https://github.com/mkuehne-git/necklace-splitting/commit/ab904ec)
 
 * No functional change. The sphere keeps its current way of turning by drag; the decision is recorded in the roadmap.
 

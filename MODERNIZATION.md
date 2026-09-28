@@ -95,7 +95,7 @@ Ported from Climate Helix in this order; each is a self-contained step.
 
 ## Decisions for the owner
 
-Decided 2026-09-27: the owner accepted the plan with its recommendations - copy the Climate Helix modules (1) and replace lil-gui after Phase 6 (2). Also decided 2026-09-27: yes to the info panel and to German (3), so the native settings panel is built with translatable texts. Item 4 was decided 2026-09-28: OrbitControls stay, see `ROADMAP.md`. Item 5 is open.
+Decided 2026-09-27: the owner accepted the plan with its recommendations - copy the Climate Helix modules (1) and replace lil-gui after Phase 6 (2). Also decided 2026-09-27: yes to the info panel and to German (3), so the native settings panel is built with translatable texts. Item 4 was decided 2026-09-28: OrbitControls stay, see `CLAUDE.md`. Item 5 is open.
 
 1. **Share code or copy it?** The common UI modules could live in a shared package, but for two small apps copying the Climate Helix versions and letting them diverge is simpler. Recommendation: copy.
 2. **Replace lil-gui?** It is the largest step (8 folders, ~40 controls) and the prerequisite for localization. Recommendation: yes, after Phase 6.

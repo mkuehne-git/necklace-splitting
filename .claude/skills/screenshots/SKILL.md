@@ -15,8 +15,6 @@ The README shows five screenshots in `docs/images/`. `npm run screenshots` retak
 | `necklace-phone.png` | The app on a phone, the pointer on a solution | 390 x 844 |
 | `necklace-phone-settings.png` | The settings on a phone | 390 x 844 |
 
-`necklace-line-segments.png` and `favicon.png` in `docs/images/` are older images, not taken by the script and not used by the README.
-
 ## 1. When
 
 - A visible change to the sphere, the necklace, the fairness meter or the settings panel that a screenshot shows.

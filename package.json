@@ -1,6 +1,6 @@
 {
   "name": "necklace-splitting",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "type": "module",
   "engines": {
     "node": ">=22.12.0"
