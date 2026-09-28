@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
-    "@types/node": "^24.19.0",
+    "@types/node": "^26.6.2",
     "@types/three": "^0.186.0",
     "@vitejs/plugin-basic-ssl": "^2.3.0",
     "happy-dom": "^20.14.5",
