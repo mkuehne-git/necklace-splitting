@@ -19,6 +19,18 @@ const mouse = {
   y: 0,
 };
 
+/**
+ * One eighth of the sphere, as its own meshes: Spread octants moves the group
+ * away from the origin, so no triangle ever spans two octants.
+ */
+type Octant = {
+  /** The signs of (x, y, z) in this octant. */
+  signs: THREE.Vector3;
+  group: THREE.Group;
+  faces: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial>;
+  wireframe: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial>;
+};
+
 class Sphere extends NecklaceComponent {
   // Just any vector
   #lastInterSect: THREE.Vector3;
@@ -26,12 +38,10 @@ class Sphere extends NecklaceComponent {
   #raycaster: THREE.Raycaster;
   #camera: THREE.PerspectiveCamera;
   #renderer: THREE.WebGLRenderer;
-  #sphere: THREE.Mesh;
+  #octants: Octant[];
+  #material: THREE.ShaderMaterial;
+  #wireframeMaterial: THREE.MeshBasicMaterial;
   #orbitControls: OrbitControls;
-  #sphereMesh: THREE.Mesh<
-    THREE.SphereGeometry,
-    THREE.MeshBasicMaterial
-  >;
   #group: THREE.Group;
   #axesHelper: THREE.AxesHelper;
   #resizer: Resizer;
@@ -69,28 +79,21 @@ class Sphere extends NecklaceComponent {
     this.container.appendChild(canvas);
     this.#resizer = new Resizer(this.container, this.#camera, this.#renderer);
 
-    this.#sphere = new THREE.Mesh(
-      this.createSphereGeometry(),
-      this.createSphereMaterial()
-    );
-    this.#sphere.visible = SETTINGS.view.faces_visible;
-
-    this.#sphereMesh = new THREE.Mesh(
-      this.createSphereGeometry(),
-      new THREE.MeshBasicMaterial({
-        wireframe: true,
-        side: THREE.DoubleSide,
-        transparent: true,
-      })
-    );
-    this.#sphereMesh.visible = SETTINGS.view.mesh_visible;
+    this.#material = this.createSphereMaterial();
+    this.#wireframeMaterial = new THREE.MeshBasicMaterial({
+      wireframe: true,
+      side: THREE.DoubleSide,
+      transparent: true,
+    });
+    this.#octants = this.createOctants();
 
     this.#axesHelper = new THREE.AxesHelper(20);
     this.#axesHelper.visible = SETTINGS.view.axes_visible;
 
     this.#group = new THREE.Group();
-    this.#group.add(this.#sphere, this.#sphereMesh, this.#axesHelper);
+    this.#group.add(...this.#octants.map((octant) => octant.group), this.#axesHelper);
     this.#scene.add(this.#group);
+    this.arrangeOctants();
 
     this.#orbitControls = new OrbitControls(
       this.#camera,
@@ -173,12 +176,15 @@ class Sphere extends NecklaceComponent {
     // required if controls.enableDamping or controls.autoRotate are set to true
     this.#orbitControls.update();
     // The pointer is hit-tested before drawing, so the hover marker is drawn in the same frame.
-    if (this.#sphere.visible || this.#sphereMesh.visible) {
+    if (SETTINGS.view.faces_visible || SETTINGS.view.mesh_visible) {
       this.#raycaster.setFromCamera(mouse as THREE.Vector2, this.#camera);
-      const intersects = this.#raycaster.intersectObject(this.#sphere);
-      const uniforms = (this.#sphere.material as THREE.ShaderMaterial).uniforms;
+      // The faces are hit even while only the wireframe is shown; hidden octants are not.
+      const shown = this.#octants.filter((octant) => octant.group.visible).map((octant) => octant.faces);
+      const intersects = this.#raycaster.intersectObjects(shown, false);
+      const uniforms = this.#material.uniforms;
       if (intersects.length > 0 && !SETTINGS.animation.run) {
-        const point = intersects[0].point.clone();
+        // In the octant's own coordinates: the point on the sphere, wherever the octant was moved or turned.
+        const point = intersects[0].object.worldToLocal(intersects[0].point.clone());
         uniforms.u_intersect.value = point;
         this._setIntersect(point);
       } else {
@@ -211,23 +217,74 @@ class Sphere extends NecklaceComponent {
   }
 
   createSphere() {
-    this.#sphere.geometry.dispose();
-    this.#sphereMesh.geometry.dispose();
-
-    const geometry = this.createSphereGeometry();
-    this.#sphere.geometry = geometry;
-    this.#sphereMesh.geometry = geometry;
-
+    for (const octant of this.#octants) {
+      octant.faces.geometry.dispose();
+      const geometry = this.createOctantGeometry(octant.signs);
+      octant.faces.geometry = geometry;
+      octant.wireframe.geometry = geometry;
+    }
     this.updateSphereMaterial();
   }
 
-  createSphereGeometry() {
-    const segments = SETTINGS.sphere.segments;
+  /** The eight octants, each with its faces and its wireframe sharing one geometry and the common materials. */
+  createOctants(): Octant[] {
+    const octants: Octant[] = [];
+    for (const x of [1, -1]) {
+      for (const y of [1, -1]) {
+        for (const z of [1, -1]) {
+          const signs = new THREE.Vector3(x, y, z);
+          const geometry = this.createOctantGeometry(signs);
+          const faces = new THREE.Mesh(geometry, this.#material);
+          const wireframe = new THREE.Mesh(geometry, this.#wireframeMaterial);
+          const group = new THREE.Group();
+          group.add(faces, wireframe);
+          octants.push({ signs, group, faces, wireframe });
+        }
+      }
+    }
+    return octants;
+  }
+
+  /**
+   * The part of the sphere in the octant with the given signs. SphereGeometry
+   * places a point at (-cos φ sin θ, cos θ, sin φ sin θ): θ from the top (+y),
+   * φ around the y axis. An octant is half of θ's range and a quarter of φ's.
+   * The sphere's segments are shared out, so all eight together have as many
+   * as the whole sphere had.
+   */
+  createOctantGeometry(signs: THREE.Vector3): THREE.SphereGeometry {
+    const quarter = Math.PI / 2;
+    const segments = Math.max(1, Math.round(SETTINGS.sphere.segments / 4));
+    const thetaStart = signs.y > 0 ? 0 : quarter;
+    // x = -cos φ is positive for φ in (π/2, 3π/2), z = sin φ for φ in (0, π).
+    const phiStart = signs.x < 0
+      ? (signs.z > 0 ? 0 : 3 * quarter)
+      : (signs.z > 0 ? quarter : 2 * quarter);
     return new THREE.SphereGeometry(
       SETTINGS.sphere.radius,
       segments,
-      segments / 2
+      segments,
+      phiStart,
+      quarter,
+      thetaStart,
+      quarter
     );
+  }
+
+  /**
+   * Places the octants: Spread octants moves each one away from the origin, and
+   * Undivided octants shows or hides the two where one thief gets everything.
+   */
+  arrangeOctants(): void {
+    const offset = SETTINGS.sphere.offset_octant;
+    for (const octant of this.#octants) {
+      const { signs } = octant;
+      const undivided = signs.x === signs.y && signs.y === signs.z;
+      octant.group.position.copy(signs).multiplyScalar(offset);
+      octant.group.visible = SETTINGS.view.show_single_thiefs_region || !undivided;
+      octant.faces.visible = SETTINGS.view.faces_visible;
+      octant.wireframe.visible = SETTINGS.view.mesh_visible;
+    }
   }
 
   /**
@@ -255,7 +312,6 @@ class Sphere extends NecklaceComponent {
   }
 
   get uniforms() {
-    const offset = SETTINGS.sphere.offset_octant / SETTINGS.sphere.radius;
     return {
       u_necklace_discrete: {
         type: "b",
@@ -264,14 +320,6 @@ class Sphere extends NecklaceComponent {
       u_input: { type: "i", value: this.model.necklace },
       u_count_0: { type: "i", value: this.model.count_0 },
       u_count_1: { type: "i", value: this.model.count_1 },
-      u_offset_sphere_octant: {
-        type: "f",
-        value: SETTINGS.sphere.offset_octant,
-      },
-      u_use_bad_on_sphere_check: {
-        type: "b",
-        value: SETTINGS.sphere.use_bad_on_sphere_check,
-      },
       u_show_borsuk_ulam_proof_shape: {
         type: "b",
         value: SETTINGS.sphere.show_borsuk_ulam_proof_shape,
@@ -298,10 +346,6 @@ class Sphere extends NecklaceComponent {
         value: SETTINGS.necklace.show_solution_band,
       },
       u_show_solutions: { type: "b", value: SETTINGS.necklace.show_solutions },
-      u_show_single_thiefs_region: {
-        type: "b",
-        value: SETTINGS.view.show_single_thiefs_region,
-      },
       u_alpha: { type: "f", value: SETTINGS.color.alpha },
       u_time: { type: "f", value: 1.0 },
       u_resolution: {
@@ -319,19 +363,19 @@ class Sphere extends NecklaceComponent {
    * Updates the ShaderMaterial of the sphere, based on current settings.
    */
   updateSphereMaterial(): void {
-    if (this.#sphere !== undefined) {
-      (this.#sphere.material as THREE.ShaderMaterial).dispose();
+    this.#material.dispose();
+    this.#material = this.createSphereMaterial();
+    for (const octant of this.#octants) {
+      octant.faces.material = this.#material;
     }
-    this.#sphere.material = this.createSphereMaterial();
-    this.#sphereMesh.material.transparent = SETTINGS.color.alpha != 1.0;
+    this.#wireframeMaterial.transparent = SETTINGS.color.alpha != 1.0;
     this.#needsRender = true;
     Events.dispatchEvent(Events.MODEL_CHANGED);
   }
 
   updateVisibility(): void {
     this.#axesHelper.visible = SETTINGS.view.axes_visible;
-    this.#sphereMesh.visible = SETTINGS.view.mesh_visible;
-    this.#sphere.visible = SETTINGS.view.faces_visible;
+    this.arrangeOctants();
     stats["visible"](SETTINGS.view.stats_monitor_visible);
     this.#needsRender = true;
     Events.dispatchEvent(Events.MODEL_CHANGED);

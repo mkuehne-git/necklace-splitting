@@ -44,7 +44,6 @@ export const de: Catalog = {
         'settings.advancedNote': 'Die Standardwerte passen für die meisten Geräte. Mehr Segmente zeichnen eine glattere Kugel, brauchen aber ein schnelleres Gerät.',
         'settings.radius': 'Radius',
         'settings.segments': 'Segmente',
-        'settings.badCheck': 'Einfache Prüfung auf der Kugel',
         'settings.fpsMonitor': 'Bildraten-Monitor',
         'settings.checkForUpdates': 'Updates suchen',
         'settings.imprint': 'Impressum',

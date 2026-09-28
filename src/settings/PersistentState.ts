@@ -56,7 +56,6 @@ const SETTING_FIELDS: Record<string, Validator<number | string | boolean>> = {
   "sphere.radius": limited(LIMITS.radius),
   "sphere.segments": limited(LIMITS.segments),
   "sphere.offset_octant": limited(LIMITS.offset_octant),
-  "sphere.use_bad_on_sphere_check": bool,
   "sphere.show_borsuk_ulam_proof_shape": bool,
   "view.necklace_visible": bool,
   "view.gauge_visible": bool,

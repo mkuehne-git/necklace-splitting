@@ -28,26 +28,11 @@ bool isSolutionArea(vec2 thief_a, vec2 thief_b) {
     return dist_thief_a < u_epsilon;
 }
 
-bool isActiveRegion() {
-    return u_show_single_thiefs_region || (!(v_pos.x >= 0.0 && v_pos.y >= 0.0 && v_pos.z >= 0.0) && !(v_pos.x < 0.0 && v_pos.y < 0.0 && v_pos.z < 0.0));
-}
-
 vec4 scale_color(vec3 color) {
     return vec4(color * u_scale_color, u_alpha);
 }
 float inter(float a, float b, float x) {
     return (x - a) / (b - a);
-}
-bool isOnSphere(vec3 p, float oct, float valid) {
-    float offset = u_offset_sphere_octant / u_radius_vector.x;
-    return (valid != 0.0) && (abs(p.x) >= offset) && (abs(p.y) >= offset) && (abs(p.z) >= offset);
-
-}
-bool isValidSphereData() {
-    if(u_use_bad_on_sphere_check) {
-        return v_sphereData_valid == 1.0;
-    }
-    return v_sphereData_valid != 0.0;
 }
 vec3 calculateSolutionArea(vec3 colorIn, vec3 cuts) {
     if(!u_show_solution_band) {
@@ -91,19 +76,13 @@ void fragColorWithIntersect(vec3 colorIn) {
 }
 
 void main() {
-    if(!isValidSphereData()) {
-        gl_FragColor = scale_color(v_pos);
+    // Red and green: thief A's share of each kind of jewel.
+    vec2 thief_a = calculate_stolen_necklace(v_pos);
+    vec2 thief_b = vec2(1.0) - thief_a;
+    vec3 color = vec3(thief_a, 0.0);
+    if(u_show_solutions && isSolutionArea(thief_a, thief_b)) {
+        color = deltaColor(thief_a, thief_b);
     }
-
-    if(isActiveRegion() && isOnSphere(v_sphereData_p, v_sphereData_octant, v_sphereData_valid)) {
-        // Red and green: thief A's share of each kind of jewel.
-        vec2 thief_a = calculate_stolen_necklace(v_pos);
-        vec2 thief_b = vec2(1.0) - thief_a;
-        vec3 color = vec3(thief_a, 0.0);
-        if(u_show_solutions && isSolutionArea(thief_a, thief_b)) {
-            color = deltaColor(thief_a, thief_b);
-        }
-        color = calculateSolutionArea(color, v_pos);
-        fragColorWithIntersect(color);
-    }
+    color = calculateSolutionArea(color, v_pos);
+    fragColorWithIntersect(color);
 }

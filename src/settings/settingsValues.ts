@@ -40,7 +40,6 @@ const SETTINGS = {
     radius: 15,
     segments: E2E_BUILD ? 32 : 128,
     offset_octant: 0.0,
-    use_bad_on_sphere_check: false,
     show_borsuk_ulam_proof_shape: false,
   },
   animation: {

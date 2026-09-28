@@ -82,12 +82,13 @@ function viewSection(body: HTMLElement): Control[] {
         checkbox(content, text, () => view[key], (value) => { view[key] = value; visibility(); });
     return [
         checkbox(content, t('settings.undividedOctants'), () => view.show_single_thiefs_region,
-            (value) => { view.show_single_thiefs_region = value; material(); }),
+            (value) => { view.show_single_thiefs_region = value; visibility(); }),
         shown(t('settings.axes'), 'axes_visible'),
         shown(t('settings.necklaceVisible'), 'necklace_visible'),
         shown(t('settings.fairnessMeter'), 'gauge_visible'),
+        // Moves the octants' meshes; nothing is rebuilt.
         range(content, t('settings.spreadOctants'), LIMITS.offset_octant, () => SETTINGS.sphere.offset_octant,
-            (value) => { SETTINGS.sphere.offset_octant = value; rebuild(); }, formatStep(LIMITS.offset_octant.step)),
+            (value) => { SETTINGS.sphere.offset_octant = value; visibility(); }, formatStep(LIMITS.offset_octant.step)),
         checkbox(content, t('settings.borsukUlam'), () => SETTINGS.sphere.show_borsuk_ulam_proof_shape,
             (value) => { SETTINGS.sphere.show_borsuk_ulam_proof_shape = value; material(); }),
     ];
@@ -145,8 +146,6 @@ function advancedSection(body: HTMLElement): Control[] {
         range(content, t('settings.segments'), LIMITS.segments, () => sphere.segments, (value) => { sphere.segments = value; rebuild(); }),
         shown(t('settings.mesh'), 'mesh_visible'),
         shown(t('settings.faces'), 'faces_visible'),
-        checkbox(content, t('settings.badCheck'), () => sphere.use_bad_on_sphere_check,
-            (value) => { sphere.use_bad_on_sphere_check = value; material(); }),
         shown(t('settings.fpsMonitor'), 'stats_monitor_visible'),
     ];
     subheading(content, t('settings.colors'));

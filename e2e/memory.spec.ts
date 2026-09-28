@@ -31,7 +31,25 @@ const live = (page: Page) => page.evaluate(() => ({ ...(window as unknown as { l
 const settle = (page: Page) => page.waitForTimeout(300);
 
 test('rebuilding the sphere does not keep old buffers or programs', async ({ page }) => {
-    // Spread octants rebuilds the sphere's geometry and material (CREATE_SPHERE).
+    // Segments rebuilds the eight octants' geometry and the material (CREATE_SPHERE).
+    await openApp(page);
+    await openSettings(page);
+    await openSection(page, 'Advanced');
+    const segments = field(page, 'Segments');
+    await segments.fill('32');
+    await settle(page);
+    const before = await live(page);
+    for (let round = 0; round < 3; round++) {
+        for (const value of ['24', '48', '32']) {
+            await segments.fill(value);
+            await settle(page);
+        }
+    }
+    expect(await live(page)).toEqual(before);
+});
+
+test('spreading the octants moves them without creating buffers or programs', async ({ page }) => {
+    // Spread octants only moves the octants' meshes.
     await openApp(page);
     await openSettings(page);
     await openSection(page, 'View');
@@ -39,11 +57,9 @@ test('rebuilding the sphere does not keep old buffers or programs', async ({ pag
     await offset.fill('0.5');
     await settle(page);
     const before = await live(page);
-    for (let round = 0; round < 3; round++) {
-        for (const value of ['1', '2.5', '0.5']) {
-            await offset.fill(value);
-            await settle(page);
-        }
+    for (const value of ['1', '2.5', '0']) {
+        await offset.fill(value);
+        await settle(page);
     }
     expect(await live(page)).toEqual(before);
 });

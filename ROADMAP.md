@@ -15,5 +15,4 @@ What remains after the modernization (`MODERNIZATION.md`, phases 0 to 8, v0.4.14
 ## Code
 
 - **The split calculation exists twice**: in the model (`NecklaceModel.ts`, tested) and in the shader (`functions.glsl`, drawn). A change to one must be made in the other. A test could compare them, for example by rendering a few known points and reading the pixels.
-- **Unused shader code**: the octant number (`displace_octant` in `sphere.vert`) is computed but not used, and octant `000` gets the number 1. `isOnSphere` ignores its `oct` parameter. Remove or use it.
 - **End-to-end tests in CI**: they run locally only (`npm run test:e2e`). Running them in GitHub Actions would need the Playwright browsers there and a stub imprint (the imprint tests skip themselves then).

@@ -42,7 +42,6 @@ export const en = {
         'settings.advancedNote': 'The defaults suit most devices. More segments draw a smoother sphere, but need a faster device.',
         'settings.radius': 'Radius',
         'settings.segments': 'Segments',
-        'settings.badCheck': 'Simple on-sphere check',
         'settings.fpsMonitor': 'Frame rate monitor',
         'settings.checkForUpdates': 'Check for updates',
         'settings.imprint': 'Imprint',
