@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.2.0 · 2026-09-29
+## v1.2.1 · 2026-09-29
+
+* No functional change. The Borsuk-Ulam shape keeps following *Discrete*; the decision is recorded in the notes for developers.
+
+## v1.2.0 · 2026-09-29 · [4c33f81](https://github.com/mkuehne-git/necklace-splitting/commit/4c33f81)
 
 * **Borsuk-Ulam shape:** the shape is now a shape of its own, not a painted-over sphere. The mesh (*Advanced › Mesh*) follows it instead of staying a sphere around it.
 * **Pointing at the Borsuk-Ulam shape:** the white marker and the fairness meter now follow the pointer on the shape. Before, they showed the cut of the hidden sphere behind it.

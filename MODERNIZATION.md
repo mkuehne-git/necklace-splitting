@@ -101,4 +101,4 @@ Decided 2026-09-27: the owner accepted the plan with its recommendations - copy 
 2. **Replace lil-gui?** It is the largest step (8 folders, ~40 controls) and the prerequisite for localization. Recommendation: yes, after Phase 6.
 3. **German localization and an in-app info panel** - wanted?
 4. **OrbitControls or TrackballControls?** Climate Helix switched for free rotation; for a sphere with a raycast gauge, OrbitControls may stay the better fit. Decided: they stay.
-5. **The Borsuk-Ulam shape's mesh artifacts** (README note) are out of scope here unless wanted as a later feature. Done after the modernization in v1.2.0: the shape is the octants' geometry, built on the CPU.
+5. **The Borsuk-Ulam shape's mesh artifacts** (README note) are out of scope here unless wanted as a later feature. Done after the modernization in v1.2.0: the shape is the octants' geometry, built on the CPU. It follows *Discrete* (decided 2026-09-29): the walls across the jumps of a discrete g stay.
