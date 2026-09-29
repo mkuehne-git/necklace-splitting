@@ -2,17 +2,28 @@ import { expect, test, type Page } from '@playwright/test';
 import { field, morphed, openApp, openSection, openSettings, shapeButton, sphere } from './app';
 
 // The sphere is drawn only when something changes (#needsRender in Sphere.ts).
-// These tests count WebGL draw calls to see whether it is drawn.
+// These tests count WebGL draw calls, and the frames they are drawn in, to see
+// whether it is drawn.
+
+type Counted = { drawCalls: number, frames: number, inFrame: boolean };
 
 test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
-        const counted = window as unknown as { drawCalls: number };
+        const counted = window as unknown as Counted;
         counted.drawCalls = 0;
+        counted.frames = 0;
+        counted.inFrame = false;
         for (const proto of [WebGLRenderingContext.prototype, WebGL2RenderingContext.prototype]) {
             for (const name of ['drawArrays', 'drawElements'] as const) {
                 const original = proto[name] as (...args: unknown[]) => void;
                 (proto as unknown as Record<string, unknown>)[name] = function (this: unknown, ...args: unknown[]) {
                     counted.drawCalls++;
+                    // A frame's draw calls come in one go: the first one counts the frame.
+                    if (!counted.inFrame) {
+                        counted.frames++;
+                        counted.inFrame = true;
+                        queueMicrotask(() => { counted.inFrame = false; });
+                    }
                     return original.apply(this, args);
                 };
             }
@@ -20,7 +31,20 @@ test.beforeEach(async ({ page }) => {
     });
 });
 
-const drawCalls = (page: Page) => page.evaluate(() => (window as unknown as { drawCalls: number }).drawCalls);
+const drawCalls = (page: Page) => page.evaluate(() => (window as unknown as Counted).drawCalls);
+const frames = (page: Page) => page.evaluate(() => (window as unknown as Counted).frames);
+
+/**
+ * Frames drawn during `ms` milliseconds. At rest this is 0, but it may be 1:
+ * a real event can come in late and rightly draw once - on CI, Firefox runs in
+ * a window on a virtual display (focus, a late resize, the system's pointer).
+ * A view drawn every frame draws dozens a second, even on a slow machine.
+ */
+async function framesDuring(page: Page, ms: number): Promise<number> {
+    const before = await frames(page);
+    await page.waitForTimeout(ms);
+    return (await frames(page)) - before;
+}
 
 /** Draw calls during `ms` milliseconds, after `action`. */
 async function drawCallsDuring(page: Page, ms: number, action: () => Promise<void> = async () => { }): Promise<number> {
@@ -41,7 +65,7 @@ async function settled(page: Page): Promise<void> {
 test('the resting view is not drawn again', async ({ page }) => {
     await openApp(page);
     await settled(page);
-    expect(await drawCallsDuring(page, 1000)).toBe(0);
+    expect(await framesDuring(page, 1000)).toBeLessThanOrEqual(1);
 });
 
 test('pointer moves, dragging and theme changes draw the view', async ({ page }) => {
@@ -57,7 +81,7 @@ test('pointer moves, dragging and theme changes draw the view', async ({ page })
     expect(await drawCallsDuring(page, 800, () => page.locator('.toggle-div.themes').click())).toBeGreaterThan(0);
     // And it rests again.
     await settled(page);
-    expect(await drawCallsDuring(page, 1000)).toBe(0);
+    expect(await framesDuring(page, 1000)).toBeLessThanOrEqual(1);
 });
 
 test('the rotation animation draws every frame, and stops drawing when it stops', async ({ page }) => {
@@ -69,7 +93,7 @@ test('the rotation animation draws every frame, and stops drawing when it stops'
     expect(await drawCallsDuring(page, 1000)).toBeGreaterThan(10);
     await field(page, 'Rotate').uncheck();
     await settled(page);
-    expect(await drawCallsDuring(page, 1000)).toBe(0);
+    expect(await framesDuring(page, 1000)).toBeLessThanOrEqual(1);
 });
 
 test('the morph draws while it runs, and rests afterwards', async ({ page }) => {
@@ -79,5 +103,5 @@ test('the morph draws while it runs, and rests afterwards', async ({ page }) => 
     await morphed(page);
     // It comes to rest, and stays so.
     await settled(page);
-    expect(await drawCallsDuring(page, 1000)).toBe(0);
+    expect(await framesDuring(page, 1000)).toBeLessThanOrEqual(1);
 });

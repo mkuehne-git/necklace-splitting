@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.12 · 2026-09-30
+## v1.7.13 · 2026-09-30
+
+* No functional change. The automatic tests of drawing only on change allow a single redraw that a real browser event causes.
+
+## v1.7.12 · 2026-09-30 · [a36923a](https://github.com/mkuehne-git/necklace-splitting/commit/a36923a)
 
 * No functional change. The automatic tests that check the view rests when nothing changes wait for it to settle, also on slower machines.
 
