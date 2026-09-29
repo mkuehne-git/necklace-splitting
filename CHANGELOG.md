@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.7 · 2026-09-30
+## v1.7.8 · 2026-09-30
+
+* Fixed: Alt+S did not save a screen capture on a Mac, where it types "ß".
+
+## v1.7.7 · 2026-09-30 · [f3b97c3](https://github.com/mkuehne-git/necklace-splitting/commit/f3b97c3)
 
 * No functional change. The automatic tests on GitHub run with read-only access to the repository.
 

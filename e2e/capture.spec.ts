@@ -64,3 +64,10 @@ test('a capture of everything leaves out the open settings panel', async ({ page
     const [r, g, b] = await pixel(page, png, 0.9, 0.3);
     expect([r, g, b]).toEqual([255, 255, 255]);
 });
+
+test('Alt+S takes a capture, also where Alt+S types another character (macOS: ß)', async ({ page }) => {
+    await openApp(page);
+    const download = page.waitForEvent('download');
+    await page.evaluate(() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ß', code: 'KeyS', altKey: true, bubbles: true })));
+    expect((await download).suggestedFilename()).toBe('necklace.png');
+});

@@ -23,8 +23,9 @@ class ScreenCapture {
 
   constructor(elements: Record<CaptureTarget, HTMLElement>) {
     this.#elements = elements;
+    // The key, not the character: on macOS, Alt+S types "ß".
     document.addEventListener("keydown", (e) => {
-      if (e.altKey && e.key === "s") {
+      if (e.altKey && e.code === "KeyS") {
         e.stopPropagation();
         e.preventDefault();
         this.capture();
