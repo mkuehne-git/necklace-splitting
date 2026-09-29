@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.6 · 2026-09-30
+## v1.7.7 · 2026-09-30
+
+* No functional change. The automatic tests on GitHub run with read-only access to the repository.
+
+## v1.7.6 · 2026-09-30 · [404b618](https://github.com/mkuehne-git/necklace-splitting/commit/404b618)
 
 * No functional change. The smaller findings of the code review that wait for later are listed in the roadmap.
 

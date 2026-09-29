@@ -10,6 +10,11 @@ on:
   pull_request:
   workflow_dispatch:
 
+# The jobs only read the repository; the token gets nothing more, whatever the
+# repository's default. (Uploading the test traces needs no token permission.)
+permissions:
+  contents: read
+
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
