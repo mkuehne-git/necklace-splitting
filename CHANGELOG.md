@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.2.6 · 2026-09-29
+## v1.2.7 · 2026-09-29
+
+* No functional change. The end-to-end tests in Firefox get a graphics driver on GitHub.
+
+## v1.2.6 · 2026-09-29 · [cc116c7](https://github.com/mkuehne-git/necklace-splitting/commit/cc116c7)
 
 * No functional change. Fixes for the automatic checks on GitHub: the type check without the private imprint, and the end-to-end tests in Firefox.
 

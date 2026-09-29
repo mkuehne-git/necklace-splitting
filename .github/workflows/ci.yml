@@ -70,6 +70,12 @@ jobs:
       - name: Install the Playwright browsers
         run: npx playwright install --with-deps chromium firefox
 
+      # Firefox draws WebGL through the system's OpenGL; the runner has no GPU and
+      # --with-deps no driver, so Firefox needs Mesa's software renderer (llvmpipe).
+      # Chromium brings its own (SwiftShader).
+      - name: Install Mesa's software OpenGL for Firefox
+        run: sudo apt-get install -y --no-install-recommends libegl1 libgl1-mesa-dri
+
       - name: Run end-to-end tests
         run: npm run test:e2e
 
