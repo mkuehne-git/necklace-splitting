@@ -21,7 +21,6 @@ export const de: Catalog = {
         'settings.mesh': 'Gitternetz',
         'settings.faces': 'Flächen',
         'settings.spreadOctants': 'Oktanten spreizen',
-        'settings.borsukUlam': 'Borsuk-Ulam-Form',
         'settings.lighting': 'Beleuchtung',
         'settings.lightingOff': 'Aus',
         'settings.lightingShape': 'Form',
@@ -62,6 +61,9 @@ export const de: Catalog = {
         'button.darkTheme': 'Zum dunklen Design wechseln',
         'button.close': 'Schließen',
         'button.showInfo': 'Über diese App',
+
+        'view.borsukUlam': 'Borsuk-Ulam-Form',
+        'view.morph': 'Von der Kugel zur Form',
 
         'version.title': 'Änderungen anzeigen',
         'changelog.heading': 'Änderungen',

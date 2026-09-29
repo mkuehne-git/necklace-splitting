@@ -1,6 +1,13 @@
 # Changelog
 
-## v1.3.0 · 2026-09-29
+## v1.4.0 · 2026-09-29
+
+* A new button in the lower left corner switches to the Borsuk-Ulam shape: the sphere morphs into it within a second, and back again. The necklace and the fairness meter are hidden meanwhile, so the view is about the shape.
+* A slider beside the button moves the view anywhere between sphere and shape, to watch the shape form step by step.
+* The Borsuk-Ulam shape checkbox has left the settings; the button replaces it and remembers the choice as before.
+* With Lighting on Shape, the light fades in as the sphere turns into the shape.
+
+## v1.3.0 · 2026-09-29 · [5fe1aa4](https://github.com/mkuehne-git/necklace-splitting/commit/5fe1aa4)
 
 * New setting View › Lighting: a light from the viewer's direction shades the Borsuk-Ulam shape, so its facets and the walls of the discrete shape stand out even without the mesh. Off leaves everything unlit as before, Always shades the sphere too. The colors keep their meaning: the light only dims them a little.
 

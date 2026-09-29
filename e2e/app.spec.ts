@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { APP_VERSION, expectChanged, field, necklace, openApp, openSection, openSettings, panel, panelButton, pixels, sphere, withStoredState } from './app';
+import { APP_VERSION, expectChanged, field, morphSlider, morphed, necklace, openApp, openSection, openSettings, panel, panelButton, pixels, shapeButton, sphere, withStoredState } from './app';
 
 test('loads without errors and shows the sphere and the necklace', async ({ page }) => {
     const errors = await openApp(page);
@@ -20,16 +20,47 @@ test('hovering the sphere cuts the necklace there', async ({ page }) => {
     await expect(sphere(page)).toHaveCSS('cursor', 'none');
 });
 
-test('hovering the Borsuk-Ulam shape cuts the necklace there', async ({ page }) => {
-    // The shape is the octants' geometry, so the raycaster hits the shape, not the sphere.
+test('hovering the Borsuk-Ulam shape marks the point there', async ({ page }) => {
+    // The shape is the octants' morph target, so the raycaster hits the shape, not the sphere.
+    // The necklace is hidden with the shape; the pointer still sets the cut.
     await withStoredState(page, { settings: { 'sphere.show_borsuk_ulam_proof_shape': true } });
     await openApp(page);
     const box = (await sphere(page).boundingBox())!;
     await page.mouse.move(box.x + 5, box.y + 5);
-    const before = await pixels(necklace(page));
+    await expect(sphere(page)).toHaveCSS('cursor', 'auto');
     await page.mouse.move(box.x + box.width * 0.48, box.y + box.height * 0.48);
-    await expectChanged(necklace(page), before);
     await expect(sphere(page)).toHaveCSS('cursor', 'none');
+});
+
+test('the Borsuk-Ulam button morphs the sphere into the shape, hides the necklace, and is remembered', async ({ page }) => {
+    await openApp(page);
+    await expect(shapeButton(page)).toHaveAttribute('aria-pressed', 'false');
+    await expect(morphSlider(page)).toBeHidden();
+    const sphereBefore = await pixels(sphere(page));
+    const necklaceBefore = await pixels(necklace(page));
+    await shapeButton(page).click();
+    await expect(shapeButton(page)).toHaveAttribute('aria-pressed', 'true');
+    await expect(morphSlider(page)).toBeVisible();
+    await morphed(page);
+    await expect(morphSlider(page)).toHaveValue('1');
+    await expectChanged(sphere(page), sphereBefore);
+    await expectChanged(necklace(page), necklaceBefore);
+    const hidden = await pixels(necklace(page));
+    await page.reload();
+    await expect(shapeButton(page)).toHaveAttribute('aria-pressed', 'true');
+    await expect(morphSlider(page)).toHaveValue('1');
+    // Back to the sphere: the necklace shows again.
+    await shapeButton(page).click();
+    await expect(morphSlider(page)).toBeHidden();
+    await expectChanged(necklace(page), hidden);
+});
+
+test('the morph slider moves between sphere and shape', async ({ page }) => {
+    await withStoredState(page, { settings: { 'sphere.show_borsuk_ulam_proof_shape': true } });
+    await openApp(page);
+    const shape = await pixels(sphere(page));
+    await morphSlider(page).fill('0.5');
+    await expectChanged(sphere(page), shape);
 });
 
 test('Lighting shades the sphere with Always, and only the shape by default', async ({ page }) => {

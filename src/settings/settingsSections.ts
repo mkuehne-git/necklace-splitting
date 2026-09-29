@@ -89,8 +89,6 @@ function viewSection(body: HTMLElement): Control[] {
         // Moves the octants' meshes; nothing is rebuilt.
         range(content, t('settings.spreadOctants'), LIMITS.offset_octant, () => SETTINGS.sphere.offset_octant,
             (value) => { SETTINGS.sphere.offset_octant = value; visibility(); }, formatStep(LIMITS.offset_octant.step)),
-        checkbox(content, t('settings.borsukUlam'), () => SETTINGS.sphere.show_borsuk_ulam_proof_shape,
-            (value) => { SETTINGS.sphere.show_borsuk_ulam_proof_shape = value; material(); }),
         segmented<Lighting>(content, t('settings.lighting'),
             [
                 { value: 'Off', label: t('settings.lightingOff') },

@@ -13,12 +13,12 @@ Planned in this order (decided 2026-09-29): lighting (v1.3.0), the view switcher
 
 ### The view switcher
 
-Buttons at the lower left of the sphere area, just above the necklace (the necklace canvas spans the full width of the bottom 20%, so the corner itself would cover its left end). Modeled on Climate Helix's `SceneSwitcher` (`~/dev/climate-helix/src/ui/SceneSwitcher.ts`, `scenes.css`): icon buttons with a tooltip and an accessible name, the active one highlighted, the state remembered in the persistent state. Two independent choices:
+Buttons in the lower left corner (moved there from above the necklace, decided 2026-09-29): the necklace canvas spans the bottom 20%, but its rows are drawn at the top and the fairness meter centered below them, so the corner is free. Modeled on Climate Helix's `SceneSwitcher` (`~/dev/climate-helix/src/ui/SceneSwitcher.ts`, `scenes.css`): icon buttons with a tooltip and an accessible name, the active one highlighted, the state remembered in the persistent state. Two independent choices:
 
-- **Input mode**, two exclusive buttons: *Sphere* (the pointer on the sphere sets the cuts, as now) and *Necklace* (handles on the necklace set the cuts, feature 3). They come with feature 3.
-- **Borsuk-Ulam shape**, a toggle button (feature 2). It replaces the checkbox View › Borsuk-Ulam shape, which is removed from the settings panel; a stored `sphere.show_borsuk_ulam_proof_shape` carries over to the toggle. While it is on, the view is about the sphere morphing into the shape of g: the necklace and the gauge are hidden, the input-mode buttons stay in place but are disabled, and the pointer on the shape still moves the marker. Turning it off restores the previous mode, the necklace and the gauge. The info pages name the button instead of the setting (`e2e/info.spec.ts`, `e2e/german.spec.ts`).
+- **Input mode**, two exclusive buttons: *Sphere* (the pointer on the sphere sets the cuts, as now) and *Necklace* (handles on the necklace set the cuts, feature 3). They come with feature 3. On a phone, the fairness meter leaves only about 78 px left of it, room for one button: with three, the meter's radius must be limited so that it clears the switcher.
+- **Borsuk-Ulam shape**, a toggle button (feature 2, done in v1.4.0). It replaces the checkbox View › Borsuk-Ulam shape, which is removed from the settings panel; a stored `sphere.show_borsuk_ulam_proof_shape` carries over to the toggle. While it is on, the view is about the sphere morphing into the shape of g: the necklace and the gauge are hidden, the input-mode buttons stay in place but are disabled, and the pointer on the shape still moves the marker. Turning it off restores the previous mode, the necklace and the gauge. The info pages name the button instead of the setting (`e2e/info.spec.ts`, `e2e/german.spec.ts`).
 
-### 1. Lighting
+### 1. Lighting (done in v1.3.0)
 
 The Borsuk-Ulam shape shows little detail without the wireframe; shading makes its facets and walls visible.
 
@@ -26,13 +26,13 @@ The Borsuk-Ulam shape shows little detail without the wireframe; shading makes i
 - The colors carry meaning, so the light only dims them gently (about `0.6 + 0.4 · max(dot(n, l), 0)`); the pointer marker and the solution band stay unlit. The wireframe is unaffected.
 - Setting View › Lighting: Off / Shape / Always (segmented buttons), default Shape: the shape is lit, the sphere stays as it is today unless Always is chosen. No intensity control. Remembered in `SETTING_FIELDS`; both languages.
 
-### 2. Morph between sphere and Borsuk-Ulam shape
+### 2. Morph between sphere and Borsuk-Ulam shape (done in v1.4.0)
 
 Comes with the view switcher and its Borsuk-Ulam toggle.
 
 - Sphere and shape share each octant's mesh, vertex for vertex, so the shape becomes a Three.js morph target: `geometry.morphAttributes.position = [shape positions]`, `mesh.morphTargetInfluences[0] = t`. The wireframe's `MeshBasicMaterial` morphs by itself; `sphere.vert` gets Three's morph chunks. The raycast respects morph targets, so the cut under the pointer stays right mid-morph; bounding volumes must include the target.
 - The shape's positions are computed when first needed and rebuilt, as now, when the necklace or Discrete changes.
-- The toggle animates the transition (about 1 s, eased), drawing every frame while it runs (`#needsRender`). A horizontal slider (0 to 1) beside the switcher, shown only while the toggle is on, scrubs the morph by hand; toggle and slider follow each other. Short enough for phones.
+- The toggle animates the transition (about 1 s, eased), drawing every frame while it runs (`#needsRender`). A horizontal slider (0 to 1) beside the switcher, shown only while the toggle is on, scrubs the morph by hand; toggle and slider follow each other. Short enough for phones. The slider's position is not remembered: at startup the morph follows the toggle.
 - With Lighting on Shape, the light fades in with the morph.
 
 ### 3. Cuts on the necklace

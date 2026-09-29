@@ -45,7 +45,10 @@ const SETTINGS = {
     radius: 15,
     segments: E2E_BUILD ? 32 : 128,
     offset_octant: 0.0,
+    /** The view switcher's Borsuk-Ulam toggle (ui/ViewSwitcher.ts): the shape instead of the sphere. */
     show_borsuk_ulam_proof_shape: false,
+    /** How far the sphere is morphed into the shape, 0 to 1; not remembered, it follows the toggle at startup. */
+    morph: 0,
   },
   animation: {
     rotation_x: 0.0,

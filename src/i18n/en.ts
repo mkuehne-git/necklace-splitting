@@ -19,7 +19,6 @@ export const en = {
         'settings.mesh': 'Mesh',
         'settings.faces': 'Faces',
         'settings.spreadOctants': 'Spread octants',
-        'settings.borsukUlam': 'Borsuk-Ulam shape',
         'settings.lighting': 'Lighting',
         'settings.lightingOff': 'Off',
         'settings.lightingShape': 'Shape',
@@ -61,6 +60,10 @@ export const en = {
         'button.darkTheme': 'Switch to dark theme',
         'button.close': 'Close',
         'button.showInfo': 'About this app',
+
+        /** The view switcher in the lower left corner (ui/ViewSwitcher.ts). */
+        'view.borsukUlam': 'Borsuk-Ulam shape',
+        'view.morph': 'From sphere to shape',
 
         'version.title': 'Show the changelog',
         'changelog.heading': 'Changelog',

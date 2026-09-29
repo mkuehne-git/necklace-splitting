@@ -23,6 +23,11 @@ export async function withStoredState(page: Page, state: object): Promise<void> 
 export const sphere = (page: Page) => page.locator('canvas#sphere');
 export const necklace = (page: Page) => page.locator('canvas#necklace');
 export const panel = (page: Page) => page.locator('#settings-panel');
+/** The view switcher's Borsuk-Ulam toggle and its morph slider (ui/ViewSwitcher.ts). */
+export const shapeButton = (page: Page) => page.getByRole('button', { name: 'Borsuk-Ulam shape' });
+export const morphSlider = (page: Page) => page.getByRole('slider', { name: 'From sphere to shape' });
+/** Waits for the morph between sphere and shape to finish: it takes a second. */
+export const morphed = (page: Page) => page.waitForTimeout(1300);
 
 /**
  * Opens the app and collects page errors and console errors. WebGL driver

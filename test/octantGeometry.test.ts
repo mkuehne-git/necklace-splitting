@@ -34,18 +34,25 @@ describe("octant geometry", () => {
     });
   });
 
-  it("moves each point to the Borsuk-Ulam shape (g(x), z), with the cuts unchanged", () => {
+  it("has no morph target without shares", () => {
+    expect(createOctantGeometry(signs[0], radius, 32).morphAttributes.position).toBeUndefined();
+  });
+
+  it("morphs each point to the Borsuk-Ulam shape (g(x), z), with the sphere and the cuts unchanged", () => {
     for (const s of signs) {
       const geometry = createOctantGeometry(s, radius, 32, shares);
-      const position = points(geometry.getAttribute("position") as BufferAttribute);
+      const sphere = points(geometry.getAttribute("position") as BufferAttribute);
+      const position = points(geometry.morphAttributes.position![0] as BufferAttribute);
+      expect(position).toHaveLength(sphere.length);
+      sphere.forEach((p) => expect(p.length()).toBeCloseTo(radius, 3));
       points(geometry.getAttribute("cut") as BufferAttribute).forEach((c, i) => {
         expect(c.length()).toBeCloseTo(1);
         const g = shares(c).sub(shares(c.clone().negate()));
         expect(position[i].distanceTo(new Vector3(g.x, g.y, c.z).multiplyScalar(radius))).toBeLessThan(1e-4);
       });
-      // The raycaster culls by the bounding sphere: it must fit the shape, not the sphere.
+      // The raycaster culls by the bounding sphere: it must fit the shape and the sphere.
       expect(geometry.boundingSphere).not.toBeNull();
-      for (const p of position) {
+      for (const p of [...position, ...sphere]) {
         expect(geometry.boundingSphere!.containsPoint(p)).toBe(true);
       }
     }

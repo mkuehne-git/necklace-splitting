@@ -83,6 +83,17 @@ test('the octants pulled apart', async ({ page }) => {
     await shoot(page, 'necklace-octants');
 });
 
+test('the Borsuk-Ulam shape', async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await withStoredState(page, {
+        camera: { position: [22, 16, 24], target: [0, 0, 0], up: [0, 1, 0] },
+        settings: { 'sphere.show_borsuk_ulam_proof_shape': true },
+    });
+    await openApp(page);
+    await page.mouse.move(1, 1);
+    await shoot(page, 'necklace-borsuk-ulam');
+});
+
 test('the app and its settings on a phone', async ({ page }) => {
     await page.setViewportSize(PHONE);
     // The default distance: a phone is narrow, closer would crop the sphere.

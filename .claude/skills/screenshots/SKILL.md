@@ -5,13 +5,14 @@ description: Retake the Necklace Splitting README screenshots in docs/images/ wi
 
 # Screenshots
 
-The README shows five screenshots in `docs/images/`. `npm run screenshots` retakes them all with Playwright (`playwright.screenshots.config.ts`, specs in `screenshots/readme.spec.ts`), always in the dark theme, like the original ones.
+The README shows six screenshots in `docs/images/`. `npm run screenshots` retakes them all with Playwright (`playwright.screenshots.config.ts`, specs in `screenshots/readme.spec.ts`), always in the dark theme, like the original ones.
 
 | Image | Shows | Viewport |
 | --- | --- | --- |
 | `necklace.png` | The sphere seen from (1, −1, 1), the pointer on a solution: the fairness meter shows a fair split | 1366 x 632 |
 | `necklace-with-solution.png` | The same, with the settings open at Necklace | 1366 x 632 |
 | `necklace-octants.png` | Octants spread 1.6, undivided octants hidden, settings open at View | 1366 x 632 |
+| `necklace-borsuk-ulam.png` | The Borsuk-Ulam shape, lit, with the view switcher and its slider | 1366 x 632 |
 | `necklace-phone.png` | The app on a phone, the pointer on a solution | 390 x 844 |
 | `necklace-phone-settings.png` | The settings on a phone | 390 x 844 |
 

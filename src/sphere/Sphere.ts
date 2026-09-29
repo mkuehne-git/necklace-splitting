@@ -57,8 +57,8 @@ class Sphere extends NecklaceComponent {
   /** Whether the rotation animation ran in the last frame, to draw once more when it stops. */
   #wasRotating = false;
   /**
-   * What the octants' geometry was built for: the Borsuk-Ulam shape depends on
-   * the necklace and on Discrete, the sphere on neither.
+   * What the octants' geometry was built for: the Borsuk-Ulam shape, its morph
+   * target, depends on the necklace and on Discrete, the sphere on neither.
    */
   #geometryKey = "";
 
@@ -138,6 +138,10 @@ class Sphere extends NecklaceComponent {
       Events.UPDATE_SPHERE_MATERIAL.toString(),
       () => this.updateSphereMaterial()
     );
+    this.container.addEventListener(Events.MORPH_CHANGED.toString(), () => {
+      this.updateGeometry();
+      this.applyMorph();
+    });
     this.container.addEventListener(Events.UPDATE_VISIBLE.toString(), () =>
       this.updateVisibility()
     );
@@ -237,12 +241,17 @@ class Sphere extends NecklaceComponent {
     this.updateSphereMaterial();
   }
 
+  /** Whether the Borsuk-Ulam shape is needed: shown, or on the way there or back. */
+  get needsShape(): boolean {
+    return SETTINGS.sphere.show_borsuk_ulam_proof_shape || SETTINGS.sphere.morph > 0;
+  }
+
   /**
    * Builds the octants' geometry again if what it depends on changed: with the
    * Borsuk-Ulam shape, the necklace and Discrete; the sphere depends on neither.
    */
   updateGeometry(): void {
-    const shape = SETTINGS.sphere.show_borsuk_ulam_proof_shape;
+    const shape = this.needsShape;
     const key = shape
       ? `shape ${SETTINGS.necklace.discrete} ${this.model.necklace.join("")}`
       : "sphere";
@@ -255,7 +264,24 @@ class Sphere extends NecklaceComponent {
       const geometry = this.createOctantGeometry(octant.signs);
       octant.faces.geometry = geometry;
       octant.wireframe.geometry = geometry;
+      // The morph influences follow the geometry's morph targets.
+      octant.faces.updateMorphTargets();
+      octant.wireframe.updateMorphTargets();
     }
+    this.applyMorph();
+  }
+
+  /** Morphs the octants between sphere and shape, and fades the light of Lighting › Shape with it. */
+  applyMorph(): void {
+    for (const octant of this.#octants) {
+      for (const mesh of [octant.faces, octant.wireframe]) {
+        if (mesh.morphTargetInfluences) {
+          mesh.morphTargetInfluences[0] = SETTINGS.sphere.morph;
+        }
+      }
+    }
+    this.#material.uniforms.u_light.value = this.light;
+    this.#needsRender = true;
   }
 
   /** The eight octants, each with its faces and its wireframe sharing one geometry and the common materials. */
@@ -279,7 +305,7 @@ class Sphere extends NecklaceComponent {
 
   /** An octant of the sphere, or of the Borsuk-Ulam shape when that is shown (see octantGeometry.ts). */
   createOctantGeometry(signs: THREE.Vector3): THREE.BufferGeometry {
-    const shares = SETTINGS.sphere.show_borsuk_ulam_proof_shape
+    const shares = this.needsShape
       ? (point: THREE.Vector3) => this.model.shares(point)
       : undefined;
     return createOctantGeometry(signs, SETTINGS.sphere.radius, SETTINGS.sphere.segments, shares);
@@ -358,14 +384,14 @@ class Sphere extends NecklaceComponent {
         ),
       },
       u_intersect: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
-      u_light: { type: "f", value: this.lit ? 1.0 : 0.0 },
+      u_light: { type: "f", value: this.light },
     };
   }
 
-  /** Whether the headlight shades what is shown (View › Lighting). */
-  get lit(): boolean {
+  /** How much the headlight shades what is shown (View › Lighting): with Shape, as far as the sphere is morphed. */
+  get light(): number {
     const lighting = SETTINGS.view.lighting;
-    return lighting === "Always" || (lighting === "Shape" && SETTINGS.sphere.show_borsuk_ulam_proof_shape);
+    return lighting === "Always" ? 1 : lighting === "Shape" ? SETTINGS.sphere.morph : 0;
   }
 
   /**

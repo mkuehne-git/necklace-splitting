@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { field, openApp, openSection, openSettings, sphere } from './app';
+import { field, morphed, openApp, openSection, openSettings, shapeButton, sphere } from './app';
 
 // The sphere is drawn only when something changes (#needsRender in Sphere.ts).
 // These tests count WebGL draw calls to see whether it is drawn.
@@ -61,5 +61,13 @@ test('the rotation animation draws every frame, and stops drawing when it stops'
     expect(await drawCallsDuring(page, 1000)).toBeGreaterThan(10);
     await field(page, 'Rotate').uncheck();
     await page.waitForTimeout(300);
+    expect(await drawCallsDuring(page, 1000)).toBe(0);
+});
+
+test('the morph draws while it runs, and rests afterwards', async ({ page }) => {
+    await openApp(page);
+    await page.waitForTimeout(500);
+    expect(await drawCallsDuring(page, 500, () => shapeButton(page).click())).toBeGreaterThan(10);
+    await morphed(page);
     expect(await drawCallsDuring(page, 1000)).toBe(0);
 });

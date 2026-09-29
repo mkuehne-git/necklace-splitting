@@ -11,9 +11,10 @@ export type Shares = (point: THREE.Vector3) => THREE.Vector2;
  * as the whole sphere had.
  *
  * Each vertex keeps the point of the unit sphere it stands for, the cuts, in
- * the attribute `cut`. With `shares`, the vertex itself is moved to the
- * Borsuk-Ulam shape: (g(x), z) with g(x) = f(x) - f(-x), scaled by the radius.
- * The faces, the wireframe and the raycaster all see that shape.
+ * the attribute `cut`. With `shares`, the geometry gets the Borsuk-Ulam shape
+ * as its morph target: each vertex at (g(x), z) with g(x) = f(x) - f(-x),
+ * scaled by the radius. The mesh's morph influence moves between sphere (0)
+ * and shape (1); the faces, the wireframe and the raycaster all follow it.
  */
 export function createOctantGeometry(
   signs: THREE.Vector3,
@@ -40,20 +41,21 @@ export function createOctantGeometry(
 
   const position = geometry.getAttribute("position") as THREE.BufferAttribute;
   const cut = new THREE.BufferAttribute(new Float32Array(position.count * 3), 3);
+  const shape = shares ? new THREE.BufferAttribute(new Float32Array(position.count * 3), 3) : undefined;
   const point = new THREE.Vector3();
   const opposite = new THREE.Vector3();
   for (let i = 0; i < position.count; i++) {
     point.fromBufferAttribute(position, i).normalize();
     cut.setXYZ(i, point.x, point.y, point.z);
-    if (shares) {
+    if (shares && shape) {
       const g = shares(point).sub(shares(opposite.copy(point).negate()));
-      position.setXYZ(i, g.x * radius, g.y * radius, point.z * radius);
+      shape.setXYZ(i, g.x * radius, g.y * radius, point.z * radius);
     }
   }
   geometry.setAttribute("cut", cut);
-  if (shares) {
-    // The sphere's normals do not fit the shape; nothing draws with them.
-    geometry.deleteAttribute("normal");
+  if (shape) {
+    geometry.morphAttributes.position = [shape];
+    // The raycaster culls by the bounding volumes: they include the morph target.
     geometry.computeBoundingBox();
     geometry.computeBoundingSphere();
   }

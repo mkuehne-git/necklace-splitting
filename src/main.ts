@@ -19,6 +19,7 @@ import { persistentState } from './settings/PersistentState';
 import { Changelog } from './changelog/Changelog';
 import { showWhatsNewOnce } from './changelog/WhatsNew';
 import { Info } from './info/Info';
+import { ViewSwitcher } from './ui/ViewSwitcher';
 import { t } from './i18n';
 import { Sphere } from './sphere/Sphere';
 import { Necklace } from './necklace/Necklace';
@@ -29,6 +30,8 @@ import { NecklaceModel } from './necklace/NecklaceModel';
 new Settings();
 const switcher = new ThemesSwitcher();
 new Info();
+// Before the sphere, which reads the morph it sets from the remembered toggle.
+new ViewSwitcher();
 const model = new NecklaceModel();
 const sphere = new Sphere(model);
 const necklace = new Necklace(model);

@@ -1,0 +1,89 @@
+/* The view switcher (ui/ViewSwitcher.ts): in the lower left corner, as in
+   Climate Helix. The necklace canvas spans the bottom 20%, but draws its rows
+   at the top and the fairness meter centered below: the corner stays free. */
+.view-switcher {
+    /* Below the settings panel (6) and the overlays (8). */
+    z-index: 5;
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.view-button {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--settings-size);
+    height: var(--settings-size);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.55;
+}
+
+.view-button:focus-visible {
+    opacity: 0.85;
+}
+
+/* Touch screens keep :hover on the last tapped element, which would leave the
+   tooltip stuck on screen - only real pointers get the hover styling. */
+@media (hover: hover) {
+    .view-button:hover {
+        opacity: 0.85;
+    }
+
+    .view-button:hover .view-tooltip {
+        opacity: 1;
+    }
+}
+
+.view-button.active {
+    opacity: 1;
+    background: var(--b-color);
+}
+
+.view-button:disabled {
+    cursor: default;
+    opacity: 0.25;
+}
+
+.view-icon {
+    width: calc(var(--settings-size) / 2);
+    height: calc(var(--settings-size) / 2);
+    fill: var(--text-color);
+}
+
+.view-tooltip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 0;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: var(--text-color);
+    background: var(--background-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+}
+
+.view-button:focus-visible .view-tooltip {
+    opacity: 1;
+}
+
+/* The morph slider, shown with the shape; short enough for phones. */
+.view-morph {
+    width: min(200px, 40vw);
+    accent-color: var(--text-color);
+}
+
+.view-morph[hidden] {
+    display: none;
+}

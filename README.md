@@ -54,7 +54,9 @@ $$g(\mathbf{x}) = f(\mathbf{x}) - f(-\mathbf{x})$$
 
 must have at least one zero. Along a circle around the sphere, $g$ forms a closed loop around the origin, because $g$ is continuous and $g(-\mathbf{x}) = -g(\mathbf{x})$. Moving the circle towards a pole shrinks the loop continuously to a single point, so on the way the loop must cross the origin.
 
-*View › Borsuk-Ulam shape* shows the 3D shape formed by $g(\mathbf{x})$ as the circle moves: each point $\mathbf{x}$ of the sphere is drawn at $(g(\mathbf{x}), z)$, in the colors of the sphere. Fair splits lie where the shape meets the $z$ axis (*View › Axes*). With *Necklace › Discrete*, $g$ jumps from value to value; the walls between the steps span these jumps.
+The Borsuk-Ulam button in the lower left corner morphs the sphere into the 3D shape formed by $g(\mathbf{x})$ as the circle moves: each point $\mathbf{x}$ of the sphere is drawn at $(g(\mathbf{x}), z)$, in the colors of the sphere. The slider beside the button moves the view anywhere between sphere and shape. Fair splits lie where the shape meets the $z$ axis (*View › Axes*). With *Necklace › Discrete*, $g$ jumps from value to value; the walls between the steps span these jumps. *View › Lighting* shades the shape, so that its facets and walls stand out even without the mesh.
+
+![The Borsuk-Ulam shape, with the view switcher and its slider](./docs/images/necklace-borsuk-ulam.png)
 
 ## Using the app
 

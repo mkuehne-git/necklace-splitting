@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { field, openApp, openSection, openSettings } from './app';
+import { field, morphed, openApp, openSection, openSettings, shapeButton } from './app';
 
 // Rebuilding the sphere or its material must free the old WebGL resources:
 // otherwise every settings change uses more graphics memory. The tests count the
@@ -81,21 +81,22 @@ test('changing the number of jewels does not keep old buffers or programs', asyn
 });
 
 test('the Borsuk-Ulam shape does not keep old buffers or programs', async ({ page }) => {
-    // With the shape, the octants' geometry is rebuilt when it is switched and
-    // when the necklace changes; the old geometry must be freed.
+    // The shape is the octants' morph target: the geometry is rebuilt when the
+    // necklace changes, with or without it; the old geometry must be freed.
     await openApp(page);
     await openSettings(page);
-    await openSection(page, 'View');
-    const shape = field(page, 'Borsuk-Ulam shape');
+    await openSection(page, 'Necklace');
     const jewels = field(page, 'Jewels');
-    await shape.check();
-    await settle(page);
+    await shapeButton(page).click();
+    await morphed(page);
     const before = await live(page);
     for (let round = 0; round < 2; round++) {
-        await shape.uncheck();
+        await shapeButton(page).click();
+        await morphed(page);
+        await jewels.fill(String(14 + round));
         await settle(page);
-        await shape.check();
-        await settle(page);
+        await shapeButton(page).click();
+        await morphed(page);
         for (const value of ['12', '20', '16']) {
             await jewels.fill(value);
             await settle(page);

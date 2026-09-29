@@ -13,6 +13,8 @@ export enum Events {
   SET_NECKLACE_CONFIGURATION_BY_STRING = "necklace-configuration-by-string",
   UPDATE_SPHERE_MATERIAL = "update-material",
   NECKLACE_CUT = "necklace-cut",
+  /** SETTINGS.sphere.morph changed: by the view switcher's animation or its slider. */
+  MORPH_CHANGED = "morph-changed",
   SCREEN_CAPTURE = "screen-capture",
   SHOW_CHANGELOG = "show-changelog",
   HIDE_CHANGELOG = "hide-changelog",

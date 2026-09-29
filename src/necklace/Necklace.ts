@@ -113,12 +113,13 @@ class Necklace extends NecklaceComponent {
     return this.domElement;
   }
 
+  /** The Borsuk-Ulam view is about the sphere morphing into the shape: it hides necklace and gauge. */
   get showNecklace(): boolean {
-    return SETTINGS.view.necklace_visible;
+    return SETTINGS.view.necklace_visible && !SETTINGS.sphere.show_borsuk_ulam_proof_shape;
   }
 
   get showGauge(): boolean {
-    return SETTINGS.view.gauge_visible;
+    return SETTINGS.view.gauge_visible && !SETTINGS.sphere.show_borsuk_ulam_proof_shape;
   }
 
   render(): void {
