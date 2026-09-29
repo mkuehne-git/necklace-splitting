@@ -1,7 +1,7 @@
 import { Events } from '../Enums';
 import type { SettingsPanel } from './SettingsPanel';
 import { button, checkbox, numberField, range, section, segmented, subheading, textField, type Control } from './settingsControls';
-import { LIMITS, SETTINGS, maxConfiguration, resetAnimation, type CaptureTarget, type Lighting } from './settingsValues';
+import { LIMITS, SETTINGS, maxConfiguration, resetAnimation, setSolutionHint, solutionHintShown, type CaptureTarget, type Lighting, type SolutionHint } from './settingsValues';
 import { collectSettings, persistentState } from './PersistentState';
 import { Imprint } from '../imprint/Imprint';
 import { checkForPwaUpdates, showPwaStatus } from '../ui/PwaUpdate';
@@ -45,8 +45,11 @@ const formatStep = (step: number) => (value: number) => formatNumber(value, deci
 function necklaceSection(body: HTMLElement, refresh: () => void): Control[] {
     const content = section(body, t('settings.necklace'), { open: true });
     const necklace = SETTINGS.necklace;
-    const flag = (text: string, key: 'discrete' | 'show_solution_band' | 'show_solutions') =>
+    const flag = (text: string, key: 'discrete') =>
         checkbox(content, text, () => necklace[key], (value) => { necklace[key] = value; material(); });
+    // The game hides the solutions; ticking them during the game shows them for this game only.
+    const hint = (text: string, key: SolutionHint) =>
+        checkbox(content, text, () => solutionHintShown(key), (value) => { setSolutionHint(key, value); material(); });
     return [
         range(content, t('settings.jewels'), LIMITS.number_of_jewels, () => necklace.number_of_jewels, (value) => {
             necklace.number_of_jewels = value;
@@ -67,8 +70,8 @@ function necklaceSection(body: HTMLElement, refresh: () => void): Control[] {
             changed(Events.SET_NECKLACE_CONFIGURATION_BY_STRING);
         }),
         flag(t('settings.discrete'), 'discrete'),
-        flag(t('settings.solutionBand'), 'show_solution_band'),
-        flag(t('settings.solutions'), 'show_solutions'),
+        hint(t('settings.solutionBand'), 'show_solution_band'),
+        hint(t('settings.solutions'), 'show_solutions'),
         range(content, t('settings.epsilon'), LIMITS.epsilon, () => necklace.epsilon,
             (value) => { necklace.epsilon = value; material(); }, formatStep(LIMITS.epsilon.step)),
     ];

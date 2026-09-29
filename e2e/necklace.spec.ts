@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { expectChanged, necklace, openApp, pixels, shapeButton, sphere, withStoredState } from './app';
+import { expectChanged, field, necklace, openApp, openSection, openSettings, pixels, shapeButton, sphere, withStoredState } from './app';
 
 // The necklace's handles set the cuts in the view switcher's necklace mode
 // (necklace/Necklace.ts). The canvas draws them; hidden sliders and buttons
@@ -120,14 +120,45 @@ test('in the necklace mode the pointer on the sphere sets no cut', async ({ page
     await expect(sphere(page)).not.toHaveCSS('cursor', 'none');
 });
 
-test('the Borsuk-Ulam shape disables the input buttons, and the pointer sets the cuts', async ({ page }) => {
+test('the scenes are exclusive, and cutting the necklace leaves the Borsuk-Ulam shape at once', async ({ page }) => {
     await withStoredState(page, { settings: { 'view.input': 'Necklace' } });
     await openApp(page);
     await shapeButton(page).click();
-    await expect(inputButton(page, 'Cut the necklace')).toBeDisabled();
-    await expect(inputButton(page, 'Point at the sphere')).toBeDisabled();
+    await expect(shapeButton(page)).toHaveAttribute('aria-pressed', 'true');
+    await expect(inputButton(page, 'Cut the necklace')).toHaveAttribute('aria-pressed', 'false');
     await expect(cutSlider(page, 'First cut')).toBeHidden();
+    // Clicking the active scene again changes nothing.
     await shapeButton(page).click();
-    await expect(inputButton(page, 'Cut the necklace')).toBeEnabled();
+    await expect(shapeButton(page)).toHaveAttribute('aria-pressed', 'true');
+    // Mid-morph, another scene restores the sphere without waiting.
+    await inputButton(page, 'Cut the necklace').click();
+    await expect(inputButton(page, 'Cut the necklace')).toHaveAttribute('aria-pressed', 'true');
+    await expect(shapeButton(page)).toHaveAttribute('aria-pressed', 'false');
+    await expect(page.getByRole('slider', { name: 'From sphere to shape' })).toBeHidden();
     await expect(cutSlider(page, 'First cut')).toBeAttached();
+});
+
+test('the game hides the solutions for itself, without changing the settings', async ({ page }) => {
+    await openApp(page);
+    await openSettings(page);
+    await openSection(page, 'Necklace');
+    await expect(field(page, 'Solution band')).toBeChecked();
+    await expect(field(page, 'Solutions')).toBeChecked();
+    const shown = await pixels(sphere(page));
+    await inputButton(page, 'Cut the necklace').click();
+    await expect(field(page, 'Solution band')).not.toBeChecked();
+    await expect(field(page, 'Solutions')).not.toBeChecked();
+    await expectChanged(sphere(page), shown);
+    const hidden = await pixels(sphere(page));
+    // Shown again on request, for this game only.
+    await field(page, 'Solution band').check();
+    await expectChanged(sphere(page), hidden);
+    // A new game hides them again; the remembered settings still show them.
+    await page.reload();
+    await openSettings(page);
+    await openSection(page, 'Necklace');
+    await expect(field(page, 'Solution band')).not.toBeChecked();
+    await inputButton(page, 'Point at the sphere').click();
+    await expect(field(page, 'Solution band')).toBeChecked();
+    await expect(field(page, 'Solutions')).toBeChecked();
 });

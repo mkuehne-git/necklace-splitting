@@ -1,6 +1,12 @@
 # Changelog
 
-## v1.5.1 · 2026-09-29
+## v1.6.0 · 2026-09-29
+
+* The three buttons in the upper left corner are now scenes: pointing, cutting and the Borsuk-Ulam shape. While the shape is shown, the other two stay available and return to the sphere at once, instead of being disabled.
+* Player buttons around the morph slider: ◀ plays the morph back to the sphere, ▶ into the shape, and while one plays it becomes a pause button (⏸); play again to go on. The slider stays to watch it all; before, turning the shape off hid the slider right away.
+* Cutting the necklace yourself is now a real puzzle: the solution band and the solution markers are hidden while the handles set the cuts, so you find the fair splits yourself. Necklace › Solution band and › Solutions show them again for this game; your settings stay as they are, and pointing at the sphere shows them as before.
+
+## v1.5.1 · 2026-09-29 · [67b9c43](https://github.com/mkuehne-git/necklace-splitting/commit/67b9c43)
 
 * The marker on the sphere is now a white ring with a dark outline: the white glow was hard to see on the bright yellow. The color of the point shows inside the ring.
 * When the handles move the marker towards the rim of the sphere, the view turns to it earlier, not only once it is out of sight.

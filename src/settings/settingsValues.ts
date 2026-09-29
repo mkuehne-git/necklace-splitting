@@ -93,6 +93,35 @@ function cutsFromNecklace(): boolean {
   return SETTINGS.view.input === "Necklace" && !SETTINGS.sphere.show_borsuk_ulam_proof_shape;
 }
 
+type SolutionHint = "show_solution_band" | "show_solutions";
+
+/**
+ * The game (cuts from the necklace) hides the solutions, so they are found
+ * rather than seen: what the settings' checkboxes turn on again for this game.
+ * Not remembered; each new game starts hidden again (resetSolutionHints).
+ */
+const gameHints: Partial<Record<SolutionHint, boolean>> = {};
+
+/** Whether a solution hint is shown: during the game as it chose, otherwise as the settings say. */
+function solutionHintShown(key: SolutionHint): boolean {
+  return cutsFromNecklace() ? gameHints[key] ?? false : SETTINGS.necklace[key];
+}
+
+/** Shows or hides a solution hint: for this game only while it runs, otherwise in the settings. */
+function setSolutionHint(key: SolutionHint, shown: boolean): void {
+  if (cutsFromNecklace()) {
+    gameHints[key] = shown;
+  } else {
+    SETTINGS.necklace[key] = shown;
+  }
+}
+
+/** Forgets what the last game showed: on entering or leaving it. */
+function resetSolutionHints(): void {
+  delete gameHints.show_solution_band;
+  delete gameHints.show_solutions;
+}
+
 /** Stops the rotation and turns the sphere back; the render loop applies it. */
 function resetAnimation(): void {
   SETTINGS.animation.trigger_reset = true;
@@ -102,5 +131,5 @@ function resetAnimation(): void {
   SETTINGS.animation.rotation_z = 0;
 }
 
-export { EPS, EPS_SQ, INPUTS, LIGHTINGS, LIMITS, MAX_JEWELS, MAX_ROT, SETTINGS, cutsFromNecklace, maxConfiguration, resetAnimation };
-export type { CaptureTarget, Input, Lighting, Limit };
+export { EPS, EPS_SQ, INPUTS, LIGHTINGS, LIMITS, MAX_JEWELS, MAX_ROT, SETTINGS, cutsFromNecklace, maxConfiguration, resetAnimation, resetSolutionHints, setSolutionHint, solutionHintShown };
+export type { CaptureTarget, Input, Lighting, Limit, SolutionHint };

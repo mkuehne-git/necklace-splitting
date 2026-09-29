@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { APP_VERSION, expectChanged, field, morphSlider, morphed, necklace, openApp, openSection, openSettings, panel, panelButton, pixels, shapeButton, sphere, withStoredState } from './app';
+import { APP_VERSION, expectChanged, field, morphBackButton, morphPauseButton, morphPlayButton, morphSlider, morphed, necklace, openApp, openSection, openSettings, panel, panelButton, pixels, pointButton, shapeButton, sphere, withStoredState } from './app';
 
 test('loads without errors and shows the sphere and the necklace', async ({ page }) => {
     const errors = await openApp(page);
@@ -49,10 +49,59 @@ test('the Borsuk-Ulam button morphs the sphere into the shape, hides the necklac
     await page.reload();
     await expect(shapeButton(page)).toHaveAttribute('aria-pressed', 'true');
     await expect(morphSlider(page)).toHaveValue('1');
-    // Back to the sphere: the necklace shows again.
-    await shapeButton(page).click();
+    // Another scene restores the sphere at once: the necklace shows again.
+    await pointButton(page).click();
+    await expect(pointButton(page)).toHaveAttribute('aria-pressed', 'true');
+    await expect(shapeButton(page)).toHaveAttribute('aria-pressed', 'false');
     await expect(morphSlider(page)).toBeHidden();
     await expectChanged(necklace(page), hidden);
+});
+
+// The morph runs on animation frames and performance.now(): these tests control
+// the clock, so that a slow software renderer cannot outrun a pause.
+
+test('the player buttons play the morph either way, pause it and go on', async ({ page }) => {
+    await page.clock.install();
+    await withStoredState(page, { settings: { 'sphere.show_borsuk_ulam_proof_shape': true } });
+    await openApp(page);
+    // At the shape: only the way back plays.
+    await expect(morphPlayButton(page)).toBeDisabled();
+    await expect(morphBackButton(page)).toBeEnabled();
+    await morphBackButton(page).click();
+    await page.clock.runFor(400);
+    await morphPauseButton(page).click();
+    const paused = Number(await morphSlider(page).inputValue());
+    expect(paused).toBeGreaterThan(0);
+    expect(paused).toBeLessThan(1);
+    await page.clock.runFor(500);
+    expect(Number(await morphSlider(page).inputValue())).toBe(paused);
+    // Both ways play from the middle; the way back goes on to the sphere.
+    await expect(morphPlayButton(page)).toBeEnabled();
+    await morphBackButton(page).click();
+    await page.clock.runFor(1100);
+    await expect(morphSlider(page)).toHaveValue('0');
+    await expect(morphBackButton(page)).toBeDisabled();
+    // Still in the scene, at the sphere: play into the shape again.
+    await expect(shapeButton(page)).toHaveAttribute('aria-pressed', 'true');
+    await morphPlayButton(page).click();
+    await page.clock.runFor(1100);
+    await expect(morphSlider(page)).toHaveValue('1');
+    await expect(morphPlayButton(page)).toBeDisabled();
+});
+
+test('entering the Borsuk-Ulam scene plays the morph, which can be paused', async ({ page }) => {
+    await page.clock.install();
+    await openApp(page);
+    await shapeButton(page).click();
+    await page.clock.runFor(300);
+    await morphPauseButton(page).click();
+    const paused = Number(await morphSlider(page).inputValue());
+    expect(paused).toBeGreaterThan(0);
+    expect(paused).toBeLessThan(1);
+    await expect(morphPlayButton(page)).toBeEnabled();
+    await morphPlayButton(page).click();
+    await page.clock.runFor(1100);
+    await expect(morphSlider(page)).toHaveValue('1');
 });
 
 test('the morph slider moves between sphere and shape', async ({ page }) => {

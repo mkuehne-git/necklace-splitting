@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { field, morphed, openApp, openSection, openSettings, shapeButton } from './app';
+import { field, morphed, openApp, openSection, openSettings, pointButton, shapeButton } from './app';
 
 // Rebuilding the sphere or its material must free the old WebGL resources:
 // otherwise every settings change uses more graphics memory. The tests count the
@@ -91,8 +91,8 @@ test('the Borsuk-Ulam shape does not keep old buffers or programs', async ({ pag
     await morphed(page);
     const before = await live(page);
     for (let round = 0; round < 2; round++) {
-        await shapeButton(page).click();
-        await morphed(page);
+        await pointButton(page).click();
+        await settle(page);
         await jewels.fill(String(14 + round));
         await settle(page);
         await shapeButton(page).click();

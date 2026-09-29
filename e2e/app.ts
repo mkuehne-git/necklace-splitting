@@ -25,6 +25,11 @@ export const necklace = (page: Page) => page.locator('canvas#necklace');
 export const panel = (page: Page) => page.locator('#settings-panel');
 /** The view switcher's Borsuk-Ulam toggle and its morph slider (ui/ViewSwitcher.ts). */
 export const shapeButton = (page: Page) => page.getByRole('button', { name: 'Borsuk-Ulam shape' });
+export const pointButton = (page: Page) => page.getByRole('button', { name: 'Point at the sphere' });
+/** The morph's player buttons around its slider. */
+export const morphBackButton = (page: Page) => page.getByRole('button', { name: 'Morph back to the sphere' });
+export const morphPlayButton = (page: Page) => page.getByRole('button', { name: 'Morph into the shape' });
+export const morphPauseButton = (page: Page) => page.getByRole('button', { name: 'Pause the morph' });
 export const morphSlider = (page: Page) => page.getByRole('slider', { name: 'From sphere to shape' });
 /** Waits for the morph between sphere and shape to finish: it takes a second. */
 export const morphed = (page: Page) => page.waitForTimeout(1300);

@@ -66,6 +66,9 @@ export const en = {
         'view.inputNecklace': 'Cut the necklace',
         'view.borsukUlam': 'Borsuk-Ulam shape',
         'view.morph': 'From sphere to shape',
+        'view.morphBack': 'Morph back to the sphere',
+        'view.morphPause': 'Pause the morph',
+        'view.morphPlay': 'Morph into the shape',
 
         /** The necklace's handles and parts (necklace/Necklace.ts), for keyboards and screen readers. */
         'necklace.firstCut': 'First cut',

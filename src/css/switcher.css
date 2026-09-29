@@ -14,17 +14,9 @@
     gap: 0 8px;
 }
 
-/* The input buttons, exclusive, set apart from the shape toggle by a line. */
-.view-inputs {
+/* The three scene buttons, exclusive. */
+.view-scenes {
     display: flex;
-}
-
-/* Its own element with opacity: html2canvas (the screen capture) cannot parse color-mix(). */
-.view-separator {
-    width: 1px;
-    height: calc(var(--settings-size) * 0.75);
-    background: var(--text-color);
-    opacity: 0.35;
 }
 
 .view-button {
@@ -62,9 +54,6 @@
     background: var(--b-color);
 }
 
-.view-button.active:disabled {
-    opacity: 0.35;
-}
 
 .view-button:disabled {
     cursor: default;
@@ -97,12 +86,49 @@
     opacity: 1;
 }
 
-/* The morph slider, shown with the shape; short enough for phones. */
+/* The morph slider and its X, shown with the shape; short enough for phones. */
 .view-morph {
-    width: min(200px, 40vw);
-    accent-color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .view-morph[hidden] {
     display: none;
+}
+
+.view-morph input {
+    width: min(200px, 40vw);
+    accent-color: var(--text-color);
+}
+
+/* The player buttons around the slider: back to the sphere (◀), into the shape (▶), pause (⏸). */
+.view-morph-button {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    color: var(--text-color);
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.85;
+}
+
+.view-morph-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+@media (hover: hover) {
+    .view-morph-button:hover:enabled {
+        background: var(--b-color);
+    }
+}
+
+.view-morph-button:disabled {
+    cursor: default;
+    opacity: 0.25;
 }

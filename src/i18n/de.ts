@@ -66,6 +66,9 @@ export const de: Catalog = {
         'view.inputNecklace': 'Die Halskette schneiden',
         'view.borsukUlam': 'Borsuk-Ulam-Form',
         'view.morph': 'Von der Kugel zur Form',
+        'view.morphBack': 'Zurück zur Kugel verwandeln',
+        'view.morphPause': 'Verwandlung anhalten',
+        'view.morphPlay': 'Zur Form verwandeln',
 
         'necklace.firstCut': 'Erster Schnitt',
         'necklace.secondCut': 'Zweiter Schnitt',

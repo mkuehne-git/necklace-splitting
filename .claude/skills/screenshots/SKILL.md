@@ -14,7 +14,7 @@ The README shows seven screenshots in `docs/images/`. `npm run screenshots` reta
 | `necklace-octants.png` | Octants spread 1.6, undivided octants hidden, settings open at View | 1366 x 632 |
 | `necklace-borsuk-ulam.png` | The Borsuk-Ulam shape, lit, with the view switcher and its slider | 1366 x 632 |
 | `necklace-phone.png` | The app on a phone, the pointer on a solution | 390 x 844 |
-| `necklace-phone-handles.png` | The necklace mode on a phone: the handles at a third and two thirds, the switcher in the upper left corner | 390 x 844 |
+| `necklace-phone-handles.png` | The necklace mode on a phone: the handles at a third and two thirds, the solutions hidden, the switcher in the upper left corner | 390 x 844 |
 | `necklace-phone-settings.png` | The settings on a phone | 390 x 844 |
 
 ## 1. When

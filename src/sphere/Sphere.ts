@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { Events } from "../Enums";
-import { EPS_SQ, MAX_JEWELS, SETTINGS, cutsFromNecklace } from "../settings/settingsValues";
+import { EPS_SQ, MAX_JEWELS, SETTINGS, cutsFromNecklace, solutionHintShown } from "../settings/settingsValues";
 import { NecklaceModel } from "../necklace/NecklaceModel";
 import { ComponentOptions, NecklaceComponent } from "../necklace/NecklaceComponent";
 import { Resizer } from "./Resizer";
@@ -160,7 +160,11 @@ class Sphere extends NecklaceComponent {
         this.#needsRender = true;
       }
     });
+    // Entering or leaving the game hides or restores the solutions.
     this.container.addEventListener(Events.INPUT_CHANGED.toString(), () => {
+      const uniforms = this.#material.uniforms;
+      uniforms.u_show_solution_band.value = solutionHintShown("show_solution_band");
+      uniforms.u_show_solutions.value = solutionHintShown("show_solutions");
       this.#needsRender = true;
     });
     this.container.addEventListener(Events.SHOW_CUT.toString(), () => this.showCut());
@@ -451,9 +455,9 @@ class Sphere extends NecklaceComponent {
       u_epsilon: { type: "f", value: SETTINGS.necklace.epsilon },
       u_show_solution_band: {
         type: "b",
-        value: SETTINGS.necklace.show_solution_band,
+        value: solutionHintShown("show_solution_band"),
       },
-      u_show_solutions: { type: "b", value: SETTINGS.necklace.show_solutions },
+      u_show_solutions: { type: "b", value: solutionHintShown("show_solutions") },
       u_alpha: { type: "f", value: SETTINGS.color.alpha },
       u_time: { type: "f", value: 1.0 },
       u_resolution: {
