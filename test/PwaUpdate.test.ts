@@ -121,3 +121,12 @@ describe("Check for updates", () => {
     vi.useRealTimers();
   });
 });
+
+describe("checking for updates offline", () => {
+  it("says the check failed instead of nothing", async () => {
+    secureContext(true);
+    serviceWorkers([{ update: () => Promise.reject(new TypeError("Failed to fetch")), waiting: null }]);
+    await expect(checkForPwaUpdates()).resolves.toBe(false);
+    expect(status()!.textContent).toBe("Could not check for updates. Are you offline?");
+  });
+});

@@ -43,6 +43,7 @@ export const de: Catalog = {
         'settings.captureSphere': 'Kugel',
         'settings.captureNecklace': 'Halskette',
         'settings.captureButton': 'Bild speichern (Alt+S)',
+        'capture.failed': 'Das Bildschirmfoto ist fehlgeschlagen.',
         'settings.advanced': 'Erweitert',
         'settings.advancedHint': 'Kugel, Farben, Monitor',
         'settings.advancedNote': 'Die Standardwerte passen für die meisten Geräte. Mehr Segmente zeichnen eine glattere Kugel, brauchen aber ein schnelleres Gerät.',
@@ -105,6 +106,7 @@ export const de: Catalog = {
         'pwa.notRegistered': 'Es ist noch kein Service Worker registriert.',
         'pwa.updateReady': 'Update bereit. Zum Anwenden neu laden.',
         'pwa.noUpdate': 'Kein Update verfügbar.',
+        'pwa.checkFailed': 'Die Suche nach Updates ist fehlgeschlagen. Bist du offline?',
         'pwa.offlineReady': 'Necklace Splitting ist bereit für die Nutzung ohne Internet.',
     },
 };

@@ -1,6 +1,11 @@
 # Changelog
 
-## v1.7.8 · 2026-09-30
+## v1.7.9 · 2026-09-30
+
+* Fixed: Check for updates said nothing when it could not reach the server, for example offline. It now says the check failed.
+* Fixed: a screen capture that failed ended silently. It now says so.
+
+## v1.7.8 · 2026-09-30 · [4bd1dcb](https://github.com/mkuehne-git/necklace-splitting/commit/4bd1dcb)
 
 * Fixed: Alt+S did not save a screen capture on a Mac, where it types "ß".
 

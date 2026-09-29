@@ -42,6 +42,7 @@ export const en = {
         'settings.captureSphere': 'Sphere',
         'settings.captureNecklace': 'Necklace',
         'settings.captureButton': 'Save image (Alt+S)',
+        'capture.failed': 'The screen capture failed.',
         'settings.advanced': 'Advanced',
         'settings.advancedHint': 'Sphere, colors, monitor',
         'settings.advancedNote': 'The defaults suit most devices. More segments draw a smoother sphere, but need a faster device.',
@@ -110,6 +111,7 @@ export const en = {
         'pwa.notRegistered': 'No service worker is registered yet.',
         'pwa.updateReady': 'Update ready. Reload to apply it.',
         'pwa.noUpdate': 'No update available.',
+        'pwa.checkFailed': 'Could not check for updates. Are you offline?',
         'pwa.offlineReady': 'Necklace Splitting is ready for offline use.',
     },
 };

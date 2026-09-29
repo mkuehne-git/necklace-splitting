@@ -103,12 +103,19 @@ export async function checkForPwaUpdates(): Promise<boolean> {
     }
 
     let hasWaiting = false;
-    await Promise.all(registrations.map(async (registration) => {
-        await registration.update();
-        if (registration.waiting) {
-            hasWaiting = true;
-        }
-    }));
+    try {
+        await Promise.all(registrations.map(async (registration) => {
+            await registration.update();
+            if (registration.waiting) {
+                hasWaiting = true;
+            }
+        }));
+    } catch (error) {
+        // Offline, or the server cannot be reached: say so rather than nothing.
+        showPwaStatus(t('pwa.checkFailed'), 'warning');
+        console.info(error);
+        return false;
+    }
 
     if (hasWaiting) {
         showPwaStatus(t('pwa.updateReady'), 'success');

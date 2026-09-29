@@ -71,3 +71,20 @@ test('Alt+S takes a capture, also where Alt+S types another character (macOS: ß
     await page.evaluate(() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ß', code: 'KeyS', altKey: true, bubbles: true })));
     expect((await download).suggestedFilename()).toBe('necklace.png');
 });
+
+test('a capture that fails says so', async ({ page }) => {
+    const errors = await openApp(page);
+    // html2canvas cannot parse color-mix() and gives up on the whole page.
+    await page.evaluate(() => {
+        const element = document.createElement('div');
+        element.style.color = 'color-mix(in srgb, red 50%, blue)';
+        element.textContent = 'x';
+        document.body.appendChild(element);
+    });
+    await openSettings(page);
+    await openSection(page, 'Screen capture');
+    await panelButton(page, 'All').click();
+    await panelButton(page, 'Save image (Alt+S)').click();
+    await expect(page.locator('#pwa-status')).toHaveText('The screen capture failed.');
+    expect(errors.length).toBe(1);
+});

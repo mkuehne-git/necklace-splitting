@@ -1,6 +1,8 @@
 import { Events } from "../Enums";
 import { SETTINGS, type CaptureTarget } from "../settings/settingsValues";
 import { loadHtml2canvas } from "./loadHtml2canvas";
+import { showPwaStatus } from "./PwaUpdate";
+import { t } from "../i18n";
 // This is for the screen capture. Without the WebGL content, i.e. my sphere would not be showing.
 // It must run before the renderer is created, so it stays in this module, which main.ts loads
 // at startup; only html2canvas itself is loaded on first use.
@@ -48,6 +50,10 @@ class ScreenCapture {
         a.href = canvas.toDataURL();
         a.download = "necklace.png";
         a.click();
+      }).catch((error: unknown) => {
+        // html2canvas stops at CSS it cannot parse, e.g. color-mix() (gotchas.md).
+        showPwaStatus(t("capture.failed"), "warning");
+        console.error(error);
       });
     }, 100);
   }
