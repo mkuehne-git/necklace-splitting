@@ -17,3 +17,7 @@ On GitHub's runners Firefox could not create a WebGL context at all ("tryNativeG
 ## html2canvas and modern CSS color functions
 
 The screen capture ("All") renders the page with html2canvas, which throws on color functions it cannot parse, such as `color-mix()`; the capture then never finishes (`e2e/capture.spec.ts` times out waiting for the download). Use plain colors, variables and `opacity` in styles of anything on the page, or leave the element out with `ignoreElements` in `ScreenCapture.ts`.
+
+## Playwright's clock keeps running after install
+
+`page.clock.install()` makes the page's time controllable but lets it keep running in real time. A test that plays an animation (the morph) and then acts on it (pause) passes locally and fails on GitHub's slower machines, where the animation ends first. Stop the clock with `page.clock.pauseAt(...)` and move it with `page.clock.runFor(ms)` (see `stopClock` in `e2e/app.spec.ts`). To find such races locally, slow Chromium's CPU down for a run: `Emulation.setCPUThrottlingRate` (rate 6) through a CDP session. Likewise, wait for a state to settle (`expect.poll`) rather than a fixed time.

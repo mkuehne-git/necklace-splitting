@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { APP_VERSION, expectChanged, field, morphBackButton, morphPauseButton, morphPlayButton, morphSlider, morphed, necklace, openApp, openSection, openSettings, panel, panelButton, pixels, pointButton, shapeButton, sphere, withStoredState } from './app';
 
 test('loads without errors and shows the sphere and the necklace', async ({ page }) => {
@@ -74,13 +74,21 @@ test('the Borsuk-Ulam button morphs the sphere into the shape, hides the necklac
     await expectChanged(necklace(page), hidden);
 });
 
-// The morph runs on animation frames and performance.now(): these tests control
-// the clock, so that a slow software renderer cannot outrun a pause.
+// The morph runs on animation frames and performance.now(): these tests stop the
+// clock (install alone keeps it running in real time) and move it by hand, so that
+// a slow machine cannot finish the morph before the test pauses it.
+
+/** Stops the page's clock: from now on only page.clock.runFor moves it. */
+async function stopClock(page: Page): Promise<void> {
+    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 50));
+}
 
 test('the player buttons play the morph either way, pause it and go on', async ({ page }) => {
     await page.clock.install();
     await withStoredState(page, { settings: { 'sphere.show_borsuk_ulam_proof_shape': true } });
     await openApp(page);
+    await page.clock.runFor(1100);
+    await stopClock(page);
     // At the shape: only the way back plays.
     await expect(morphPlayButton(page)).toBeDisabled();
     await expect(morphBackButton(page)).toBeEnabled();
@@ -109,6 +117,7 @@ test('the player buttons play the morph either way, pause it and go on', async (
 test('entering the Borsuk-Ulam scene plays the morph, which can be paused', async ({ page }) => {
     await page.clock.install();
     await openApp(page);
+    await stopClock(page);
     await shapeButton(page).click();
     await page.clock.runFor(300);
     await morphPauseButton(page).click();

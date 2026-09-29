@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.10 · 2026-09-30
+## v1.7.11 · 2026-09-30
+
+* No functional change. Three automatic tests of the morph failed on GitHub's slower machines; they no longer depend on how fast the machine is.
+
+## v1.7.10 · 2026-09-30 · [9b3e120](https://github.com/mkuehne-git/necklace-splitting/commit/9b3e120)
 
 * No functional change. Leftover debugging code and unused shader values are gone.
 

@@ -69,5 +69,6 @@ test('the morph draws while it runs, and rests afterwards', async ({ page }) => 
     await page.waitForTimeout(500);
     expect(await drawCallsDuring(page, 500, () => shapeButton(page).click())).toBeGreaterThan(10);
     await morphed(page);
-    expect(await drawCallsDuring(page, 1000)).toBe(0);
+    // It comes to rest: a slow machine may still be drawing the morph's last frames.
+    await expect.poll(() => drawCallsDuring(page, 500), { timeout: 10000 }).toBe(0);
 });
