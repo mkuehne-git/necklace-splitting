@@ -31,7 +31,7 @@ The project uses the current Active LTS release of Node.js: Node 24 (24.21.0 loc
 - `.nvmrc` selects Node 24 for `nvm use`; `engines` in `package.json` states the minimum (22.12, which Vite 8 and Vitest need).
 - The CI workflow's `node-version` (`.github/workflows/ci.yml`) must match `.nvmrc`.
 - When adding or upgrading a dev dependency, check its `engines` field against that version.
-- Revisit this when a newer LTS starts (Node 26 in October 2026) and when the used one reaches end of life: update `.nvmrc`, the workflow and, if needed, `engines` together.
+- Revisit this when a newer LTS starts (Node 26 in October 2026) and when the used one reaches end of life: update `.nvmrc`, the workflow and, if needed, `engines` together. `@types/node` stays on the used major version: `.github/dependabot.yml` ignores its major updates, so lift or move that rule with the switch.
 
 The development server uses HTTPS with a local self-signed certificate. If the browser cannot trust that certificate, use `npm run dev:http` and open `http://127.0.0.1:5173/` instead. Over plain HTTP, only `localhost` and `127.0.0.1` have service workers (and with them the PWA update check); the network address does not.
 

@@ -12,6 +12,10 @@ updates:
     labels:
       - "dependencies"
     rebase-strategy: "auto"
+    ignore:
+      # @types/node follows the Node version in .nvmrc (24); lift this when switching to Node 26.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     groups:
       runtime-dependencies:
         patterns:

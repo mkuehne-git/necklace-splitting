@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.2.2 · 2026-09-29
+## v1.2.3 · 2026-09-29
+
+* No functional change. Automatic dependency updates no longer propose Node type definitions for a newer Node version than the one the app is built with.
+
+## v1.2.2 · 2026-09-29 · [01fc082](https://github.com/mkuehne-git/necklace-splitting/commit/01fc082)
 
 * No functional change. The code is now type-checked in strict mode, which catches missing values before they reach the app.
 
