@@ -14,7 +14,7 @@ The README shows seven screenshots in `docs/images/`. `npm run screenshots` reta
 | `necklace-octants.png` | Octants spread 1.6, undivided octants hidden, settings open at View | 1366 x 632 |
 | `necklace-borsuk-ulam.png` | The Borsuk-Ulam shape, lit, with the view switcher and its slider | 1366 x 632 |
 | `necklace-phone.png` | The app on a phone, the pointer on a solution | 390 x 844 |
-| `necklace-phone-handles.png` | The necklace mode on a phone: the handles at a third and two thirds, the fairness meter right of the switcher | 390 x 844 |
+| `necklace-phone-handles.png` | The necklace mode on a phone: the handles at a third and two thirds, the switcher in the upper left corner | 390 x 844 |
 | `necklace-phone-settings.png` | The settings on a phone | 390 x 844 |
 
 ## 1. When
@@ -33,7 +33,7 @@ The README shows seven screenshots in `docs/images/`. `npm run screenshots` reta
 
 Open every changed image (the Read tool shows images) and check:
 
-- The white marker sits on a blue solution marker in `necklace.png` and `necklace-phone.png`, and the fairness meter shows an exactly fair split.
+- The marker (a white ring with a dark outline) sits on a blue solution marker in `necklace.png` and `necklace-phone.png`, and the fairness meter shows an exactly fair split.
 - The sphere is not cropped (the phone uses the default camera distance, 50).
 - The version label shows the new version.
 

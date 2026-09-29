@@ -17,6 +17,12 @@ import fragmentShader from "./shaders/sphere.frag";
 
 /** How long the camera takes to turn to a cut out of sight, in ms. */
 const TURN_DURATION = 700;
+/**
+ * How far from the direction of view a cut may lie before the camera turns to
+ * it: cos 50°, about three quarters of the way from the center to the rim.
+ * Further out, the marker is squeezed at the rim or hidden behind it.
+ */
+const IN_VIEW_COS = Math.cos((50 * Math.PI) / 180);
 
 const easeInOut = (x: number) => x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2;
 
@@ -253,7 +259,7 @@ class Sphere extends NecklaceComponent {
   }
 
   /**
-   * Turns the camera to the model's cut if it is out of sight: after a handle
+   * Turns the camera to the model's cut if it is near the rim or out of sight: after a handle
    * is let go or a part given to the other thief. Not while the sphere rotates,
    * which would carry the point away again.
    */
@@ -272,8 +278,9 @@ class Sphere extends NecklaceComponent {
     const toPoint = point.sub(target).normalize();
     const toCamera = this.#camera.position.clone().sub(target);
     const distance = toCamera.length();
-    // In sight: on the part of the sphere the camera sees, whose edge lies at cos = radius / distance.
-    if (toPoint.dot(toCamera.clone().normalize()) > SETTINGS.sphere.radius / distance) {
+    // Well in sight: near enough to the direction of view, and on the part of
+    // the sphere the camera sees at all, whose edge lies at cos = radius / distance.
+    if (toPoint.dot(toCamera.clone().normalize()) > Math.max(IN_VIEW_COS, SETTINGS.sphere.radius / distance)) {
       return;
     }
     const from = toCamera.normalize();

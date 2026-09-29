@@ -19,7 +19,7 @@ const MORPH_DURATION = 1000;
 const easeInOut = (x: number) => x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2;
 
 /**
- * The buttons in the lower left corner, modeled on Climate Helix's scene
+ * The buttons in the upper left corner, modeled on Climate Helix's scene
  * switcher. Two exclusive buttons choose what sets the cuts: the pointer on the
  * sphere or the handles on the necklace (SETTINGS.view.input, INPUT_CHANGED).
  * The Borsuk-Ulam toggle morphs the sphere into

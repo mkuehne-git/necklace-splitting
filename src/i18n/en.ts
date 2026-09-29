@@ -61,7 +61,7 @@ export const en = {
         'button.close': 'Close',
         'button.showInfo': 'About this app',
 
-        /** The view switcher in the lower left corner (ui/ViewSwitcher.ts). */
+        /** The view switcher in the upper left corner (ui/ViewSwitcher.ts). */
         'view.inputSphere': 'Point at the sphere',
         'view.inputNecklace': 'Cut the necklace',
         'view.borsukUlam': 'Borsuk-Ulam shape',

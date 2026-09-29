@@ -1,15 +1,17 @@
-/* The view switcher (ui/ViewSwitcher.ts): in the lower left corner, as in
-   Climate Helix. The necklace canvas spans the bottom 20%, but draws its rows
-   at the top and the fairness meter centered below: the corner stays free. */
+/* The view switcher (ui/ViewSwitcher.ts): in the upper left corner, level
+   with the icon buttons on the right. On a phone the morph slider wraps onto
+   a line of its own below the buttons, clear of those on the right. */
 .view-switcher {
     /* Below the settings panel (6) and the overlays (8). */
     z-index: 5;
     position: absolute;
     left: 8px;
-    bottom: 8px;
+    top: 0;
+    max-width: calc(100% - var(--settings-size) * 3 - 24px);
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
+    gap: 0 8px;
 }
 
 /* The input buttons, exclusive, set apart from the shape toggle by a line. */
@@ -77,7 +79,7 @@
 
 .view-tooltip {
     position: absolute;
-    bottom: calc(100% + 6px);
+    top: calc(100% + 6px);
     left: 0;
     white-space: nowrap;
     font-size: 0.8rem;

@@ -28,8 +28,12 @@ const Y_GAP_BETWEEN_THIEVES = 20;
 const Y_GAP_BETWEEN_LINE_SEGMENTS = 5;
 const Y_GAP_THIEF_LINE_SEGMENT = 7;
 
-/** The jewels' two rows, where the handles are drawn and parts are tapped. */
+/** How far the handles reach beyond the jewels' rows; the necklace starts this far down. */
+const OVERHANG = 6;
+/** The jewels' two rows, where parts are tapped. */
 const ROWS_HEIGHT = 2 * JEWEL_HEIGHT + Y_GAP_BETWEEN_THIEVES;
+/** Where the handles are drawn and grabbed, from the top of the canvas. */
+const HANDLES_HEIGHT = ROWS_HEIGHT + 2 * OVERHANG;
 /** How far from a handle, in px, a pointer still grabs it: at least 24 px wide for fingers. */
 const HANDLE_REACH = 14;
 /**
@@ -236,7 +240,7 @@ class Necklace extends NecklaceComponent {
   }
 
   private onPointerDown(event: PointerEvent): void {
-    if (!cutsFromNecklace() || !this.hasCut || event.offsetY > ROWS_HEIGHT + HANDLE_REACH) {
+    if (!cutsFromNecklace() || !this.hasCut || event.offsetY > HANDLES_HEIGHT + HANDLE_REACH) {
       return;
     }
     const handle = this.handleAt(event.offsetX);
@@ -254,7 +258,7 @@ class Necklace extends NecklaceComponent {
     if (this.#dragging) {
       this.#dragging = this.moveHandle(this.#dragging, event.offsetX / this.width);
     } else if (cutsFromNecklace() && this.hasCut) {
-      const onRows = event.offsetY <= ROWS_HEIGHT + HANDLE_REACH;
+      const onRows = event.offsetY <= HANDLES_HEIGHT + HANDLE_REACH;
       this.canvas.style.cursor = !onRows ? "" : this.handleAt(event.offsetX) ? "ew-resize" : "pointer";
     }
   }
@@ -363,7 +367,7 @@ class Necklace extends NecklaceComponent {
     if (ctxOrNull !== null) {
       const ctx: CanvasRenderingContext2D = ctxOrNull;
       const xOffset = 0;
-      const yOffset = 0;
+      const yOffset = OVERHANG;
       let xPos = xOffset;
 
       const cuts = this.model.cuts;
@@ -373,7 +377,10 @@ class Necklace extends NecklaceComponent {
 
         // Render line segments for x*x, y*y, z*z
         if (cuts !== undefined) {
+          ctx.save();
+          ctx.translate(0, yOffset);
           this.drawSegments(ctx, cuts);
+          ctx.restore();
         }
         if (this.hasCut) {
           this.drawHandles(ctx);
@@ -384,7 +391,7 @@ class Necklace extends NecklaceComponent {
       if (this.model.thief_a !== undefined && this.showGauge) {
         const thief_a = this.model.canonicalThief(this.model.thief_a);
         const thief_b = this.model.canonicalThief(this.model.thief_b);
-        this.drawGauge(ctx, 50, thief_a, thief_b);
+        this.drawGauge(ctx, 50 + OVERHANG, thief_a, thief_b);
       }
 
       // Some debug output
@@ -449,7 +456,7 @@ class Necklace extends NecklaceComponent {
       ctx.lineWidth = interactive ? 2 : 1;
       ctx.beginPath();
       ctx.moveTo(x, 0);
-      ctx.lineTo(x, ROWS_HEIGHT);
+      ctx.lineTo(x, HANDLES_HEIGHT);
       ctx.stroke();
       if (interactive) {
         // The grip, in the gap between the rows.
@@ -458,7 +465,7 @@ class Necklace extends NecklaceComponent {
         // Whole at the ends of the necklace too.
         const grip = Math.min(this.width - width / 2, Math.max(width / 2, x));
         ctx.beginPath();
-        ctx.roundRect(grip - width / 2, JEWEL_HEIGHT + 2, width, height, 3);
+        ctx.roundRect(grip - width / 2, OVERHANG + JEWEL_HEIGHT + 2, width, height, 3);
         ctx.fill();
       }
     }
@@ -468,7 +475,7 @@ class Necklace extends NecklaceComponent {
       ctx.globalAlpha = 1;
       ctx.lineWidth = 2;
       ctx.setLineDash([4, 3]);
-      ctx.strokeRect(bounds[part] * this.width + 1, 1, (bounds[part + 1] - bounds[part]) * this.width - 2, ROWS_HEIGHT - 2);
+      ctx.strokeRect(bounds[part] * this.width + 1, 1, (bounds[part + 1] - bounds[part]) * this.width - 2, HANDLES_HEIGHT - 2);
     }
     ctx.restore();
   }
@@ -545,25 +552,12 @@ class Necklace extends NecklaceComponent {
     const height = this.height - y0;
     const lineWidth = 3.0;
     const vgap = 2;
-    let radius = height - vgap;
-    let centerX = this.width / 2;
-    // Clear of the view switcher in the lower left corner: on narrow screens,
-    // centered in the room right of it and left of the version label, and
-    // smaller if that room is too small.
-    const switcher = document.querySelector(".view-switcher");
-    if (switcher) {
-      const left = switcher.getBoundingClientRect().right - this.canvas.getBoundingClientRect().left + 8;
-      if (centerX - radius < left) {
-        const room = this.width - 48 - left;
-        radius = Math.min(radius, room / 2);
-        centerX = left + room / 2;
-      }
-    }
+    const radius = height - vgap;
 
     if (radius >= 10) {
       /** The real circle radius, scaled by sqrt(0.5), because the largest vector can be [1,1]. */
       const rradius = Math.SQRT1_2 * radius;
-      const center = new THREE.Vector2(centerX, this.height - vgap);
+      const center = new THREE.Vector2(this.width / 2, this.height - vgap);
 
       const THIEF_A_COLOR = this.thief_a_color;
       const THIEF_B_COLOR = this.thief_b_color;

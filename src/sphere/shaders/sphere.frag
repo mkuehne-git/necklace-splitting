@@ -75,12 +75,22 @@ vec3 shade(vec3 color) {
 }
 void fragColorWithIntersect(vec3 colorIn) {
     // Both on the unit sphere: the cuts under the pointer and those of this fragment.
+    // A white ring with a dark outline, open in the middle: it reads on the bright
+    // yellow and on the dark parts alike, and the color of the point stays visible.
     vec3 color = colorIn;
     float dist = distance(v_pos, u_intersect);
-    float epsilon = 0.05;
-    if(dist < epsilon) {
-        float t = inter(0.0, epsilon, dist);
-        color = mix(vec3(1.0), color, t);
+    float hole = 0.025;
+    float ring = 0.04;
+    float outline = 0.05;
+    float edge = 0.055;
+    if(dist < hole) {
+        color = colorIn;
+    } else if(dist < ring) {
+        color = vec3(1.0);
+    } else if(dist < outline) {
+        color = vec3(0.08);
+    } else if(dist < edge) {
+        color = mix(vec3(0.08), color, inter(outline, edge, dist));
     }
     gl_FragColor = scale_color(color);
 }

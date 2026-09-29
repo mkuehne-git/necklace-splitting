@@ -16,7 +16,7 @@ $$x^2 + y^2 + z^2 = 1.$$
 
 The sign of each coordinate gives its piece to thief A ($+$) or thief B ($-$).
 
-Point at the sphere: the white marker shows the point, the necklace below it the cuts, and the fairness meter how fair the split is. One line per thief shows how much of each kind of jewel that thief gets; the dotted arc marks a fair share, and the outer arc turns from red to green as the split gets fairer.
+Point at the sphere: the marker, a white ring with a dark outline, shows the point, the necklace below it the cuts, and the fairness meter how fair the split is. One line per thief shows how much of each kind of jewel that thief gets; the dotted arc marks a fair share, and the outer arc turns from red to green as the split gets fairer.
 
 The colors on the sphere show how much thief A gets of each kind: red for the first kind, green for the second. Bright yellow, a mix of both, means thief A gets most of both kinds.
 
@@ -54,7 +54,7 @@ $$g(\mathbf{x}) = f(\mathbf{x}) - f(-\mathbf{x})$$
 
 must have at least one zero. Along a circle around the sphere, $g$ forms a closed loop around the origin, because $g$ is continuous and $g(-\mathbf{x}) = -g(\mathbf{x})$. Moving the circle towards a pole shrinks the loop continuously to a single point, so on the way the loop must cross the origin.
 
-The Borsuk-Ulam button in the lower left corner morphs the sphere into the 3D shape formed by $g(\mathbf{x})$ as the circle moves: each point $\mathbf{x}$ of the sphere is drawn at $(g(\mathbf{x}), z)$, in the colors of the sphere. The slider beside the button moves the view anywhere between sphere and shape. Fair splits lie where the shape meets the $z$ axis (*View › Axes*). With *Necklace › Discrete*, $g$ jumps from value to value; the walls between the steps span these jumps. *View › Lighting* shades the shape, so that its facets and walls stand out even without the mesh.
+The Borsuk-Ulam button in the upper left corner morphs the sphere into the 3D shape formed by $g(\mathbf{x})$ as the circle moves: each point $\mathbf{x}$ of the sphere is drawn at $(g(\mathbf{x}), z)$, in the colors of the sphere. The slider beside the button moves the view anywhere between sphere and shape. Fair splits lie where the shape meets the $z$ axis (*View › Axes*). With *Necklace › Discrete*, $g$ jumps from value to value; the walls between the steps span these jumps. *View › Lighting* shades the shape, so that its facets and walls stand out even without the mesh.
 
 ![The Borsuk-Ulam shape, with the view switcher and its slider](./docs/images/necklace-borsuk-ulam.png)
 
@@ -62,7 +62,7 @@ The Borsuk-Ulam button in the lower left corner morphs the sphere into the 3D sh
 
 <img src="./docs/images/necklace-phone.png" alt="The app on a phone" width="195"> <img src="./docs/images/necklace-phone-settings.png" alt="The settings on a phone" width="195"> <img src="./docs/images/necklace-phone-handles.png" alt="Cutting the necklace with its handles on a phone" width="195">
 
-- **Point or cut**: the two buttons in the lower left corner choose what sets the cuts. *Point at the sphere* is the view above. *Cut the necklace* turns it around: drag the two handles along the necklace and tap a piece to give it to the other thief. The marker on the sphere follows, the view turns to it when it is out of sight, and a fair split is celebrated.
+- **Point or cut**: the two buttons in the upper left corner choose what sets the cuts. *Point at the sphere* is the view above. *Cut the necklace* turns it around: drag the two handles along the necklace and tap a piece to give it to the other thief. The marker on the sphere follows, the view turns to it when it nears the rim or goes out of sight, and a fair split is celebrated.
 - **Borsuk-Ulam shape**: the button beside them morphs the sphere into the shape of $g$ (see above).
 - **Settings** (gear button, or `h`): the necklace, what the view shows, a rotation animation and screen captures; *Advanced* holds the sphere's mesh and colors. The app remembers them; *Restore defaults* goes back to the original ones.
 - **About this app** (info button): the explanation above, in the app.

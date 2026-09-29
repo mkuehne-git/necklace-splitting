@@ -13,9 +13,9 @@ Planned in this order (decided 2026-09-29): lighting (v1.3.0), the view switcher
 
 ### The view switcher
 
-Buttons in the lower left corner (moved there from above the necklace, decided 2026-09-29): the necklace canvas spans the bottom 20%, but its rows are drawn at the top and the fairness meter centered below them, so the corner is free. Modeled on Climate Helix's `SceneSwitcher` (`~/dev/climate-helix/src/ui/SceneSwitcher.ts`, `scenes.css`): icon buttons with a tooltip and an accessible name, the active one highlighted, the state remembered in the persistent state. Two independent choices:
+Buttons in the upper left corner, level with the icon buttons on the right (decided 2026-09-29, after trying above the necklace and the lower left corner, where the fairness meter had to move aside on phones). Modeled on Climate Helix's `SceneSwitcher` (`~/dev/climate-helix/src/ui/SceneSwitcher.ts`, `scenes.css`): icon buttons with a tooltip and an accessible name, the active one highlighted, the state remembered in the persistent state. Two independent choices:
 
-- **Input mode**, two exclusive buttons: *Sphere* (the pointer on the sphere sets the cuts, as now) and *Necklace* (handles on the necklace set the cuts, feature 3, done in v1.5.0). On a phone, the fairness meter leaves only about 78 px left of it, room for one button: with three, the meter's radius must be limited so that it clears the switcher.
+- **Input mode**, two exclusive buttons: *Sphere* (the pointer on the sphere sets the cuts, as now) and *Necklace* (handles on the necklace set the cuts, feature 3, done in v1.5.0). On a phone the morph slider wraps onto a line below the buttons.
 - **Borsuk-Ulam shape**, a toggle button (feature 2, done in v1.4.0). It replaces the checkbox View › Borsuk-Ulam shape, which is removed from the settings panel; a stored `sphere.show_borsuk_ulam_proof_shape` carries over to the toggle. While it is on, the view is about the sphere morphing into the shape of g: the necklace and the gauge are hidden, the input-mode buttons stay in place but are disabled, and the pointer on the shape still moves the marker. Turning it off restores the previous mode, the necklace and the gauge. The info pages name the button instead of the setting (`e2e/info.spec.ts`, `e2e/german.spec.ts`).
 
 ### 1. Lighting (done in v1.3.0)
