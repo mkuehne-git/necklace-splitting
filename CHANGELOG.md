@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.2.8 · 2026-09-29
+## v1.2.9 · 2026-09-29
+
+* No functional change. The notes for developers describe how the Firefox tests got to run on GitHub.
+
+## v1.2.8 · 2026-09-29 · [abe21b6](https://github.com/mkuehne-git/necklace-splitting/commit/abe21b6)
 
 * No functional change. The end-to-end tests in Firefox run on a virtual display on GitHub.
 
