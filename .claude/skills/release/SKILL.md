@@ -13,7 +13,7 @@ Read the current version from `package.json` and the top entry of `CHANGELOG.md`
 
 - **Patch (`z`)**: fixes, small improvements, tests, docs, refactors without behavior change.
 - **Minor (`y`)**: new user-visible features (a new control, view or option).
-- **Major (`x`)**: never on your own - only the project owner decides.
+- **Major (`x`)**: never on your own - only the project owner decides. It also requires a full code review whose important findings are resolved first (see "Versioning" in `CLAUDE.md`): check that it was done before committing a major version, and summarize it in the commit message.
 
 If the previous version was never committed (it is still in the working tree), extend its changelog entry instead of adding a new version.
 

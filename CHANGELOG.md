@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.0 · 2026-09-29
+## v1.7.1 · 2026-09-30
+
+* No functional change. A new rule for the project: before a major version, the whole code is reviewed and its important issues are fixed.
+
+## v1.7.0 · 2026-09-29 · [9d08e1e](https://github.com/mkuehne-git/necklace-splitting/commit/9d08e1e)
 
 * Settings whose name does not say it all, such as Discrete, Epsilon or Undivided octants, have a small ⓘ behind them: it opens a short explanation below the setting.
 
