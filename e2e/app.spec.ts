@@ -32,6 +32,16 @@ test('hovering the Borsuk-Ulam shape cuts the necklace there', async ({ page }) 
     await expect(sphere(page)).toHaveCSS('cursor', 'none');
 });
 
+test('Lighting shades the sphere with Always, and only the shape by default', async ({ page }) => {
+    await openApp(page);
+    await openSettings(page);
+    await openSection(page, 'View');
+    await expect(panelButton(page, 'Shape')).toHaveAttribute('aria-pressed', 'true');
+    const unlit = await pixels(sphere(page));
+    await panelButton(page, 'Always').click();
+    await expectChanged(sphere(page), unlit);
+});
+
 test('the theme switcher toggles light and dark', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
     await openApp(page);

@@ -9,3 +9,5 @@ uniform int u_count_0;
 uniform int u_count_1;
 uniform int u_input[MAX_JEWELS];
 uniform vec3 u_intersect;
+/** How much the headlight shades the faces: 0 unlit, 1 fully lit. */
+uniform float u_light;

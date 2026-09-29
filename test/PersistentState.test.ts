@@ -70,6 +70,13 @@ describe("parseState", () => {
     expect(camera({ position: [1, 2], target: [0, 0, 0], up: [0, 1, 0] })).toBeUndefined();
   });
 
+  it("accepts only the known choices for the lighting", () => {
+    const settings = (value: object) => parseState(JSON.stringify({ version: 1, settings: value })).settings;
+    expect(settings({ "view.lighting": "Always" })).toEqual({ "view.lighting": "Always" });
+    expect(settings({ "view.lighting": "always" })).toEqual({});
+    expect(settings({ "view.lighting": true })).toEqual({});
+  });
+
   it("accepts only whole numbers in range for the jewels and the segments", () => {
     const settings = (value: object) => parseState(JSON.stringify({ version: 1, settings: value })).settings;
     expect(settings({ "sphere.segments": 64.5, "necklace.number_of_jewels": 33 })).toEqual({});

@@ -27,6 +27,10 @@ const LIMITS = {
 
 type CaptureTarget = "All" | "Sphere" | "Necklace";
 
+/** What is shaded by the headlight: nothing, the Borsuk-Ulam shape, or the sphere too. */
+const LIGHTINGS = ["Off", "Shape", "Always"] as const;
+type Lighting = (typeof LIGHTINGS)[number];
+
 const SETTINGS = {
   necklace: {
     number_of_jewels: 24,
@@ -58,6 +62,7 @@ const SETTINGS = {
     axes_visible: true,
     mesh_visible: false,
     faces_visible: true,
+    lighting: "Shape" as Lighting,
   },
   color: {
     scale_red: 1.0,
@@ -84,5 +89,5 @@ function resetAnimation(): void {
   SETTINGS.animation.rotation_z = 0;
 }
 
-export { EPS, EPS_SQ, LIMITS, MAX_JEWELS, MAX_ROT, SETTINGS, maxConfiguration, resetAnimation };
-export type { CaptureTarget, Limit };
+export { EPS, EPS_SQ, LIGHTINGS, LIMITS, MAX_JEWELS, MAX_ROT, SETTINGS, maxConfiguration, resetAnimation };
+export type { CaptureTarget, Lighting, Limit };

@@ -1,7 +1,7 @@
 import { Events } from '../Enums';
 import type { SettingsPanel } from './SettingsPanel';
 import { button, checkbox, numberField, range, section, segmented, subheading, textField, type Control } from './settingsControls';
-import { LIMITS, SETTINGS, maxConfiguration, resetAnimation, type CaptureTarget } from './settingsValues';
+import { LIMITS, SETTINGS, maxConfiguration, resetAnimation, type CaptureTarget, type Lighting } from './settingsValues';
 import { collectSettings, persistentState } from './PersistentState';
 import { Imprint } from '../imprint/Imprint';
 import { checkForPwaUpdates, showPwaStatus } from '../ui/PwaUpdate';
@@ -91,6 +91,14 @@ function viewSection(body: HTMLElement): Control[] {
             (value) => { SETTINGS.sphere.offset_octant = value; visibility(); }, formatStep(LIMITS.offset_octant.step)),
         checkbox(content, t('settings.borsukUlam'), () => SETTINGS.sphere.show_borsuk_ulam_proof_shape,
             (value) => { SETTINGS.sphere.show_borsuk_ulam_proof_shape = value; material(); }),
+        segmented<Lighting>(content, t('settings.lighting'),
+            [
+                { value: 'Off', label: t('settings.lightingOff') },
+                { value: 'Shape', label: t('settings.lightingShape') },
+                { value: 'Always', label: t('settings.lightingAlways') },
+            ],
+            () => view.lighting,
+            (value) => { view.lighting = value; material(); }),
     ];
 }
 

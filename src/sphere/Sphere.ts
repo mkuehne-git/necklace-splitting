@@ -358,7 +358,14 @@ class Sphere extends NecklaceComponent {
         ),
       },
       u_intersect: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
+      u_light: { type: "f", value: this.lit ? 1.0 : 0.0 },
     };
+  }
+
+  /** Whether the headlight shades what is shown (View › Lighting). */
+  get lit(): boolean {
+    const lighting = SETTINGS.view.lighting;
+    return lighting === "Always" || (lighting === "Shape" && SETTINGS.sphere.show_borsuk_ulam_proof_shape);
   }
 
   /**

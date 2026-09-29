@@ -62,6 +62,17 @@ vec3 calculateSolutionArea(vec3 colorIn, vec3 cuts) {
     vec2 thief_b = vec2(1.0) - thief_a;
     return isSolutionArea(thief_a, thief_b) ? vec3(0.5, 0.0, 0.0) + colorIn : colorIn;
 }
+/**
+ * The headlight's shading: a flat normal from the screen-space derivatives of
+ * the position, so each facet and each wall of the shape shows, whatever the
+ * vertex normals. Both sides are lit alike, and the colors keep their meaning:
+ * the light dims them to 60% at most.
+ */
+vec3 shade(vec3 color) {
+    vec3 normal = normalize(cross(dFdx(v_view), dFdy(v_view)));
+    float diffuse = abs(dot(normal, normalize(-v_view)));
+    return color * mix(1.0, 0.6 + 0.4 * diffuse, u_light);
+}
 void fragColorWithIntersect(vec3 colorIn) {
     // Both on the unit sphere: the cuts under the pointer and those of this fragment.
     vec3 color = colorIn;
@@ -82,6 +93,6 @@ void main() {
     if(u_show_solutions && isSolutionArea(thief_a, thief_b)) {
         color = deltaColor(thief_a, thief_b);
     }
-    color = calculateSolutionArea(color, v_pos);
+    color = calculateSolutionArea(shade(color), v_pos);
     fragColorWithIntersect(color);
 }
