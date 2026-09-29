@@ -3,8 +3,6 @@ uniform bool u_necklace_discrete;
 uniform bool u_show_solution_band;
 uniform bool u_show_solutions;
 uniform float u_epsilon;
-uniform vec3 u_radius_vector;
-uniform bool u_show_borsuk_ulam_proof_shape;
 uniform vec3 u_scale_color;
 uniform float u_alpha;
 uniform int u_count_0;

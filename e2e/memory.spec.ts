@@ -79,3 +79,27 @@ test('changing the number of jewels does not keep old buffers or programs', asyn
     }
     expect(await live(page)).toEqual(before);
 });
+
+test('the Borsuk-Ulam shape does not keep old buffers or programs', async ({ page }) => {
+    // With the shape, the octants' geometry is rebuilt when it is switched and
+    // when the necklace changes; the old geometry must be freed.
+    await openApp(page);
+    await openSettings(page);
+    await openSection(page, 'View');
+    const shape = field(page, 'Borsuk-Ulam shape');
+    const jewels = field(page, 'Jewels');
+    await shape.check();
+    await settle(page);
+    const before = await live(page);
+    for (let round = 0; round < 2; round++) {
+        await shape.uncheck();
+        await settle(page);
+        await shape.check();
+        await settle(page);
+        for (const value of ['12', '20', '16']) {
+            await jewels.fill(value);
+            await settle(page);
+        }
+    }
+    expect(await live(page)).toEqual(before);
+});

@@ -8,6 +8,7 @@ import { ComponentOptions, NecklaceComponent } from "../necklace/NecklaceCompone
 import { Resizer } from "./Resizer";
 import { persistentState } from "../settings/PersistentState";
 import { stats } from "./Stats";
+import { createOctantGeometry } from "./octantGeometry";
 
 // The GLSL shaders
 import vertexShader from "./shaders/sphere.vert";
@@ -27,8 +28,8 @@ type Octant = {
   /** The signs of (x, y, z) in this octant. */
   signs: THREE.Vector3;
   group: THREE.Group;
-  faces: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial>;
-  wireframe: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial>;
+  faces: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
+  wireframe: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
 };
 
 class Sphere extends NecklaceComponent {
@@ -54,6 +55,11 @@ class Sphere extends NecklaceComponent {
   #needsRender = true;
   /** Whether the rotation animation ran in the last frame, to draw once more when it stops. */
   #wasRotating = false;
+  /**
+   * What the octants' geometry was built for: the Borsuk-Ulam shape depends on
+   * the necklace and on Discrete, the sphere on neither.
+   */
+  #geometryKey = "";
 
   constructor(
     model: NecklaceModel,
@@ -146,6 +152,11 @@ class Sphere extends NecklaceComponent {
     const style = window.getComputedStyle(this.container);
     const backgroundColor = style.getPropertyValue("background-color");
     this.#scene.background = new THREE.Color(backgroundColor);
+    // The wireframe in the theme's color: white, its default, vanishes on the light theme.
+    const meshColor = style.getPropertyValue("--mesh-color").trim();
+    if (meshColor) {
+      this.#wireframeMaterial.color.set(meshColor);
+    }
     this.#needsRender = true;
   }
 
@@ -182,9 +193,13 @@ class Sphere extends NecklaceComponent {
       const shown = this.#octants.filter((octant) => octant.group.visible).map((octant) => octant.faces);
       const intersects = this.#raycaster.intersectObjects(shown, false);
       const uniforms = this.#material.uniforms;
-      if (intersects.length > 0 && !SETTINGS.animation.run) {
-        // In the octant's own coordinates: the point on the sphere, wherever the octant was moved or turned.
-        const point = intersects[0].object.worldToLocal(intersects[0].point.clone());
+      const hit = intersects[0];
+      if (hit && hit.face && hit.barycoord && !SETTINGS.animation.run) {
+        // The cuts the hit stands for, from the geometry's `cut` attribute: the
+        // point on the sphere, wherever the octant was moved and whatever the shape.
+        const cut = (hit.object as THREE.Mesh).geometry.getAttribute("cut") as THREE.BufferAttribute;
+        const { a, b, c } = hit.face;
+        const point = THREE.Triangle.getInterpolatedAttribute(cut, a, b, c, hit.barycoord, new THREE.Vector3()).normalize();
         uniforms.u_intersect.value = point;
         this._setIntersect(point);
       } else {
@@ -207,23 +222,40 @@ class Sphere extends NecklaceComponent {
     stats.end();
   }
 
+  /** Applies the cut at a point of the unit sphere. */
   _setIntersect(point: THREE.Vector3) {
     if (point.distanceToSquared(this.#lastInterSect) > EPS_SQ) {
       this.domElement.style.cursor = "none";
       this.#lastInterSect = point;
-      const radius = SETTINGS.sphere.radius || 1.0;
-      this.model.applyCut(point.clone().divideScalar(radius));
+      this.model.applyCut(point.clone());
     }
   }
 
+  /** Rebuilds the octants' geometry and the material: after Radius or Segments. */
   createSphere() {
+    this.#geometryKey = "";
+    this.updateSphereMaterial();
+  }
+
+  /**
+   * Builds the octants' geometry again if what it depends on changed: with the
+   * Borsuk-Ulam shape, the necklace and Discrete; the sphere depends on neither.
+   */
+  updateGeometry(): void {
+    const shape = SETTINGS.sphere.show_borsuk_ulam_proof_shape;
+    const key = shape
+      ? `shape ${SETTINGS.necklace.discrete} ${this.model.necklace.join("")}`
+      : "sphere";
+    if (key === this.#geometryKey) {
+      return;
+    }
+    this.#geometryKey = key;
     for (const octant of this.#octants) {
       octant.faces.geometry.dispose();
       const geometry = this.createOctantGeometry(octant.signs);
       octant.faces.geometry = geometry;
       octant.wireframe.geometry = geometry;
     }
-    this.updateSphereMaterial();
   }
 
   /** The eight octants, each with its faces and its wireframe sharing one geometry and the common materials. */
@@ -245,30 +277,12 @@ class Sphere extends NecklaceComponent {
     return octants;
   }
 
-  /**
-   * The part of the sphere in the octant with the given signs. SphereGeometry
-   * places a point at (-cos φ sin θ, cos θ, sin φ sin θ): θ from the top (+y),
-   * φ around the y axis. An octant is half of θ's range and a quarter of φ's.
-   * The sphere's segments are shared out, so all eight together have as many
-   * as the whole sphere had.
-   */
-  createOctantGeometry(signs: THREE.Vector3): THREE.SphereGeometry {
-    const quarter = Math.PI / 2;
-    const segments = Math.max(1, Math.round(SETTINGS.sphere.segments / 4));
-    const thetaStart = signs.y > 0 ? 0 : quarter;
-    // x = -cos φ is positive for φ in (π/2, 3π/2), z = sin φ for φ in (0, π).
-    const phiStart = signs.x < 0
-      ? (signs.z > 0 ? 0 : 3 * quarter)
-      : (signs.z > 0 ? quarter : 2 * quarter);
-    return new THREE.SphereGeometry(
-      SETTINGS.sphere.radius,
-      segments,
-      segments,
-      phiStart,
-      quarter,
-      thetaStart,
-      quarter
-    );
+  /** An octant of the sphere, or of the Borsuk-Ulam shape when that is shown (see octantGeometry.ts). */
+  createOctantGeometry(signs: THREE.Vector3): THREE.BufferGeometry {
+    const shares = SETTINGS.sphere.show_borsuk_ulam_proof_shape
+      ? (point: THREE.Vector3) => this.model.shares(point)
+      : undefined;
+    return createOctantGeometry(signs, SETTINGS.sphere.radius, SETTINGS.sphere.segments, shares);
   }
 
   /**
@@ -320,18 +334,6 @@ class Sphere extends NecklaceComponent {
       u_input: { type: "i", value: this.model.necklace },
       u_count_0: { type: "i", value: this.model.count_0 },
       u_count_1: { type: "i", value: this.model.count_1 },
-      u_show_borsuk_ulam_proof_shape: {
-        type: "b",
-        value: SETTINGS.sphere.show_borsuk_ulam_proof_shape,
-      },
-      u_radius_vector: {
-        type: "v3",
-        value: new THREE.Vector3(
-          SETTINGS.sphere.radius,
-          SETTINGS.sphere.radius,
-          SETTINGS.sphere.radius
-        ),
-      },
       u_scale_color: {
         type: "v3",
         value: new THREE.Vector3(
@@ -360,9 +362,11 @@ class Sphere extends NecklaceComponent {
   }
 
   /**
-   * Updates the ShaderMaterial of the sphere, based on current settings.
+   * Updates the ShaderMaterial of the sphere, based on current settings, and
+   * the geometry if the Borsuk-Ulam shape needs it.
    */
   updateSphereMaterial(): void {
+    this.updateGeometry();
     this.#material.dispose();
     this.#material = this.createSphereMaterial();
     for (const octant of this.#octants) {

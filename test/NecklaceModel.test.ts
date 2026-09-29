@@ -195,6 +195,27 @@ describe.each([
   });
 });
 
+describe.each([
+  ["discrete", true],
+  ["continuous", false],
+])("shares, %s", (_name, discrete) => {
+  it("are thief A's canonical shares, without applying the cut", () => {
+    SETTINGS.necklace.discrete = discrete;
+    const model = fromNumber(defaults.configuration, defaults.number_of_jewels);
+    const applied = new Vector3(0, 0, 1);
+    model.applyCut(applied);
+    for (const p of randomPoints(50, 3)) {
+      const shares = model.shares(p);
+      expect(model.cuts).toEqual(applied);
+      model.applyCut(p);
+      const expected = model.canonicalThief(model.thief_a);
+      expect(shares.x).toBeCloseTo(expected.x);
+      expect(shares.y).toBeCloseTo(expected.y);
+      model.applyCut(applied);
+    }
+  });
+});
+
 describe("necklace splitting theorem", () => {
   /** Tries all pairs of cuts between jewels, with the middle segment to thief B. */
   function findSolution(model: NecklaceModel): Vector3 | undefined {

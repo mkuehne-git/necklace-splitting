@@ -4,7 +4,7 @@ What remains after the modernization (`MODERNIZATION.md`, phases 0 to 8, v0.4.14
 
 ## Waiting for the owner
 
-1. **The Borsuk-Ulam shape's mesh artifacts** (decision 5). The shape moves each vertex of the sphere to g(x), which does not preserve the mesh (see the note in the README). A proper shape would need its own geometry. Out of scope unless wanted as a feature.
+1. **The Borsuk-Ulam shape with Discrete.** Since v1.2.0 the shape is the octants' geometry, and it follows *Discrete*. A discrete g is piecewise constant: triangles within one value collapse to vertical lines, and what shows are the walls across the jumps, which depend on the mesh. The owner decides after looking at it whether the shape keeps following *Discrete* or always uses the continuous split.
 
 ## Maintenance
 

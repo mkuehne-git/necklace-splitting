@@ -63,10 +63,9 @@ vec3 calculateSolutionArea(vec3 colorIn, vec3 cuts) {
     return isSolutionArea(thief_a, thief_b) ? vec3(0.5, 0.0, 0.0) + colorIn : colorIn;
 }
 void fragColorWithIntersect(vec3 colorIn) {
-    vec3 intersect = u_intersect / u_radius_vector;
-
+    // Both on the unit sphere: the cuts under the pointer and those of this fragment.
     vec3 color = colorIn;
-    float dist = distance(v_pos, intersect);
+    float dist = distance(v_pos, u_intersect);
     float epsilon = 0.05;
     if(dist < epsilon) {
         float t = inter(0.0, epsilon, dist);

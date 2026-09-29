@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { APP_VERSION, expectChanged, field, necklace, openApp, openSection, openSettings, panel, panelButton, pixels, sphere } from './app';
+import { APP_VERSION, expectChanged, field, necklace, openApp, openSection, openSettings, panel, panelButton, pixels, sphere, withStoredState } from './app';
 
 test('loads without errors and shows the sphere and the necklace', async ({ page }) => {
     const errors = await openApp(page);
@@ -20,6 +20,18 @@ test('hovering the sphere cuts the necklace there', async ({ page }) => {
     await expect(sphere(page)).toHaveCSS('cursor', 'none');
 });
 
+test('hovering the Borsuk-Ulam shape cuts the necklace there', async ({ page }) => {
+    // The shape is the octants' geometry, so the raycaster hits the shape, not the sphere.
+    await withStoredState(page, { settings: { 'sphere.show_borsuk_ulam_proof_shape': true } });
+    await openApp(page);
+    const box = (await sphere(page).boundingBox())!;
+    await page.mouse.move(box.x + 5, box.y + 5);
+    const before = await pixels(necklace(page));
+    await page.mouse.move(box.x + box.width * 0.48, box.y + box.height * 0.48);
+    await expectChanged(necklace(page), before);
+    await expect(sphere(page)).toHaveCSS('cursor', 'none');
+});
+
 test('the theme switcher toggles light and dark', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
     await openApp(page);
@@ -31,6 +43,19 @@ test('the theme switcher toggles light and dark', async ({ page }) => {
     await expectChanged(necklace(page), before);
     await page.locator('.toggle-div.themes').click();
     await expect(body).toHaveClass(/\blight\b/);
+});
+
+test('the mesh shows on the light theme (v1.2.0)', async ({ page }) => {
+    // The wireframe was white, its default, and vanished on the light background.
+    await page.emulateMedia({ colorScheme: 'light' });
+    await withStoredState(page, { settings: { 'view.faces_visible': false, 'view.axes_visible': false, 'view.mesh_visible': false } });
+    await openApp(page);
+    await expect(page.locator('body')).toHaveClass(/\blight\b/);
+    await openSettings(page);
+    await openSection(page, 'Advanced');
+    const before = await pixels(sphere(page));
+    await field(page, 'Mesh').check();
+    await expectChanged(sphere(page), before);
 });
 
 test('the gear button opens and closes the settings', async ({ page }) => {
