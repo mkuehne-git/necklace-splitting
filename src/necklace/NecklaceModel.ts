@@ -1,10 +1,30 @@
 import { Vector2, Vector3 } from "three";
 
-import { EPS, SETTINGS } from "../settings/settingsValues";
+import { EPS, MAX_NECKLACE_JEWELS, SETTINGS } from "../settings/settingsValues";
 import { Events } from "../Enums";
 
 function fract(x: number): number {
   return x % 1;
+}
+
+/**
+ * The jewels for a text: the binary digits of each character's code, one
+ * character after another. Only whole characters that fit into
+ * MAX_NECKLACE_JEWELS are taken; `characters` tells how many.
+ */
+function necklaceFromText(text: string): { jewels: number[], characters: number } {
+  const jewels: number[] = [];
+  for (let i = 0; i < text.length; i++) {
+    const code = text.charCodeAt(i);
+    const digits = code === 0 ? "" : code.toString(2);
+    if (jewels.length + digits.length > MAX_NECKLACE_JEWELS) {
+      return { jewels, characters: i };
+    }
+    for (const digit of digits) {
+      jewels.push(digit === "0" ? 0 : 1);
+    }
+  }
+  return { jewels, characters: text.length };
 }
 
 class NecklaceModel {
@@ -68,17 +88,7 @@ class NecklaceModel {
 
   private necklaceFromStr(necklaceAsStr: string): void {
     this.initializeStatus(1);
-    this.#necklace = [];
-    for (let i = 0; i < necklaceAsStr.length; i++) {
-      const necklaceAsInt = necklaceAsStr.charCodeAt(i);
-      const strVector = necklaceAsInt.toString(2);
-      // console.log(`necklaceAsInt: ${necklaceAsInt}, ${strVector}`);
-      if (necklaceAsInt != 0) {
-        for (const c of strVector) {
-          this.#necklace.push(c === "0" ? 0 : 1);
-        }
-      }
-    }
+    this.#necklace = necklaceFromText(necklaceAsStr).jewels;
     for (const jewel of this.#necklace) {
       if (jewel === 0.0) {
         this.#cnt.x += 1;
@@ -258,4 +268,4 @@ class NecklaceModel {
     return new Vector2(x, y);
   }
 }
-export { NecklaceModel };
+export { NecklaceModel, necklaceFromText };

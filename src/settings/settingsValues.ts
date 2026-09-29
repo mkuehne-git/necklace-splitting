@@ -9,8 +9,17 @@ const EPS_SQ = EPS * EPS;
 /** The fastest rotation of the animation, per axis, in Hz. */
 const MAX_ROT = 0.5;
 
-/** Must match the u_input length in fragment.glsl */
+/** The most jewels of a necklace given by its configuration number (Jewels). */
 const MAX_JEWELS = 32;
+
+/**
+ * The most jewels any necklace may have, also one given by a text: the shader
+ * gets a uniform per jewel (u_input), and WebGL 2 guarantees only 224 uniform
+ * vectors to a fragment shader. Beyond that the shader fails on some devices
+ * and the sphere disappears; long necklaces are also slow, since the shader
+ * loops over all jewels for every pixel.
+ */
+const MAX_NECKLACE_JEWELS = 192;
 
 type Limit = { min: number; max: number; step?: number };
 
@@ -131,5 +140,5 @@ function resetAnimation(): void {
   SETTINGS.animation.rotation_z = 0;
 }
 
-export { EPS, EPS_SQ, INPUTS, LIGHTINGS, LIMITS, MAX_JEWELS, MAX_ROT, SETTINGS, cutsFromNecklace, maxConfiguration, resetAnimation, resetSolutionHints, setSolutionHint, solutionHintShown };
+export { EPS, EPS_SQ, INPUTS, LIGHTINGS, LIMITS, MAX_JEWELS, MAX_NECKLACE_JEWELS, MAX_ROT, SETTINGS, cutsFromNecklace, maxConfiguration, resetAnimation, resetSolutionHints, setSolutionHint, solutionHintShown };
 export type { CaptureTarget, Input, Lighting, Limit, SolutionHint };

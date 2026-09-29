@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.1 · 2026-09-30
+## v1.7.2 · 2026-09-30
+
+* Fixed: a long text as the necklace made the sphere disappear, and it stayed gone after a reload because the text was remembered. On some phones a few dozen characters were enough. The necklace now takes at most 192 jewels: as many whole characters of the text as fit, and a note below the text field says so.
+
+## v1.7.1 · 2026-09-30 · [4fdf152](https://github.com/mkuehne-git/necklace-splitting/commit/4fdf152)
 
 * No functional change. A new rule for the project: before a major version, the whole code is reviewed and its important issues are fixed.
 

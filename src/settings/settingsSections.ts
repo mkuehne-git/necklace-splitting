@@ -4,6 +4,7 @@ import { button, checkbox, numberField, range, section, segmented, subheading, t
 import { LIMITS, SETTINGS, maxConfiguration, resetAnimation, setSolutionHint, solutionHintShown, type CaptureTarget, type Lighting, type SolutionHint } from './settingsValues';
 import { collectSettings, persistentState } from './PersistentState';
 import { Imprint } from '../imprint/Imprint';
+import { necklaceFromText } from '../necklace/NecklaceModel';
 import { checkForPwaUpdates, showPwaStatus } from '../ui/PwaUpdate';
 import { LANGUAGE_NAMES, LANGUAGES, formatNumber, t, type Language, type MessageKey } from '../i18n';
 
@@ -44,10 +45,31 @@ const rebuild = () => changed(Events.CREATE_SPHERE);
 const decimals = (step: number) => (String(step).split('.')[1] ?? '').length;
 const formatStep = (step: number) => (value: number) => formatNumber(value, decimals(step));
 
+/**
+ * A note below the text field when the text is too long for the necklace: it
+ * takes only the characters that fit (MAX_NECKLACE_JEWELS, NecklaceModel.ts).
+ */
+function textLengthNote(content: HTMLElement): Control {
+    const note = document.createElement('p');
+    note.className = 'settings-note';
+    note.setAttribute('aria-live', 'polite');
+    const update = () => {
+        const text = SETTINGS.necklace.string;
+        const { characters } = necklaceFromText(text);
+        note.hidden = characters === text.length;
+        note.textContent = note.hidden ? '' : t('settings.textTooLong', { count: characters });
+    };
+    content.appendChild(note);
+    update();
+    return { update };
+}
+
 /** Necklace: the jewels and how the solutions are shown. */
 function necklaceSection(body: HTMLElement, refresh: () => void): Control[] {
     const content = section(body, t('settings.necklace'), { open: true });
     const necklace = SETTINGS.necklace;
+    // Built right after the text field, below it; the field updates it.
+    let textNote: Control | undefined;
     const flag = (text: Label, key: 'discrete') =>
         checkbox(content, text, () => necklace[key], (value) => { necklace[key] = value; material(); });
     // The game hides the solutions; ticking them during the game shows them for this game only.
@@ -71,7 +93,9 @@ function necklaceSection(body: HTMLElement, refresh: () => void): Control[] {
             necklace.string = value;
             persistentState.update({ necklaceSource: 'string' });
             changed(Events.SET_NECKLACE_CONFIGURATION_BY_STRING);
+            textNote?.update();
         }),
+        textNote = textLengthNote(content),
         flag(explained('settings.discrete', 'info.discrete'), 'discrete'),
         hint(explained('settings.solutionBand', 'info.solutionBand'), 'show_solution_band'),
         hint(explained('settings.solutions', 'info.solutions'), 'show_solutions'),

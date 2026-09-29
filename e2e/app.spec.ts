@@ -112,6 +112,25 @@ test('the morph slider moves between sphere and shape', async ({ page }) => {
     await expectChanged(sphere(page), shape);
 });
 
+test('a text too long for the necklace is cut short, and the sphere is still drawn', async ({ page }) => {
+    // Every jewel is a uniform of the shader: 700 characters (4900 jewels) broke it, even after a reload.
+    await withStoredState(page, { necklaceSource: 'string', settings: { 'necklace.string': 'x'.repeat(700) } });
+    const errors = await openApp(page);
+    await openSettings(page);
+    await expect(panel(page).getByText('Only the first 27 characters fit on the necklace.')).toBeVisible();
+    // The sphere is there: hovering it marks a cut on the necklace.
+    const box = (await sphere(page).boundingBox())!;
+    await page.mouse.move(box.x + 5, box.y + 5);
+    const before = await pixels(necklace(page));
+    await page.mouse.move(box.x + box.width * 0.4, box.y + box.height * 0.45);
+    await expectChanged(necklace(page), before);
+    expect(errors).toEqual([]);
+    // A short text needs no note.
+    await field(page, 'Text').fill('Hi');
+    await field(page, 'Text').press('Enter');
+    await expect(panel(page).getByText('characters fit on the necklace')).toBeHidden();
+});
+
 test('an ⓘ button behind a setting explains it in a call-out', async ({ page }) => {
     await openApp(page);
     await openSettings(page);

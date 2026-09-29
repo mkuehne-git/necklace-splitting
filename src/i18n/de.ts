@@ -9,6 +9,7 @@ export const de: Catalog = {
         'settings.jewels': 'Juwelen',
         'settings.configuration': 'Konfiguration',
         'settings.text': 'Text',
+        'settings.textTooLong': 'Nur die ersten {count} Zeichen passen auf die Halskette.',
         'settings.discrete': 'Diskret',
         'settings.solutionBand': 'Lösungsband',
         'settings.solutions': 'Lösungen',
@@ -57,7 +58,7 @@ export const de: Catalog = {
 
         'settings.info': 'Erklärung zu {setting}',
         'info.configuration': 'Die Halskette als Zahl: Ihre Binärziffern, die niedrigste zuerst, sind die Juwelen - 0 für die erste Sorte, 1 für die zweite.',
-        'info.text': 'Die Halskette aus einem Text: Die Binärziffern der Zeichencodes, ein Zeichen nach dem anderen, sind die Juwelen. Der Text ersetzt die Konfiguration.',
+        'info.text': 'Die Halskette aus einem Text: Die Binärziffern der Zeichencodes, ein Zeichen nach dem anderen, sind die Juwelen, bis zu 192 davon. Der Text ersetzt die Konfiguration.',
         'info.discrete': 'Schnitte fallen nur zwischen Juwelen. Ohne diese Option darf ein Schnitt ein Juwel teilen, und jeder Dieb bekommt einen Teil davon.',
         'info.solutionBand': 'Oranges Band, auf der beide Diebe gleich lange Stücke der Halskette bekommen. Jede gerechte Teilung liegt auf diesem Band.',
         'info.solutions': 'Markiert die gerechten Teilungen blau: wo Dieb A von jeder Sorte die Hälfte bekommt, bis auf Epsilon.',

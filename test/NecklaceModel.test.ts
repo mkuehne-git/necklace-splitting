@@ -4,8 +4,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { Vector2, Vector3 } from "three";
 
 import { Events } from "../src/Enums";
-import { NecklaceModel } from "../src/necklace/NecklaceModel";
-import { SETTINGS } from "../src/settings/settingsValues";
+import { NecklaceModel, necklaceFromText } from "../src/necklace/NecklaceModel";
+import { MAX_NECKLACE_JEWELS, SETTINGS } from "../src/settings/settingsValues";
 
 /** Configures the model the way the settings panel does: by number, lowest bit first. */
 function fromNumber(configuration: number, numberOfJewels: number): NecklaceModel {
@@ -256,5 +256,21 @@ describe("points off the sphere", () => {
   it("are rejected", () => {
     const model = fromNumber(6, 4);
     expect(() => model.applyCut(new Vector3(1, 1, 0))).toThrow(/not close enough to sphere/);
+  });
+});
+
+describe("necklaceFromText", () => {
+  it("takes the binary digits of each character's code, one after another", () => {
+    // "A" is 1000001, "B" 1000010.
+    expect(necklaceFromText("AB")).toEqual({ jewels: [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0], characters: 2 });
+    expect(necklaceFromText("")).toEqual({ jewels: [], characters: 0 });
+  });
+
+  it("takes only whole characters that fit into the longest necklace", () => {
+    const { jewels, characters } = necklaceFromText("x".repeat(700));
+    // "x" is 1111000: seven jewels each.
+    expect(characters).toBe(Math.floor(MAX_NECKLACE_JEWELS / 7));
+    expect(jewels).toHaveLength(characters * 7);
+    expect(jewels.length).toBeLessThanOrEqual(MAX_NECKLACE_JEWELS);
   });
 });

@@ -7,6 +7,8 @@ export const en = {
         'settings.jewels': 'Jewels',
         'settings.configuration': 'Configuration',
         'settings.text': 'Text',
+        /** Below the text field, when the text is longer than the necklace can be. */
+        'settings.textTooLong': 'Only the first {count} characters fit on the necklace.',
         'settings.discrete': 'Discrete',
         'settings.solutionBand': 'Solution band',
         'settings.solutions': 'Solutions',
@@ -57,7 +59,7 @@ export const en = {
         /** The explanations behind the ⓘ buttons of the settings, and the buttons' names. */
         'settings.info': 'About {setting}',
         'info.configuration': 'The necklace as a number: its binary digits, lowest first, are the jewels - 0 for the first kind, 1 for the second.',
-        'info.text': "The necklace from a text: the binary digits of each character's code, one character after another, are the jewels. The text replaces the configuration.",
+        'info.text': "The necklace from a text: the binary digits of each character's code, one character after another, are the jewels, up to 192 of them. The text replaces the configuration.",
         'info.discrete': 'Cuts fall only between jewels. When off, a cut may split a jewel, and each thief gets a part of it.',
         'info.solutionBand': 'Marks in orange where both thieves get equally long pieces of the necklace. Every fair split lies on this band.',
         'info.solutions': 'Marks the fair splits in blue: where thief A gets half of each kind of jewel, up to Epsilon.',
