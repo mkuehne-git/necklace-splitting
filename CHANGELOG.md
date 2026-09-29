@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.14 · 2026-09-30
+## v1.7.15 · 2026-09-30
+
+* No functional change. The description of the automated tests is up to date again.
+
+## v1.7.14 · 2026-09-30 · [bc4a583](https://github.com/mkuehne-git/necklace-splitting/commit/bc4a583)
 
 * No functional change. The automatic tests of the morph player get the time they need on slower machines.
 
