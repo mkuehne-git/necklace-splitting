@@ -163,6 +163,17 @@ test('an ⓘ button behind a setting explains it in a call-out', async ({ page }
     await expect(panel(page).getByText('How far from exactly half')).toBeVisible();
 });
 
+test('the solution band shows for a necklace of one kind of jewel too', async ({ page }) => {
+    // Configuration 0: every jewel of the first kind. The band is about lengths, so it is still there.
+    await withStoredState(page, { settings: { 'necklace.configuration': 0 } });
+    await openApp(page);
+    await openSettings(page);
+    await openSection(page, 'Necklace');
+    const withBand = await pixels(sphere(page));
+    await field(page, 'Solution band').uncheck();
+    await expectChanged(sphere(page), withBand);
+});
+
 test('Lighting shades the sphere with Always, and only the shape by default', async ({ page }) => {
     await openApp(page);
     await openSettings(page);

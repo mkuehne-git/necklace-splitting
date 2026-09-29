@@ -59,8 +59,9 @@ vec3 calculateSolutionArea(vec3 colorIn, vec3 cuts) {
         thief_a.y += zSq;
     }
 
-    vec2 thief_b = vec2(1.0) - thief_a;
-    return isSolutionArea(thief_a, thief_b) ? vec3(0.5, 0.0, 0.0) + colorIn : colorIn;
+    // Lengths, not kinds of jewels: each thief gets half the necklace, whatever the
+    // jewels. deltaTarget() would drop a kind that does not occur, and the band with it.
+    return distance(thief_a, vec2(0.5)) < u_epsilon ? vec3(0.5, 0.0, 0.0) + colorIn : colorIn;
 }
 /**
  * The headlight's shading: a flat normal from the screen-space derivatives of

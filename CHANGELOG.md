@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.3 · 2026-09-30
+## v1.7.4 · 2026-09-30
+
+* Fixed: with a necklace of only one kind of jewel, the solution band was missing. It marks where both thieves get equally long pieces, whatever the jewels, and now shows for such a necklace too.
+
+## v1.7.3 · 2026-09-30 · [5889600](https://github.com/mkuehne-git/necklace-splitting/commit/5889600)
 
 * Fixed: moving the mouse over the settings, the necklace or a button changed the cut on the part of the sphere behind them. Only the sphere itself sets the cut now.
 
