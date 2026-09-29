@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.13 · 2026-09-30
+## v1.7.14 · 2026-09-30
+
+* No functional change. The automatic tests of the morph player get the time they need on slower machines.
+
+## v1.7.13 · 2026-09-30 · [f7d4968](https://github.com/mkuehne-git/necklace-splitting/commit/f7d4968)
 
 * No functional change. The automatic tests of drawing only on change allow a single redraw that a real browser event causes.
 

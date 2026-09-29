@@ -78,12 +78,17 @@ test('the Borsuk-Ulam button morphs the sphere into the shape, hides the necklac
 // clock (install alone keeps it running in real time) and move it by hand, so that
 // a slow machine cannot finish the morph before the test pauses it.
 
-/** Stops the page's clock: from now on only page.clock.runFor moves it. */
+/**
+ * Stops the page's clock: from now on only page.clock.runFor moves it. The
+ * tests using it are slow: runFor plays every animation frame, and each one
+ * draws the morphing sphere (on GitHub, runFor(1100) takes about 10 s).
+ */
 async function stopClock(page: Page): Promise<void> {
     await page.clock.pauseAt(await page.evaluate(() => Date.now() + 50));
 }
 
 test('the player buttons play the morph either way, pause it and go on', async ({ page }) => {
+    test.slow();
     await page.clock.install();
     await withStoredState(page, { settings: { 'sphere.show_borsuk_ulam_proof_shape': true } });
     await openApp(page);
@@ -115,6 +120,7 @@ test('the player buttons play the morph either way, pause it and go on', async (
 });
 
 test('entering the Borsuk-Ulam scene plays the morph, which can be paused', async ({ page }) => {
+    test.slow();
     await page.clock.install();
     await openApp(page);
     await stopClock(page);
