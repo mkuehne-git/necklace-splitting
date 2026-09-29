@@ -31,6 +31,10 @@ type CaptureTarget = "All" | "Sphere" | "Necklace";
 const LIGHTINGS = ["Off", "Shape", "Always"] as const;
 type Lighting = (typeof LIGHTINGS)[number];
 
+/** What sets the cuts: the pointer on the sphere, or the handles on the necklace (the view switcher's mode buttons). */
+const INPUTS = ["Sphere", "Necklace"] as const;
+type Input = (typeof INPUTS)[number];
+
 const SETTINGS = {
   necklace: {
     number_of_jewels: 24,
@@ -66,6 +70,7 @@ const SETTINGS = {
     mesh_visible: false,
     faces_visible: true,
     lighting: "Shape" as Lighting,
+    input: "Sphere" as Input,
   },
   color: {
     scale_red: 1.0,
@@ -83,6 +88,11 @@ function maxConfiguration(): number {
   return 2 ** SETTINGS.necklace.number_of_jewels - 1;
 }
 
+/** Whether the necklace's handles set the cuts: in their mode, and not with the Borsuk-Ulam shape, which hides the necklace. */
+function cutsFromNecklace(): boolean {
+  return SETTINGS.view.input === "Necklace" && !SETTINGS.sphere.show_borsuk_ulam_proof_shape;
+}
+
 /** Stops the rotation and turns the sphere back; the render loop applies it. */
 function resetAnimation(): void {
   SETTINGS.animation.trigger_reset = true;
@@ -92,5 +102,5 @@ function resetAnimation(): void {
   SETTINGS.animation.rotation_z = 0;
 }
 
-export { EPS, EPS_SQ, LIGHTINGS, LIMITS, MAX_JEWELS, MAX_ROT, SETTINGS, maxConfiguration, resetAnimation };
-export type { CaptureTarget, Lighting, Limit };
+export { EPS, EPS_SQ, INPUTS, LIGHTINGS, LIMITS, MAX_JEWELS, MAX_ROT, SETTINGS, cutsFromNecklace, maxConfiguration, resetAnimation };
+export type { CaptureTarget, Input, Lighting, Limit };

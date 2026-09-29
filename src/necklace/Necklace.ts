@@ -1,9 +1,11 @@
 import * as THREE from "three";
 
-import { SETTINGS } from "../settings/settingsValues";
+import { SETTINGS, cutsFromNecklace } from "../settings/settingsValues";
 import { Events } from "../Enums";
+import { t } from "../i18n";
 import { NecklaceComponent, ComponentOptions } from "./NecklaceComponent";
 import { NecklaceModel } from "./NecklaceModel";
+import { DEFAULT_SIGNS, cutFromHandles, handlesFromCut, partAt, snap, type Handles } from "./handles";
 
 let counter = 0;
 const JEWEL_A_COLOR = "--jewel-a-color";
@@ -26,7 +28,41 @@ const Y_GAP_BETWEEN_THIEVES = 20;
 const Y_GAP_BETWEEN_LINE_SEGMENTS = 5;
 const Y_GAP_THIEF_LINE_SEGMENT = 7;
 
+/** The jewels' two rows, where the handles are drawn and parts are tapped. */
+const ROWS_HEIGHT = 2 * JEWEL_HEIGHT + Y_GAP_BETWEEN_THIEVES;
+/** How far from a handle, in px, a pointer still grabs it: at least 24 px wide for fingers. */
+const HANDLE_REACH = 14;
+/**
+ * Handles on the gaps between jewels, snapped exactly: the model takes the
+ * squares of the cut's coordinates, and √a squared may land a hair beyond a
+ * gap and take the next jewel. The cut is set this much before the handles.
+ */
+const NUDGE = 1e-9;
+/** How long the fair split message shows, in ms. */
+const FAIR_MESSAGE_DURATION = 2500;
+
+type HandleKey = "a" | "b";
+
+/**
+ * The necklace, the current cuts and the fairness meter, on a 2D canvas. The
+ * cuts are shown as two handles; when they set the cuts (the view switcher's
+ * necklace mode), they can be dragged, and tapping a part gives it to the
+ * other thief. Hidden sliders and buttons do the same from the keyboard and
+ * for screen readers; the canvas shows which one has the focus.
+ */
 class Necklace extends NecklaceComponent {
+  /** The cuts as handles; the thieves of parts of length 0 are kept here, the cut does not tell them. */
+  #handles: Handles = { a: 0, b: 0, signs: DEFAULT_SIGNS.clone() };
+  #dragging: HandleKey | undefined;
+  #sliders = new Map<HandleKey, HTMLInputElement>();
+  #partButtons: HTMLButtonElement[] = [];
+  #controls!: HTMLElement;
+  #fairMessage!: HTMLElement;
+  #fairTimer: number | undefined;
+  #wasFair = false;
+  /** Set while the handles apply their cut: the handles, not the nudged cut, stay as they are. */
+  #applying = false;
+
   constructor(
     model: NecklaceModel,
     options: ComponentOptions = { id: "necklace", container: document.body }
@@ -51,13 +87,207 @@ class Necklace extends NecklaceComponent {
     const canvas = document.createElement("canvas");
     canvas.setAttribute("id", "necklace");
     canvas.classList.add("necklace");
-    this.container.addEventListener(Events.NECKLACE_CUT.toString(), () =>
-      this.render()
-    );
-    this.container.addEventListener(Events.MODEL_CHANGED.toString(), () =>
-      this.render()
-    );
+    this.container.addEventListener(Events.NECKLACE_CUT.toString(), () => {
+      this.syncHandles();
+      this.render();
+    });
+    this.container.addEventListener(Events.MODEL_CHANGED.toString(), () => {
+      this.startCutting();
+      this.render();
+    });
+    this.container.addEventListener(Events.INPUT_CHANGED.toString(), () => {
+      this.startCutting();
+      this.render();
+    });
+    canvas.addEventListener("pointerdown", (event) => this.onPointerDown(event));
+    canvas.addEventListener("pointermove", (event) => this.onPointerMove(event));
+    canvas.addEventListener("pointerup", () => this.letGo());
+    canvas.addEventListener("pointercancel", () => this.letGo());
+    this.createControls();
     return canvas;
+  }
+
+  /** The hidden sliders for the handles and buttons for the parts, and the fair split message. */
+  private createControls(): void {
+    this.#controls = document.createElement("div");
+    this.#controls.className = "necklace-controls visually-hidden";
+    for (const [key, label] of [["a", t("necklace.firstCut")], ["b", t("necklace.secondCut")]] as const) {
+      const slider = document.createElement("input");
+      slider.type = "range";
+      slider.min = "0";
+      slider.max = "1";
+      slider.setAttribute("aria-label", label);
+      slider.addEventListener("input", () => this.moveHandle(key, Number(slider.value), false));
+      slider.addEventListener("change", () => Events.dispatchEvent(Events.SHOW_CUT));
+      this.#sliders.set(key, slider);
+      this.#controls.appendChild(slider);
+    }
+    for (const part of [0, 1, 2] as const) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.addEventListener("click", () => this.togglePart(part));
+      this.#partButtons.push(button);
+      this.#controls.appendChild(button);
+    }
+    for (const control of this.#controls.children) {
+      control.addEventListener("focus", () => this.render());
+      control.addEventListener("blur", () => this.render());
+    }
+    this.#fairMessage = document.createElement("div");
+    this.#fairMessage.className = "fair-split";
+    this.#fairMessage.setAttribute("role", "status");
+    this.container.append(this.#controls, this.#fairMessage);
+    // The rest follows with the necklace (MODEL_CHANGED): the canvas is not set yet.
+    this.#controls.hidden = !cutsFromNecklace();
+  }
+
+  /** Whether the model holds a cut: a point of the unit sphere. */
+  private get hasCut(): boolean {
+    const cut = this.model.cuts;
+    return cut !== undefined && cut.lengthSq() > 0.5;
+  }
+
+  /**
+   * When the handles set the cuts: starts from a first cut if there is none,
+   * or applies the cut again, so the fairness meter follows a changed necklace.
+   */
+  private startCutting(): void {
+    this.updateControls();
+    if (!cutsFromNecklace() || this.model.size === 0) {
+      return;
+    }
+    if (this.hasCut) {
+      this.model.applyCut(this.model.cuts!);
+    } else {
+      const jewels = SETTINGS.necklace.discrete ? this.model.size : 0;
+      this.#handles = { a: snap(1 / 3, jewels), b: snap(2 / 3, jewels), signs: DEFAULT_SIGNS.clone() };
+      this.applyHandles();
+    }
+  }
+
+  /** The handles for the model's cut, however it was set. */
+  private syncHandles(): void {
+    if (this.hasCut && !this.#applying) {
+      this.#handles = handlesFromCut(this.model.cuts!, this.#handles.signs);
+    }
+    this.updateControls();
+  }
+
+  private updateControls(): void {
+    const enabled = cutsFromNecklace();
+    this.#controls.hidden = !enabled;
+    this.canvas.style.cursor = "";
+    const step = SETTINGS.necklace.discrete && this.model.size > 0 ? 1 / this.model.size : 0.01;
+    this.#sliders.forEach((slider, key) => {
+      slider.step = String(step);
+      slider.value = String(this.#handles[key]);
+    });
+    const signs = this.#handles.signs.toArray();
+    this.#partButtons.forEach((button, part) => {
+      button.textContent = t("necklace.part", { part: part + 1, thief: signs[part] > 0 ? "A" : "B" });
+    });
+  }
+
+  private applyHandles(): void {
+    const { a, b, signs } = this.#handles;
+    this.#applying = true;
+    this.model.applyCut(cutFromHandles({ a: a - NUDGE, b: b - NUDGE, signs }));
+    this.#applying = false;
+    this.celebrateFairSplit();
+  }
+
+  /** Moves a handle; one dragged past the other takes its place. Returns the handle moved. */
+  private moveHandle(key: HandleKey, position: number, swap = true): HandleKey {
+    const jewels = SETTINGS.necklace.discrete ? this.model.size : 0;
+    const value = snap(Math.min(1, Math.max(0, position)), jewels);
+    const handles = this.#handles;
+    if (key === "a") {
+      if (value <= handles.b) {
+        handles.a = value;
+      } else if (swap) {
+        [handles.a, handles.b, key] = [handles.b, value, "b"];
+      } else {
+        handles.a = handles.b;
+      }
+    } else if (value >= handles.a) {
+      handles.b = value;
+    } else if (swap) {
+      [handles.b, handles.a, key] = [handles.a, value, "a"];
+    } else {
+      handles.b = handles.a;
+    }
+    this.applyHandles();
+    return key;
+  }
+
+  /** Gives a part to the other thief, and shows the new point on the sphere. */
+  private togglePart(part: 0 | 1 | 2): void {
+    const signs = this.#handles.signs;
+    signs.setComponent(part, -signs.getComponent(part));
+    this.applyHandles();
+    Events.dispatchEvent(Events.SHOW_CUT);
+  }
+
+  /** The handle within reach of x, the nearer one if both are. */
+  private handleAt(x: number): HandleKey | undefined {
+    const distance = (key: HandleKey) => Math.abs(this.#handles[key] * this.width - x);
+    const nearest: HandleKey = distance("a") < distance("b") || (distance("a") === distance("b") && x < this.#handles.a * this.width) ? "a" : "b";
+    return distance(nearest) <= HANDLE_REACH ? nearest : undefined;
+  }
+
+  private onPointerDown(event: PointerEvent): void {
+    if (!cutsFromNecklace() || !this.hasCut || event.offsetY > ROWS_HEIGHT + HANDLE_REACH) {
+      return;
+    }
+    const handle = this.handleAt(event.offsetX);
+    if (handle) {
+      this.#dragging = handle;
+      this.canvas.setPointerCapture(event.pointerId);
+      this.render();
+    } else {
+      this.togglePart(partAt(event.offsetX / this.width, this.#handles));
+    }
+    event.preventDefault();
+  }
+
+  private onPointerMove(event: PointerEvent): void {
+    if (this.#dragging) {
+      this.#dragging = this.moveHandle(this.#dragging, event.offsetX / this.width);
+    } else if (cutsFromNecklace() && this.hasCut) {
+      const onRows = event.offsetY <= ROWS_HEIGHT + HANDLE_REACH;
+      this.canvas.style.cursor = !onRows ? "" : this.handleAt(event.offsetX) ? "ew-resize" : "pointer";
+    }
+  }
+
+  /** Ends a drag: the sphere turns to the point if it is out of sight. */
+  private letGo(): void {
+    if (this.#dragging) {
+      this.#dragging = undefined;
+      this.render();
+      Events.dispatchEvent(Events.SHOW_CUT);
+    }
+  }
+
+  /** Whether the split is fair: thief A's share of each kind is the target (1/2, or 0 without that kind). */
+  private get fair(): boolean {
+    const shares = this.model.canonicalThief(this.model.thief_a);
+    const target = new THREE.Vector2(this.model.count_0 > 0 ? 0.5 : 0, this.model.count_1 > 0 ? 0.5 : 0);
+    return shares.distanceTo(target) <= Math.max(SETTINGS.necklace.epsilon, 1e-6);
+  }
+
+  /** Shows the fair split message when a change of the handles makes the split fair. */
+  private celebrateFairSplit(): void {
+    const fair = this.fair;
+    if (fair && !this.#wasFair) {
+      this.#fairMessage.textContent = t("necklace.fair");
+      this.#fairMessage.classList.add("show");
+      clearTimeout(this.#fairTimer);
+      this.#fairTimer = window.setTimeout(() => {
+        this.#fairMessage.classList.remove("show");
+        this.#fairMessage.textContent = "";
+      }, FAIR_MESSAGE_DURATION);
+    }
+    this.#wasFair = fair;
   }
 
   /**
@@ -145,6 +375,9 @@ class Necklace extends NecklaceComponent {
         if (cuts !== undefined) {
           this.drawSegments(ctx, cuts);
         }
+        if (this.hasCut) {
+          this.drawHandles(ctx);
+        }
       }
 
       // render textual result
@@ -195,6 +428,49 @@ class Necklace extends NecklaceComponent {
       );
       jewelStart += this.jewelWidth;
     }
+  }
+
+  /**
+   * Draws the cuts as handles across the jewels' rows: thin lines while the
+   * pointer on the sphere sets the cuts, with grips when they can be dragged.
+   * The handle or part whose hidden control has the focus is marked.
+   */
+  private drawHandles(ctx: CanvasRenderingContext2D): void {
+    const interactive = cutsFromNecklace();
+    const color = getComputedStyle(document.body).getPropertyValue("--text-color");
+    const focused = document.activeElement;
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    for (const key of ["a", "b"] as const) {
+      const x = Math.min(this.width - 1, Math.max(1, this.#handles[key] * this.width));
+      const active = this.#dragging === key || focused === this.#sliders.get(key);
+      ctx.globalAlpha = interactive ? 1 : 0.6;
+      ctx.lineWidth = interactive ? 2 : 1;
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, ROWS_HEIGHT);
+      ctx.stroke();
+      if (interactive) {
+        // The grip, in the gap between the rows.
+        const width = active ? 12 : 8;
+        const height = Y_GAP_BETWEEN_THIEVES - 4;
+        // Whole at the ends of the necklace too.
+        const grip = Math.min(this.width - width / 2, Math.max(width / 2, x));
+        ctx.beginPath();
+        ctx.roundRect(grip - width / 2, JEWEL_HEIGHT + 2, width, height, 3);
+        ctx.fill();
+      }
+    }
+    const part = this.#partButtons.findIndex((button) => button === focused);
+    if (interactive && part >= 0) {
+      const bounds = [0, this.#handles.a, this.#handles.b, 1];
+      ctx.globalAlpha = 1;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 3]);
+      ctx.strokeRect(bounds[part] * this.width + 1, 1, (bounds[part + 1] - bounds[part]) * this.width - 2, ROWS_HEIGHT - 2);
+    }
+    ctx.restore();
   }
 
   /**
@@ -269,13 +545,25 @@ class Necklace extends NecklaceComponent {
     const height = this.height - y0;
     const lineWidth = 3.0;
     const vgap = 2;
-    const radius = height - vgap;
+    let radius = height - vgap;
+    let centerX = this.width / 2;
+    // Clear of the view switcher in the lower left corner: on narrow screens,
+    // centered in the room right of it and left of the version label, and
+    // smaller if that room is too small.
+    const switcher = document.querySelector(".view-switcher");
+    if (switcher) {
+      const left = switcher.getBoundingClientRect().right - this.canvas.getBoundingClientRect().left + 8;
+      if (centerX - radius < left) {
+        const room = this.width - 48 - left;
+        radius = Math.min(radius, room / 2);
+        centerX = left + room / 2;
+      }
+    }
 
     if (radius >= 10) {
       /** The real circle radius, scaled by sqrt(0.5), because the largest vector can be [1,1]. */
       const rradius = Math.SQRT1_2 * radius;
-      const x0 = this.width / 2 - radius;
-      const center = new THREE.Vector2(x0 + radius, y0 + radius);
+      const center = new THREE.Vector2(centerX, this.height - vgap);
 
       const THIEF_A_COLOR = this.thief_a_color;
       const THIEF_B_COLOR = this.thief_b_color;

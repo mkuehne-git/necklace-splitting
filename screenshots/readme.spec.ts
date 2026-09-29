@@ -104,3 +104,11 @@ test('the app and its settings on a phone', async ({ page }) => {
     await openSettings(page);
     await shoot(page, 'necklace-phone-settings');
 });
+
+test('cutting the necklace with its handles on a phone', async ({ page }) => {
+    await page.setViewportSize(PHONE);
+    await withStoredState(page, { camera: solutionsCamera(50), settings: { 'view.input': 'Necklace' } });
+    await openApp(page);
+    await page.mouse.move(1, 1);
+    await shoot(page, 'necklace-phone-handles');
+});

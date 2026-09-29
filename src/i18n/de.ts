@@ -62,8 +62,15 @@ export const de: Catalog = {
         'button.close': 'Schließen',
         'button.showInfo': 'Über diese App',
 
+        'view.inputSphere': 'Auf die Kugel zeigen',
+        'view.inputNecklace': 'Die Halskette schneiden',
         'view.borsukUlam': 'Borsuk-Ulam-Form',
         'view.morph': 'Von der Kugel zur Form',
+
+        'necklace.firstCut': 'Erster Schnitt',
+        'necklace.secondCut': 'Zweiter Schnitt',
+        'necklace.part': 'Teil {part} geht an Dieb {thief}',
+        'necklace.fair': 'Gerecht geteilt!',
 
         'version.title': 'Änderungen anzeigen',
         'changelog.heading': 'Änderungen',

@@ -5,7 +5,7 @@ description: Retake the Necklace Splitting README screenshots in docs/images/ wi
 
 # Screenshots
 
-The README shows six screenshots in `docs/images/`. `npm run screenshots` retakes them all with Playwright (`playwright.screenshots.config.ts`, specs in `screenshots/readme.spec.ts`), always in the dark theme, like the original ones.
+The README shows seven screenshots in `docs/images/`. `npm run screenshots` retakes them all with Playwright (`playwright.screenshots.config.ts`, specs in `screenshots/readme.spec.ts`), always in the dark theme, like the original ones.
 
 | Image | Shows | Viewport |
 | --- | --- | --- |
@@ -14,6 +14,7 @@ The README shows six screenshots in `docs/images/`. `npm run screenshots` retake
 | `necklace-octants.png` | Octants spread 1.6, undivided octants hidden, settings open at View | 1366 x 632 |
 | `necklace-borsuk-ulam.png` | The Borsuk-Ulam shape, lit, with the view switcher and its slider | 1366 x 632 |
 | `necklace-phone.png` | The app on a phone, the pointer on a solution | 390 x 844 |
+| `necklace-phone-handles.png` | The necklace mode on a phone: the handles at a third and two thirds, the fairness meter right of the switcher | 390 x 844 |
 | `necklace-phone-settings.png` | The settings on a phone | 390 x 844 |
 
 ## 1. When

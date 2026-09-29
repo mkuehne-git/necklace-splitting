@@ -60,8 +60,10 @@ The Borsuk-Ulam button in the lower left corner morphs the sphere into the 3D sh
 
 ## Using the app
 
-<img src="./docs/images/necklace-phone.png" alt="The app on a phone" width="195"> <img src="./docs/images/necklace-phone-settings.png" alt="The settings on a phone" width="195">
+<img src="./docs/images/necklace-phone.png" alt="The app on a phone" width="195"> <img src="./docs/images/necklace-phone-settings.png" alt="The settings on a phone" width="195"> <img src="./docs/images/necklace-phone-handles.png" alt="Cutting the necklace with its handles on a phone" width="195">
 
+- **Point or cut**: the two buttons in the lower left corner choose what sets the cuts. *Point at the sphere* is the view above. *Cut the necklace* turns it around: drag the two handles along the necklace and tap a piece to give it to the other thief. The marker on the sphere follows, the view turns to it when it is out of sight, and a fair split is celebrated.
+- **Borsuk-Ulam shape**: the button beside them morphs the sphere into the shape of $g$ (see above).
 - **Settings** (gear button, or `h`): the necklace, what the view shows, a rotation animation and screen captures; *Advanced* holds the sphere's mesh and colors. The app remembers them; *Restore defaults* goes back to the original ones.
 - **About this app** (info button): the explanation above, in the app.
 - **Language**: the app follows the browser's language (English or German); *Language* at the bottom of the settings chooses one.
@@ -76,6 +78,7 @@ The Borsuk-Ulam button in the lower left corner morphs the sphere into the 3D sh
 | `Alt` + `S` | Save a screen capture (what *Screen capture* in the settings chooses) |
 | `Esc` | Close the imprint, the changelog or the explanation; otherwise the settings |
 | `Tab`, `Enter`, `Space` | Reach and use every button and control |
+| `←`, `→` | Move the focused handle of the necklace by one jewel (*Cut the necklace*) |
 
 # Getting started
 

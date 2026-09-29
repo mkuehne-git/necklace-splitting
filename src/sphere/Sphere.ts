@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { Events } from "../Enums";
-import { EPS_SQ, MAX_JEWELS, SETTINGS } from "../settings/settingsValues";
+import { EPS_SQ, MAX_JEWELS, SETTINGS, cutsFromNecklace } from "../settings/settingsValues";
 import { NecklaceModel } from "../necklace/NecklaceModel";
 import { ComponentOptions, NecklaceComponent } from "../necklace/NecklaceComponent";
 import { Resizer } from "./Resizer";
@@ -15,9 +15,15 @@ import vertexShader from "./shaders/sphere.vert";
 import fragmentShader from "./shaders/sphere.frag";
 
 
+/** How long the camera takes to turn to a cut out of sight, in ms. */
+const TURN_DURATION = 700;
+
+const easeInOut = (x: number) => x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2;
+
+/** The pointer in normalized device coordinates; outside the view until it moves, so that no cut is set before. */
 const mouse = {
-  x: 0,
-  y: 0,
+  x: -2,
+  y: -2,
 };
 
 /**
@@ -61,6 +67,8 @@ class Sphere extends NecklaceComponent {
    * target, depends on the necklace and on Discrete, the sphere on neither.
    */
   #geometryKey = "";
+  /** The camera turning to show a cut set on the necklace: around the orbit's target, at the same distance. */
+  #turn: { turn: THREE.Quaternion; from: THREE.Vector3; start: DOMHighResTimeStamp } | undefined;
 
   constructor(
     model: NecklaceModel,
@@ -113,6 +121,8 @@ class Sphere extends NecklaceComponent {
       this.#orbitControls.target.fromArray(stored.target);
     }
     this.#orbitControls.update();
+    // Turning the view by hand ends a turn to the cut.
+    this.#orbitControls.addEventListener("start", () => this.#turn = undefined);
     this.#orbitControls.addEventListener("change", () => {
       this.#needsRender = true;
       persistentState.update({
@@ -138,6 +148,16 @@ class Sphere extends NecklaceComponent {
       Events.UPDATE_SPHERE_MATERIAL.toString(),
       () => this.updateSphereMaterial()
     );
+    // With the necklace's handles, the marker shows the model's cut rather than the pointer's.
+    this.container.addEventListener(Events.NECKLACE_CUT.toString(), () => {
+      if (cutsFromNecklace()) {
+        this.#needsRender = true;
+      }
+    });
+    this.container.addEventListener(Events.INPUT_CHANGED.toString(), () => {
+      this.#needsRender = true;
+    });
+    this.container.addEventListener(Events.SHOW_CUT.toString(), () => this.showCut());
     this.container.addEventListener(Events.MORPH_CHANGED.toString(), () => {
       this.updateGeometry();
       this.applyMorph();
@@ -174,6 +194,7 @@ class Sphere extends NecklaceComponent {
         this.#lastRender = time;
       }
       const rotating = SETTINGS.animation.run || SETTINGS.animation.trigger_reset;
+      this.turnCamera(time);
       if (this.#needsRender || rotating || this.#wasRotating) {
         this.#needsRender = false;
         this._render(time - this.#lastRender);
@@ -191,7 +212,12 @@ class Sphere extends NecklaceComponent {
     // required if controls.enableDamping or controls.autoRotate are set to true
     this.#orbitControls.update();
     // The pointer is hit-tested before drawing, so the hover marker is drawn in the same frame.
-    if (SETTINGS.view.faces_visible || SETTINGS.view.mesh_visible) {
+    if (cutsFromNecklace()) {
+      // The handles set the cut; the pointer only turns the view.
+      const cut = this.model.cuts;
+      this.#material.uniforms.u_intersect.value = cut && cut.lengthSq() > 0.5 ? cut : new THREE.Vector3();
+      this.domElement.style.cursor = "auto";
+    } else if (SETTINGS.view.faces_visible || SETTINGS.view.mesh_visible) {
       this.#raycaster.setFromCamera(mouse as THREE.Vector2, this.#camera);
       // The faces are hit even while only the wireframe is shown; hidden octants are not.
       const shown = this.#octants.filter((octant) => octant.group.visible).map((octant) => octant.faces);
@@ -224,6 +250,53 @@ class Sphere extends NecklaceComponent {
     }
     this.#renderer.render(this.#scene, this.#camera);
     stats.end();
+  }
+
+  /**
+   * Turns the camera to the model's cut if it is out of sight: after a handle
+   * is let go or a part given to the other thief. Not while the sphere rotates,
+   * which would carry the point away again.
+   */
+  showCut(): void {
+    const cut = this.model.cuts;
+    if (!cut || cut.lengthSq() < 0.5 || SETTINGS.animation.run) {
+      return;
+    }
+    // Where the point is drawn: on its octant, moved by Spread octants, turned with the group.
+    const signs = new THREE.Vector3(Math.sign(cut.x) || 1, Math.sign(cut.y) || 1, Math.sign(cut.z) || 1);
+    const point = cut.clone().multiplyScalar(SETTINGS.sphere.radius)
+      .addScaledVector(signs, SETTINGS.sphere.offset_octant);
+    this.#group.updateMatrixWorld();
+    this.#group.localToWorld(point);
+    const target = this.#orbitControls.target;
+    const toPoint = point.sub(target).normalize();
+    const toCamera = this.#camera.position.clone().sub(target);
+    const distance = toCamera.length();
+    // In sight: on the part of the sphere the camera sees, whose edge lies at cos = radius / distance.
+    if (toPoint.dot(toCamera.clone().normalize()) > SETTINGS.sphere.radius / distance) {
+      return;
+    }
+    const from = toCamera.normalize();
+    this.#turn = { turn: new THREE.Quaternion().setFromUnitVectors(from, toPoint), from, start: performance.now() };
+    this.#needsRender = true;
+  }
+
+  /** Moves the camera along its turn to the cut, if one is under way. */
+  private turnCamera(time: DOMHighResTimeStamp): void {
+    if (!this.#turn) {
+      return;
+    }
+    const progress = Math.min(1, Math.max(0, (time - this.#turn.start) / TURN_DURATION));
+    const target = this.#orbitControls.target;
+    const distance = this.#camera.position.distanceTo(target);
+    const turn = new THREE.Quaternion().slerp(this.#turn.turn, easeInOut(progress));
+    this.#camera.position.copy(this.#turn.from).applyQuaternion(turn).multiplyScalar(distance).add(target);
+    // The controls keep the camera upright, and remember the new position.
+    this.#orbitControls.update();
+    this.#needsRender = true;
+    if (progress >= 1) {
+      this.#turn = undefined;
+    }
   }
 
   /** Applies the cut at a point of the unit sphere. */

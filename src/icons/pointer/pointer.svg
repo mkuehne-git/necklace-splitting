@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="512" height="512">
+    <!-- The sphere with the marker of the point: the pointer sets the cuts. -->
+    <path fill-rule="evenodd" d="M24 6a18 18 0 1 0 0 36a18 18 0 1 0 0-36zM24 10a14 14 0 1 1 0 28a14 14 0 1 1 0-28z"/>
+    <circle cx="29" cy="19" r="5"/>
+</svg>

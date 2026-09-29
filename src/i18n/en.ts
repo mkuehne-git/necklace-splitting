@@ -62,8 +62,17 @@ export const en = {
         'button.showInfo': 'About this app',
 
         /** The view switcher in the lower left corner (ui/ViewSwitcher.ts). */
+        'view.inputSphere': 'Point at the sphere',
+        'view.inputNecklace': 'Cut the necklace',
         'view.borsukUlam': 'Borsuk-Ulam shape',
         'view.morph': 'From sphere to shape',
+
+        /** The necklace's handles and parts (necklace/Necklace.ts), for keyboards and screen readers. */
+        'necklace.firstCut': 'First cut',
+        'necklace.secondCut': 'Second cut',
+        /** A button that gives the part to the other thief. */
+        'necklace.part': 'Part {part} goes to thief {thief}',
+        'necklace.fair': 'Fair split!',
 
         'version.title': 'Show the changelog',
         'changelog.heading': 'Changelog',

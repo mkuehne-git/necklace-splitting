@@ -1,4 +1,4 @@
-import { LIGHTINGS, LIMITS, MAX_JEWELS, SETTINGS, type Limit } from "./settingsValues";
+import { INPUTS, LIGHTINGS, LIMITS, MAX_JEWELS, SETTINGS, type Limit } from "./settingsValues";
 
 const STORAGE_KEY = "necklace-splitting.state";
 const STATE_VERSION = 1;
@@ -64,6 +64,7 @@ const SETTING_FIELDS: Record<string, Validator<number | string | boolean>> = {
   "view.mesh_visible": bool,
   "view.faces_visible": bool,
   "view.lighting": oneOf(LIGHTINGS),
+  "view.input": oneOf(INPUTS),
   "color.scale_red": limited(LIMITS.scale),
   "color.scale_green": limited(LIMITS.scale),
   "color.scale_blue": limited(LIMITS.scale),

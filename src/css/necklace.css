@@ -8,4 +8,28 @@
   height: 20%;
 
   margin-bottom: 2px;
+  /* Dragging a handle must not scroll or zoom. */
+  touch-action: none;
+}
+
+/* The message when the handles make the split fair (necklace/Necklace.ts):
+   above the necklace, centered, fading in and out. */
+.fair-split {
+  z-index: 5;
+  position: absolute;
+  left: 50%;
+  bottom: calc(20% + 16px);
+  transform: translateX(-50%);
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-weight: bold;
+  color: var(--background-color);
+  background: rgb(0, 170, 0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.fair-split.show {
+  opacity: 1;
 }

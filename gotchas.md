@@ -13,3 +13,7 @@ CI type-checks against a stub `src/imprint-gen.js` (`() => undefined`), not the 
 ## Firefox without a GPU
 
 On GitHub's runners Firefox could not create a WebGL context at all ("tryNativeGL () Exhausted GL driver options", in the console of the trace): the sphere is never created and every Firefox test fails at its first look at the canvas (v1.2.5). Firefox draws WebGL through the system's OpenGL; the runner has no GPU, and headless Firefox finds no driver there. Chromium brings its own (SwiftShader). Neither `webgl.force-enabled` (v1.2.6) nor installing Mesa (v1.2.7) was enough on its own. What works (v1.2.8): on CI, Firefox runs with a window (`headless: !process.env.CI` in `playwright.config.ts`) on the virtual display of `xvfb-run` (`ci.yml`), where it gets Mesa's software renderer. The Mesa step (`libegl1`, `libgl1-mesa-dri`) and the preference stay as part of that setup; whether each is still needed was not tested. Locally, with a GPU and its drivers, the problem does not show, not even with `LIBGL_ALWAYS_SOFTWARE=1`. The browser console of a failed test is in its trace: download the `playwright-test-results` artifact of the run.
+
+## html2canvas and modern CSS color functions
+
+The screen capture ("All") renders the page with html2canvas, which throws on color functions it cannot parse, such as `color-mix()`; the capture then never finishes (`e2e/capture.spec.ts` times out waiting for the download). Use plain colors, variables and `opacity` in styles of anything on the page, or leave the element out with `ignoreElements` in `ScreenCapture.ts`.

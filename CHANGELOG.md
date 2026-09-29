@@ -1,6 +1,14 @@
 # Changelog
 
-## v1.4.0 · 2026-09-29
+## v1.5.0 · 2026-09-29
+
+* Cut the necklace yourself: a new button in the lower left corner lets two handles on the necklace set the cuts instead of the pointer on the sphere. Drag a handle along the necklace, tap a piece to give it to the other thief, and watch the marker on the sphere follow; the view turns to the marker when it is out of sight. The app remembers which way you chose.
+* A fair split made with the handles is celebrated with a short message.
+* On phones, the fairness meter moves aside so that it stays clear of the buttons in the corner.
+* The handles work from the keyboard too: Tab reaches each handle and piece, the arrow keys move a handle by one jewel, and Enter gives a piece to the other thief.
+* Before the pointer first moves over the sphere, the necklace is no longer cut at the point facing the camera.
+
+## v1.4.0 · 2026-09-29 · [2ec1fff](https://github.com/mkuehne-git/necklace-splitting/commit/2ec1fff)
 
 * A new button in the lower left corner switches to the Borsuk-Ulam shape: the sphere morphs into it within a second, and back again. The necklace and the fairness meter are hidden meanwhile, so the view is about the shape.
 * A slider beside the button moves the view anywhere between sphere and shape, to watch the shape form step by step.

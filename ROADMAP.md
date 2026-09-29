@@ -15,7 +15,7 @@ Planned in this order (decided 2026-09-29): lighting (v1.3.0), the view switcher
 
 Buttons in the lower left corner (moved there from above the necklace, decided 2026-09-29): the necklace canvas spans the bottom 20%, but its rows are drawn at the top and the fairness meter centered below them, so the corner is free. Modeled on Climate Helix's `SceneSwitcher` (`~/dev/climate-helix/src/ui/SceneSwitcher.ts`, `scenes.css`): icon buttons with a tooltip and an accessible name, the active one highlighted, the state remembered in the persistent state. Two independent choices:
 
-- **Input mode**, two exclusive buttons: *Sphere* (the pointer on the sphere sets the cuts, as now) and *Necklace* (handles on the necklace set the cuts, feature 3). They come with feature 3. On a phone, the fairness meter leaves only about 78 px left of it, room for one button: with three, the meter's radius must be limited so that it clears the switcher.
+- **Input mode**, two exclusive buttons: *Sphere* (the pointer on the sphere sets the cuts, as now) and *Necklace* (handles on the necklace set the cuts, feature 3, done in v1.5.0). On a phone, the fairness meter leaves only about 78 px left of it, room for one button: with three, the meter's radius must be limited so that it clears the switcher.
 - **Borsuk-Ulam shape**, a toggle button (feature 2, done in v1.4.0). It replaces the checkbox View › Borsuk-Ulam shape, which is removed from the settings panel; a stored `sphere.show_borsuk_ulam_proof_shape` carries over to the toggle. While it is on, the view is about the sphere morphing into the shape of g: the necklace and the gauge are hidden, the input-mode buttons stay in place but are disabled, and the pointer on the shape still moves the marker. Turning it off restores the previous mode, the necklace and the gauge. The info pages name the button instead of the setting (`e2e/info.spec.ts`, `e2e/german.spec.ts`).
 
 ### 1. Lighting (done in v1.3.0)
@@ -35,7 +35,7 @@ Comes with the view switcher and its Borsuk-Ulam toggle.
 - The toggle animates the transition (about 1 s, eased), drawing every frame while it runs (`#needsRender`). A horizontal slider (0 to 1) beside the switcher, shown only while the toggle is on, scrubs the morph by hand; toggle and slider follow each other. Short enough for phones. The slider's position is not remembered: at startup the morph follows the toggle.
 - With Lighting on Shape, the light fades in with the morph.
 
-### 3. Cuts on the necklace
+### 3. Cuts on the necklace (done in v1.5.0)
 
 Inversion of control, and a little game: in the *Necklace* input mode, two handles on the necklace set the cuts, which propagate to the gauge and the sphere. In the *Sphere* mode the handles are drawn read-only at the current cuts, so switching modes does not jump.
 
@@ -43,7 +43,7 @@ Inversion of control, and a little game: in the *Necklace* input mode, two handl
 - The signs start from the current cut's, else (+,-,+): (+,+,+) is an undivided octant, hidden by default. A zero-length segment keeps its sign.
 - Dragging a handle past the other swaps their roles. With Discrete, handles snap to the gaps between jewels; otherwise they move freely.
 - Pointer events with `touch-action: none` and hit areas of at least about 24 px (the canvas is 20% of the height): this also gives phones a way to set cuts, which the sphere's `mousemove` does not. Keyboard: handles are focusable, arrow keys move them by a jewel, Enter and Space swap a segment; screen-reader labels via `t()`.
-- In the *Necklace* mode the pointer on the sphere only rotates the view and sets no cut. The marker (`u_intersect`) follows `model.cuts` (on `NECKLACE_CUT`) rather than the last raycast hit. In the *Sphere* mode, a cut is applied only after a real `mousemove`, not on every frame drawn.
+- In the *Necklace* mode the pointer on the sphere only rotates the view and sets no cut. The marker (`u_intersect`) follows `model.cuts` (on `NECKLACE_CUT`) rather than the last raycast hit. In the *Sphere* mode the pointer works as before; it starts outside the view, so no cut exists before it moves (instead of a cut at the point facing the camera), and the necklace mode starts from a third and two thirds.
 - Camera: when a handle is released and the point is on the far side, the camera turns around `OrbitControls.target` to show it, animated. The target point includes the octant offset and the group's rotation. While the rotation animation runs, the handles work but the camera does not follow.
 - Game: visible feedback when the split is fair (the gauge reaches its target). Challenges (a random necklace, counting moves) are a later, separate feature.
 - Tests: unit tests for the mapping; e2e for switching modes, dragging a handle, toggling a segment, and the marker following.

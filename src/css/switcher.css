@@ -12,6 +12,19 @@
     gap: 8px;
 }
 
+/* The input buttons, exclusive, set apart from the shape toggle by a line. */
+.view-inputs {
+    display: flex;
+}
+
+/* Its own element with opacity: html2canvas (the screen capture) cannot parse color-mix(). */
+.view-separator {
+    width: 1px;
+    height: calc(var(--settings-size) * 0.75);
+    background: var(--text-color);
+    opacity: 0.35;
+}
+
 .view-button {
     position: relative;
     display: grid;
@@ -45,6 +58,10 @@
 .view-button.active {
     opacity: 1;
     background: var(--b-color);
+}
+
+.view-button.active:disabled {
+    opacity: 0.35;
 }
 
 .view-button:disabled {
