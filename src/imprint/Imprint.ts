@@ -3,7 +3,10 @@ import { ClassMutationObserver } from "../ui/ClassMutationObserver";
 import { OverlayPage } from "../ui/OverlayPage";
 import { loadHtml2canvas } from "../ui/loadHtml2canvas";
 
-const loadModule = async () => {
+/** The private module, or the stub without imprint.config.json (see create-imprint.mjs), whose function returns undefined. */
+type ImprintModule = { decryptedAES: () => string | undefined };
+
+const loadModule = async (): Promise<ImprintModule> => {
     return await import("../imprint-gen");
 };
 
@@ -15,7 +18,7 @@ const trailer = `<hr><p style="opacity: 1.0;">Dieses Impressum wurde erstellt du
  * agents reading the HTML source.
  */
 class Imprint {
-    private decryptedAES: (() => string) | undefined;
+    private decryptedAES: (() => string | undefined) | undefined;
     private page = new OverlayPage("imprint", Events.HIDE_IMPRINT.toString(),
         () => window.clearTimeout(this.resizeTimer));
     private loading: Promise<boolean> | undefined;
@@ -47,7 +50,7 @@ class Imprint {
         }
         this.loading = loadModule().then((m) => {
             this.decryptedAES = m.decryptedAES;
-            return this.decryptedAES() !== undefined;
+            return m.decryptedAES() !== undefined;
         });
         return this.loading;
     }
@@ -64,7 +67,7 @@ class Imprint {
             // The page's close button is available while html2canvas is still
             // rendering (or if it fails).
             const content = this.page.show();
-            const imprintHTML = this.decryptedAES();
+            const imprintHTML = this.decryptedAES() ?? "";
             content.innerHTML = imprintHTML;
             const style = window.getComputedStyle(document.body);
             const width = content.scrollWidth;

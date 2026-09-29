@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.2.5 · 2026-09-29
+## v1.2.6 · 2026-09-29
+
+* No functional change. Fixes for the automatic checks on GitHub: the type check without the private imprint, and the end-to-end tests in Firefox.
+
+## v1.2.5 · 2026-09-29 · [8bcf8de](https://github.com/mkuehne-git/necklace-splitting/commit/8bcf8de)
 
 * No functional change. The end-to-end tests in Chromium and Firefox now also run on GitHub for every change.
 

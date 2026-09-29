@@ -24,7 +24,14 @@ export default defineConfig({
     },
     projects: [
         { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-        { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+        {
+            name: 'firefox',
+            use: {
+                ...devices['Desktop Firefox'],
+                // Without a GPU (GitHub's runners), Firefox blocks WebGL on the software renderer: no sphere, no shader test.
+                launchOptions: { firefoxUserPrefs: { 'webgl.force-enabled': true } },
+            },
+        },
     ],
     webServer: {
         // VITE_E2E: a coarser sphere (32 instead of 128 segments), see settingsValues.ts.
