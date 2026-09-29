@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.2 · 2026-09-30
+## v1.7.3 · 2026-09-30
+
+* Fixed: moving the mouse over the settings, the necklace or a button changed the cut on the part of the sphere behind them. Only the sphere itself sets the cut now.
+
+## v1.7.2 · 2026-09-30 · [7b8a62f](https://github.com/mkuehne-git/necklace-splitting/commit/7b8a62f)
 
 * Fixed: a long text as the necklace made the sphere disappear, and it stayed gone after a reload because the text was remembered. On some phones a few dozen characters were enough. The necklace now takes at most 192 jewels: as many whole characters of the text as fit, and a note below the text field says so.
 

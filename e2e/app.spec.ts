@@ -20,6 +20,23 @@ test('hovering the sphere cuts the necklace there', async ({ page }) => {
     await expect(sphere(page)).toHaveCSS('cursor', 'none');
 });
 
+test('the pointer over the settings panel does not move the cut on the sphere behind it', async ({ page }) => {
+    // Close enough that the sphere reaches behind the panel on the right.
+    await withStoredState(page, { camera: { position: [0, 0, 22], target: [0, 0, 0], up: [0, 1, 0] } });
+    await openApp(page);
+    await openSettings(page);
+    const box = (await panel(page).boundingBox())!;
+    await page.mouse.move(box.x - 60, box.y + box.height * 0.45);
+    // The cut there is applied with the next frame.
+    await page.waitForTimeout(300);
+    const before = await pixels(necklace(page));
+    // Straight into the panel, then only within it.
+    await page.mouse.move(box.x + 60, box.y + box.height * 0.55);
+    await page.mouse.move(box.x + 120, box.y + box.height * 0.6, { steps: 5 });
+    await page.waitForTimeout(300);
+    expect(await pixels(necklace(page))).toEqual(before);
+});
+
 test('hovering the Borsuk-Ulam shape marks the point there', async ({ page }) => {
     // The shape is the octants' morph target, so the raycaster hits the shape, not the sphere.
     // The necklace is hidden with the shape; the pointer still sets the cut.

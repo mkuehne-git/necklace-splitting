@@ -26,7 +26,7 @@ const IN_VIEW_COS = Math.cos((50 * Math.PI) / 180);
 
 const easeInOut = (x: number) => x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2;
 
-/** The pointer in normalized device coordinates; outside the view until it moves, so that no cut is set before. */
+/** The pointer in normalized device coordinates; outside the view until it moves over the sphere's canvas, and after it leaves. */
 const mouse = {
   x: -2,
   y: -2,
@@ -144,9 +144,19 @@ class Sphere extends NecklaceComponent {
       this.createSphere()
     );
 
-    this.container.addEventListener("mousemove", (event) => {
-      mouse.x = (event.clientX / this.container.clientWidth) * 2 - 1;
-      mouse.y = -(event.clientY / this.container.clientHeight) * 2 + 1;
+    // The pointer counts only on the sphere's own canvas: over the settings
+    // panel, the necklace or a button in front of it, it must not move the cut.
+    // Mouse events, not pointer events: on touch screens they come with a tap
+    // only, so a finger turning the view does not drag the cut along.
+    canvas.addEventListener("mousemove", (event) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      this.#needsRender = true;
+    });
+    canvas.addEventListener("mouseleave", () => {
+      mouse.x = -2;
+      mouse.y = -2;
       this.#needsRender = true;
     });
 
