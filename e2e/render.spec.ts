@@ -30,9 +30,17 @@ async function drawCallsDuring(page: Page, ms: number, action: () => Promise<voi
     return (await drawCalls(page)) - before;
 }
 
+/**
+ * Waits until the view has stopped drawing. A fixed wait is not enough: a slow
+ * machine (GitHub's, with software WebGL) may still be drawing earlier frames.
+ */
+async function settled(page: Page): Promise<void> {
+    await expect.poll(() => drawCallsDuring(page, 300), { timeout: 10000 }).toBe(0);
+}
+
 test('the resting view is not drawn again', async ({ page }) => {
     await openApp(page);
-    await page.waitForTimeout(500);
+    await settled(page);
     expect(await drawCallsDuring(page, 1000)).toBe(0);
 });
 
@@ -48,7 +56,7 @@ test('pointer moves, dragging and theme changes draw the view', async ({ page })
     })).toBeGreaterThan(0);
     expect(await drawCallsDuring(page, 800, () => page.locator('.toggle-div.themes').click())).toBeGreaterThan(0);
     // And it rests again.
-    await page.waitForTimeout(300);
+    await settled(page);
     expect(await drawCallsDuring(page, 1000)).toBe(0);
 });
 
@@ -60,7 +68,7 @@ test('the rotation animation draws every frame, and stops drawing when it stops'
     // At the default speed of 0 the sphere does not turn, but the animation still runs.
     expect(await drawCallsDuring(page, 1000)).toBeGreaterThan(10);
     await field(page, 'Rotate').uncheck();
-    await page.waitForTimeout(300);
+    await settled(page);
     expect(await drawCallsDuring(page, 1000)).toBe(0);
 });
 
@@ -69,6 +77,7 @@ test('the morph draws while it runs, and rests afterwards', async ({ page }) => 
     await page.waitForTimeout(500);
     expect(await drawCallsDuring(page, 500, () => shapeButton(page).click())).toBeGreaterThan(10);
     await morphed(page);
-    // It comes to rest: a slow machine may still be drawing the morph's last frames.
-    await expect.poll(() => drawCallsDuring(page, 500), { timeout: 10000 }).toBe(0);
+    // It comes to rest, and stays so.
+    await settled(page);
+    expect(await drawCallsDuring(page, 1000)).toBe(0);
 });

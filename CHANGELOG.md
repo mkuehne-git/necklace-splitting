@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.11 · 2026-09-30
+## v1.7.12 · 2026-09-30
+
+* No functional change. The automatic tests that check the view rests when nothing changes wait for it to settle, also on slower machines.
+
+## v1.7.11 · 2026-09-30 · [bf6bd88](https://github.com/mkuehne-git/necklace-splitting/commit/bf6bd88)
 
 * No functional change. Three automatic tests of the morph failed on GitHub's slower machines; they no longer depend on how fast the machine is.
 
