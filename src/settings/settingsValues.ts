@@ -88,8 +88,6 @@ const SETTINGS = {
     alpha: 1.0,
   },
   capture: "All" as CaptureTarget,
-  // trick for debugging without console
-  text: undefined as string | undefined,
 };
 
 /** The largest configuration number for the current number of jewels. */

@@ -1,4 +1,3 @@
-uniform bool u_necklace_absolute;
 uniform bool u_necklace_discrete;
 uniform bool u_show_solution_band;
 uniform bool u_show_solutions;

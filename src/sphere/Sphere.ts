@@ -469,14 +469,6 @@ class Sphere extends NecklaceComponent {
       },
       u_show_solutions: { type: "b", value: solutionHintShown("show_solutions") },
       u_alpha: { type: "f", value: SETTINGS.color.alpha },
-      u_time: { type: "f", value: 1.0 },
-      u_resolution: {
-        type: "v2",
-        value: new THREE.Vector2(
-          this.#renderer.domElement.width,
-          this.#renderer.domElement.height
-        ),
-      },
       u_intersect: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
       u_light: { type: "f", value: this.light },
     };

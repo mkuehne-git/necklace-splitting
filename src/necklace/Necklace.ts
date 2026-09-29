@@ -7,7 +7,6 @@ import { NecklaceComponent, ComponentOptions } from "./NecklaceComponent";
 import { NecklaceModel } from "./NecklaceModel";
 import { DEFAULT_SIGNS, cutFromHandles, handlesFromCut, partAt, snap, type Handles } from "./handles";
 
-let counter = 0;
 const JEWEL_A_COLOR = "--jewel-a-color";
 const JEWEL_B_COLOR = "--jewel-b-color";
 
@@ -390,13 +389,6 @@ class Necklace extends NecklaceComponent {
         const thief_a = this.model.canonicalThief(this.model.thief_a);
         const thief_b = this.model.canonicalThief(this.model.thief_b);
         this.drawGauge(ctx, 50 + OVERHANG, thief_a, thief_b);
-      }
-
-      // Some debug output
-      if (SETTINGS.text) {
-        ctx.font = "12px";
-        ctx.fillStyle = "rgb(255,255,255)";
-        ctx.fillText(SETTINGS.text, 0, 150);
       }
     }
 

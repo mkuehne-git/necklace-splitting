@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.9 · 2026-09-30
+## v1.7.10 · 2026-09-30
+
+* No functional change. Leftover debugging code and unused shader values are gone.
+
+## v1.7.9 · 2026-09-30 · [c08c73a](https://github.com/mkuehne-git/necklace-splitting/commit/c08c73a)
 
 * Fixed: Check for updates said nothing when it could not reach the server, for example offline. It now says the check failed.
 * Fixed: a screen capture that failed ended silently. It now says so.
