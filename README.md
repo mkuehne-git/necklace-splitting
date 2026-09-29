@@ -100,7 +100,7 @@ npm run test:e2e    # end-to-end tests in Chromium and Firefox (Playwright); run
 npm run screenshots # retake the README screenshots in docs/images/
 ```
 
-`CLAUDE.md` describes the source layout and conventions, `TESTING.md` the tests, `ROADMAP.md` what is planned. Every change to `main` is checked by GitHub Actions (types, tests, build); Dependabot keeps the dependencies current.
+`CLAUDE.md` describes the source layout and conventions, `TESTING.md` the tests, `ROADMAP.md` what is planned. Every change to `main` is checked by GitHub Actions (types, unit tests, build, end-to-end tests); Dependabot keeps the dependencies current.
 
 ## Build and deploy
 

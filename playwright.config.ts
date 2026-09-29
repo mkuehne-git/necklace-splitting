@@ -12,7 +12,10 @@ export default defineConfig({
     fullyParallel: true,
     // Each page renders the WebGL sphere in software; more workers mostly cause timeouts.
     workers: 4,
-    reporter: 'list',
+    // On GitHub Actions, failures are also annotated in the workflow run.
+    reporter: process.env.CI ? [['list'], ['github']] : 'list',
+    // A test.only left in a pushed commit fails the run instead of skipping the rest.
+    forbidOnly: !!process.env.CI,
     use: {
         baseURL: `http://localhost:${PORT}/necklace-splitting/`,
         // English, whatever the machine's language; e2e/german.spec.ts switches to German.

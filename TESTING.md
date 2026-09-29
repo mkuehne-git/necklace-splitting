@@ -7,7 +7,7 @@ This file describes the automated tests for Necklace Splitting, phase 3 of `MODE
 | Layer | Tool | Runs |
 | --- | --- | --- |
 | Unit and component tests | [Vitest](https://vitest.dev/), with [happy-dom](https://github.com/capricorn86/happy-dom) for DOM tests | Locally and in CI (`.github/workflows/ci.yml`) |
-| End-to-end tests | [Playwright](https://playwright.dev/) (Chromium and Firefox) against `vite preview` | Locally only |
+| End-to-end tests | [Playwright](https://playwright.dev/) (Chromium and Firefox) against `vite preview` | Locally and in CI (a job of its own, with a stub imprint) |
 
 Vitest reuses `vite.config.ts`, so the GLSL plugin, TypeScript and asset handling work in tests the same way as in the app. It runs the files in `test/` (`test.include`); the end-to-end tests live in `e2e/`. Vitest 5 needs Node 22.12+, 24 or 26+.
 

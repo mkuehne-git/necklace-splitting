@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.2.4 · 2026-09-29
+## v1.2.5 · 2026-09-29
+
+* No functional change. The end-to-end tests in Chromium and Firefox now also run on GitHub for every change.
+
+## v1.2.4 · 2026-09-29 · [b35bddf](https://github.com/mkuehne-git/necklace-splitting/commit/b35bddf)
 
 * No functional change. A new test checks that the colors of the sphere and the necklace below it split the jewels the same way.
 

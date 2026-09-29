@@ -1,9 +1,8 @@
 name: CI
 
-# Unit tests and a production build for every push to main and every pull
-# request (including Dependabot's). It does not deploy: deployment stays a
-# manual `deploy.sh` run. The Playwright end-to-end tests run locally only
-# (see TESTING.md).
+# Unit tests, a production build and the Playwright end-to-end tests for
+# every push to main and every pull request (including Dependabot's). It does
+# not deploy: deployment stays a manual `deploy.sh` run.
 
 on:
   push:
@@ -44,3 +43,41 @@ jobs:
 
       - name: Run production build
         run: npm run build
+
+  # The Playwright tests (TESTING.md, step 3) in Chromium and Firefox, against
+  # a test build; in a job of their own, so that the unit tests report first.
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The imprint tests skip themselves with the stub.
+      - name: Stub the private imprint module
+        run: echo 'export const decryptedAES = () => undefined;' > src/imprint-gen.js
+
+      - name: Install the Playwright browsers
+        run: npx playwright install --with-deps chromium firefox
+
+      - name: Run end-to-end tests
+        run: npm run test:e2e
+
+      # Traces of the failed tests (trace: 'retain-on-failure'), to open with `npx playwright show-trace`.
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-test-results
+          path: test-results/
+          retention-days: 7

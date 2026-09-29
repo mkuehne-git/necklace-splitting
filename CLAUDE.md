@@ -29,7 +29,7 @@ npm run screenshots # retake the README screenshots in docs/images/ (dark theme)
 The project uses the current Active LTS release of Node.js: Node 24 (24.21.0 locally as of September 2026). Climate Helix ran on the out-of-support Node 23 until npm crashed while installing Vitest; keep the version current here too.
 
 - `.nvmrc` selects Node 24 for `nvm use`; `engines` in `package.json` states the minimum (22.12, which Vite 8 and Vitest need).
-- The CI workflow's `node-version` (`.github/workflows/ci.yml`) must match `.nvmrc`.
+- The CI workflow's `node-version` (`.github/workflows/ci.yml`, in both jobs) must match `.nvmrc`.
 - When adding or upgrading a dev dependency, check its `engines` field against that version.
 - Revisit this when a newer LTS starts (Node 26 in October 2026) and when the used one reaches end of life: update `.nvmrc`, the workflow and, if needed, `engines` together. `@types/node` stays on the used major version: `.github/dependabot.yml` ignores its major updates, so lift or move that rule with the switch.
 
@@ -88,7 +88,7 @@ What remains after the modernization, and the decisions still open, is in `ROADM
 
 ## Continuous Integration
 
-`.github/workflows/ci.yml` runs on every push to `main` and every pull request: `npm ci`, a stub `src/imprint-gen.js`, `npm run typecheck`, `npm test` and `npm run build`. It does not deploy and does not run the end-to-end tests. Dependabot (`.github/dependabot.yml`) opens weekly pull requests for npm, in groups (runtime, build tooling including `vite-plugin-glsl`, test tooling), and for the GitHub Actions; CI checks each of them. A Dependabot pull request still needs a version bump and changelog entry before it is merged (see Versioning).
+`.github/workflows/ci.yml` runs on every push to `main` and every pull request: `npm ci`, a stub `src/imprint-gen.js`, `npm run typecheck`, `npm test` and `npm run build`, and in a second job the end-to-end tests (Chromium and Firefox, with the stub imprint, so the imprint tests skip themselves; traces of failed tests are uploaded as an artifact). The node-version is set in both jobs. It does not deploy. Dependabot (`.github/dependabot.yml`) opens weekly pull requests for npm, in groups (runtime, build tooling including `vite-plugin-glsl`, test tooling), and for the GitHub Actions; CI checks each of them. A Dependabot pull request still needs a version bump and changelog entry before it is merged (see Versioning).
 
 ## Deployment
 

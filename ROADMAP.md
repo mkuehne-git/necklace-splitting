@@ -6,7 +6,3 @@ What remains after the modernization (`MODERNIZATION.md`, phases 0 to 8, v0.4.14
 
 - **Node.js 26** becomes the Active LTS in October 2026: update `.nvmrc`, the CI workflow and, if needed, `engines` together (see "Node.js version" in `CLAUDE.md`), and lift the `@types/node` ignore rule in `.github/dependabot.yml`.
 - **Dependabot pull requests** need a version bump and a changelog entry before they are merged (every commit is a version).
-
-## Code
-
-- **End-to-end tests in CI**: they run locally only (`npm run test:e2e`). Running them in GitHub Actions would need the Playwright browsers there and a stub imprint (the imprint tests skip themselves then).
