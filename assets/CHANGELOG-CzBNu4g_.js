@@ -1,5 +1,26 @@
 var e=`# Changelog
 
+## v1.7.10 · 2026-09-30 · [9b3e120](https://github.com/mkuehne-git/necklace-splitting/commit/9b3e120)
+
+* No functional change. Leftover debugging code and unused shader values are gone.
+
+## v1.7.9 · 2026-09-30 · [c08c73a](https://github.com/mkuehne-git/necklace-splitting/commit/c08c73a)
+
+* Fixed: Check for updates said nothing when it could not reach the server, for example offline. It now says the check failed.
+* Fixed: a screen capture that failed ended silently. It now says so.
+
+## v1.7.8 · 2026-09-30 · [4bd1dcb](https://github.com/mkuehne-git/necklace-splitting/commit/4bd1dcb)
+
+* Fixed: Alt+S did not save a screen capture on a Mac, where it types "ß".
+
+## v1.7.7 · 2026-09-30 · [f3b97c3](https://github.com/mkuehne-git/necklace-splitting/commit/f3b97c3)
+
+* No functional change. The automatic tests on GitHub run with read-only access to the repository.
+
+## v1.7.6 · 2026-09-30 · [404b618](https://github.com/mkuehne-git/necklace-splitting/commit/404b618)
+
+* No functional change. The smaller findings of the code review that wait for later are listed in the roadmap.
+
 ## v1.7.5 · 2026-09-30 · [bf573e3](https://github.com/mkuehne-git/necklace-splitting/commit/bf573e3)
 
 * Fixed: after changing the necklace or Discrete, the fairness meter showed the old split until the pointer moved again; after a new necklace it even contradicted the jewels shown. The cut now stays where it was and the meter follows at once. In the game, the handles no longer jump back to a third and two thirds when the necklace changes.
