@@ -6,13 +6,12 @@ import { loadHtml2canvas } from "./loadHtml2canvas";
 // at startup; only html2canvas itself is loaded on first use.
 //
 // https://stackoverflow.com/questions/55760121/html2canvas-captures-everything-except-the-content-of-an-inner-canvas
-HTMLCanvasElement.prototype.getContext = (function (origFn) {
+type GetContext = (this: HTMLCanvasElement, type: string, attribs?: Record<string, unknown>) => RenderingContext | null;
+HTMLCanvasElement.prototype.getContext = (function (origFn: GetContext): GetContext {
   return function (type, attribs) {
-    attribs = attribs || {};
-    attribs.preserveDrawingBuffer = true;
-    return origFn.call(this, type, attribs);
+    return origFn.call(this, type, { ...attribs, preserveDrawingBuffer: true });
   };
-})(HTMLCanvasElement.prototype.getContext);
+})(HTMLCanvasElement.prototype.getContext as GetContext) as typeof HTMLCanvasElement.prototype.getContext;
 
 /**
  * Saves a screen capture of the page, the sphere or the necklace as a PNG,

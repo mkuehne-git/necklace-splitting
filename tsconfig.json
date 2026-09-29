@@ -1,5 +1,5 @@
 {
-  // Type checking only (`npm run typecheck`): Vite builds without it.
+  // Type checking only (`npm run typecheck`, strict since v1.2.2): Vite builds without it.
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
@@ -11,7 +11,7 @@
     "isolatedModules": true,
     "allowJs": true,
     "checkJs": false,
-    "strict": false,
+    "strict": true,
     "resolveJsonModule": true
   },
   "include": ["src", "test", "e2e", "screenshots", "glsl.d.ts", "vite-env.d.ts", "vite.config.ts", "playwright.config.ts", "playwright.screenshots.config.ts"]

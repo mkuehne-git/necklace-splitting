@@ -7,7 +7,7 @@ import { NecklaceModel } from "../necklace/NecklaceModel";
 import { ComponentOptions, NecklaceComponent } from "../necklace/NecklaceComponent";
 import { Resizer } from "./Resizer";
 import { persistentState } from "../settings/PersistentState";
-import { stats } from "./Stats";
+import { showStats, stats } from "./Stats";
 import { createOctantGeometry } from "./octantGeometry";
 
 // The GLSL shaders
@@ -33,20 +33,21 @@ type Octant = {
 };
 
 class Sphere extends NecklaceComponent {
-  // Just any vector
-  #lastInterSect: THREE.Vector3;
-  #scene: THREE.Scene;
-  #raycaster: THREE.Raycaster;
-  #camera: THREE.PerspectiveCamera;
-  #renderer: THREE.WebGLRenderer;
-  #octants: Octant[];
-  #material: THREE.ShaderMaterial;
-  #wireframeMaterial: THREE.MeshBasicMaterial;
-  #orbitControls: OrbitControls;
-  #group: THREE.Group;
-  #axesHelper: THREE.AxesHelper;
-  #resizer: Resizer;
-  #lastRender: DOMHighResTimeStamp;
+  /** The last cut applied from the pointer; any point that is not one to start with. */
+  #lastInterSect = new THREE.Vector3(-1.0, 20, -30);
+  // Set in initializeCanvas, which the constructor calls (through domElement).
+  #scene!: THREE.Scene;
+  #raycaster!: THREE.Raycaster;
+  #camera!: THREE.PerspectiveCamera;
+  #renderer!: THREE.WebGLRenderer;
+  #octants!: Octant[];
+  #material!: THREE.ShaderMaterial;
+  #wireframeMaterial!: THREE.MeshBasicMaterial;
+  #orbitControls!: OrbitControls;
+  #group!: THREE.Group;
+  #axesHelper!: THREE.AxesHelper;
+  #resizer!: Resizer;
+  #lastRender: DOMHighResTimeStamp | undefined;
   /**
    * The view is drawn only when something changed: the camera, the pointer, the
    * size, the theme, the sphere or its material. Set this when adding anything
@@ -70,7 +71,6 @@ class Sphere extends NecklaceComponent {
   }
 
   initializeCanvas(): HTMLCanvasElement {
-    this.#lastInterSect = new THREE.Vector3(-1.0, 20, -30);;
     this.#scene = new THREE.Scene();
 
     this.#raycaster = new THREE.Raycaster();
@@ -380,7 +380,7 @@ class Sphere extends NecklaceComponent {
   updateVisibility(): void {
     this.#axesHelper.visible = SETTINGS.view.axes_visible;
     this.arrangeOctants();
-    stats["visible"](SETTINGS.view.stats_monitor_visible);
+    showStats(SETTINGS.view.stats_monitor_visible);
     this.#needsRender = true;
     Events.dispatchEvent(Events.MODEL_CHANGED);
   }

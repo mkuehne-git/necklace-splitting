@@ -35,7 +35,7 @@ The project uses the current Active LTS release of Node.js: Node 24 (24.21.0 loc
 
 The development server uses HTTPS with a local self-signed certificate. If the browser cannot trust that certificate, use `npm run dev:http` and open `http://127.0.0.1:5173/` instead. Over plain HTTP, only `localhost` and `127.0.0.1` have service workers (and with them the PWA update check); the network address does not.
 
-`tsconfig.json` is for type checking only (`noEmit`, `strict` off); Vite builds without checking types. Unit tests live in `test/` and run with `npm test`; end-to-end tests live in `e2e/` and run with `npm run test:e2e` (after UI changes; it leaves a test build in `dist/`, so run `npm run build` afterwards). `TESTING.md` describes them. There is no lint script. After visible UI changes, retake the README screenshots with the `screenshots` skill (`.claude/skills/screenshots/`).
+`tsconfig.json` is for type checking only (`noEmit`, `strict` on since v1.2.2); Vite builds without checking types. Fields a component sets in `initializeCanvas` (called from its constructor through `domElement`) are declared with `!`. Unit tests live in `test/` and run with `npm test`; end-to-end tests live in `e2e/` and run with `npm run test:e2e` (after UI changes; it leaves a test build in `dist/`, so run `npm run build` afterwards). `TESTING.md` describes them. There is no lint script. After visible UI changes, retake the README screenshots with the `screenshots` skill (`.claude/skills/screenshots/`).
 
 ## Versioning
 

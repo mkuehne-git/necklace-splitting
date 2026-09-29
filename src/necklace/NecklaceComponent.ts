@@ -9,8 +9,9 @@ abstract class NecklaceComponent {
 
   #id: string;
   #container: HTMLElement;
-  #canvas: HTMLCanvasElement;
-  #observer: MutationObserver;
+  /** Set by the subclass's constructor, from domElement: initializeCanvas needs the subclass's fields. */
+  #canvas?: HTMLCanvasElement;
+  #observer?: MutationObserver;
 
   constructor(
     model: NecklaceModel,
@@ -24,6 +25,9 @@ abstract class NecklaceComponent {
     return this.#container;
   }
   get canvas(): HTMLCanvasElement {
+    if (this.#canvas === undefined) {
+      throw Error("Canvas not set");
+    }
     return this.#canvas;
   }
 

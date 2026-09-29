@@ -10,7 +10,8 @@ const DARK_THEME = 'dark';
 const LIGHT_THEME = 'light';
 
 class ThemesSwitcher {
-    #theme: boolean;
+    /** true for the dark theme; set by initTheme. */
+    #theme = false;
     #button: SVGToggleButton;
 
     constructor(p?: { container: Element }) {

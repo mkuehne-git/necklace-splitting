@@ -15,7 +15,7 @@ const trailer = `<hr><p style="opacity: 1.0;">Dieses Impressum wurde erstellt du
  * agents reading the HTML source.
  */
 class Imprint {
-    private decryptedAES: () => string;
+    private decryptedAES: (() => string) | undefined;
     private page = new OverlayPage("imprint", Events.HIDE_IMPRINT.toString(),
         () => window.clearTimeout(this.resizeTimer));
     private loading: Promise<boolean> | undefined;

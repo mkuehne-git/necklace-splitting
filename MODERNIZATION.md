@@ -35,7 +35,7 @@ Work through the phases in order. Each step is one commit with a version bump an
 
 ## Phase 2: Type checking (patch)
 
-`tsconfig.json` copied from Climate Helix (`noEmit`, `moduleResolution: bundler`, `strict: false` to start), `typecheck` script, `glsl.d.ts`/`vite-env.d.ts` included. Fix the errors it finds; tightening `strict` later is optional.
+`tsconfig.json` copied from Climate Helix (`noEmit`, `moduleResolution: bundler`, `strict: false` to start), `typecheck` script, `glsl.d.ts`/`vite-env.d.ts` included. Fix the errors it finds; tightening `strict` later is optional. `strict` was turned on after the modernization, in v1.2.2.
 
 ## Phase 3: Tests (patch per phase, `TESTING.md` tracks them)
 

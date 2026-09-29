@@ -8,15 +8,15 @@ function fract(x: number): number {
 }
 
 class NecklaceModel {
-  #necklace: number[];
+  #necklace: number[] = [];
   /** Vector with total number of jewels per type. */
-  #cnt: Vector2;
+  #cnt = new Vector2(0, 0);
 
   /** With two cuts the necklace is split into three segments - represented by this vector. */
-  #cuts: Vector3;
+  #cuts = new Vector3(0, 0, 0);
 
   /** Vector representing the number of jewels per type belonging to thief. */
-  #thief: Vector2;
+  #thief = new Vector2(0, 0);
 
   /**
    *

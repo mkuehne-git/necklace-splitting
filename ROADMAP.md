@@ -6,7 +6,6 @@ What remains after the modernization (`MODERNIZATION.md`, phases 0 to 8, v0.4.14
 
 - **Node.js 26** becomes the Active LTS in October 2026: update `.nvmrc`, the CI workflow and, if needed, `engines` together (see "Node.js version" in `CLAUDE.md`).
 - **Dependabot pull requests** need a version bump and a changelog entry before they are merged (every commit is a version).
-- **Strict TypeScript.** `strict` is off in `tsconfig.json`; turning it on reports 25 errors (v0.12.1), 13 of them in `src/sphere/Sphere.ts` (fields set in `initializeCanvas`, not the constructor), the others in `NecklaceModel.ts`, `ScreenCapture.ts`, `Stats.ts`, `NecklaceComponent.ts`, `ThemesSwitcher.ts` and `Imprint.ts`. Worth doing in one patch, file by file, with the type check as the test.
 
 ## Code
 

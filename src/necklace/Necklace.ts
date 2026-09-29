@@ -122,9 +122,7 @@ class Necklace extends NecklaceComponent {
   }
 
   render(): void {
-    if (this.canvas !== undefined) {
-      this._render();
-    }
+    this._render();
   }
   private _render(): void {
     // console.log("Necklace.render");

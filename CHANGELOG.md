@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.2.1 · 2026-09-29
+## v1.2.2 · 2026-09-29
+
+* No functional change. The code is now type-checked in strict mode, which catches missing values before they reach the app.
+
+## v1.2.1 · 2026-09-29 · [9ec52fb](https://github.com/mkuehne-git/necklace-splitting/commit/9ec52fb)
 
 * No functional change. The Borsuk-Ulam shape keeps following *Discrete*; the decision is recorded in the notes for developers.
 
