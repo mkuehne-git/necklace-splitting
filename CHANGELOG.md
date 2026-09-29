@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.2.9 · 2026-09-29
+## v1.2.10 · 2026-09-29
+
+* No functional change. The roadmap plans the next features: lighting, a view switcher with a morph from the sphere into the Borsuk-Ulam shape, and setting the cuts with handles on the necklace.
+
+## v1.2.9 · 2026-09-29 · [41880f7](https://github.com/mkuehne-git/necklace-splitting/commit/41880f7)
 
 * No functional change. The notes for developers describe how the Firefox tests got to run on GitHub.
 
