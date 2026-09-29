@@ -1,6 +1,6 @@
 var e=`# Changelog
 
-## v1.5.1 · 2026-09-29
+## v1.5.1 · 2026-09-29 · [67b9c43](https://github.com/mkuehne-git/necklace-splitting/commit/67b9c43)
 
 * The marker on the sphere is now a white ring with a dark outline: the white glow was hard to see on the bright yellow. The color of the point shows inside the ring.
 * When the handles move the marker towards the rim of the sphere, the view turns to it earlier, not only once it is out of sight.
