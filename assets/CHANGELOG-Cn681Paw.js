@@ -1,5 +1,25 @@
 var e=`# Changelog
 
+## v1.7.5 · 2026-09-30 · [bf573e3](https://github.com/mkuehne-git/necklace-splitting/commit/bf573e3)
+
+* Fixed: after changing the necklace or Discrete, the fairness meter showed the old split until the pointer moved again; after a new necklace it even contradicted the jewels shown. The cut now stays where it was and the meter follows at once. In the game, the handles no longer jump back to a third and two thirds when the necklace changes.
+
+## v1.7.4 · 2026-09-30 · [b750114](https://github.com/mkuehne-git/necklace-splitting/commit/b750114)
+
+* Fixed: with a necklace of only one kind of jewel, the solution band was missing. It marks where both thieves get equally long pieces, whatever the jewels, and now shows for such a necklace too.
+
+## v1.7.3 · 2026-09-30 · [5889600](https://github.com/mkuehne-git/necklace-splitting/commit/5889600)
+
+* Fixed: moving the mouse over the settings, the necklace or a button changed the cut on the part of the sphere behind them. Only the sphere itself sets the cut now.
+
+## v1.7.2 · 2026-09-30 · [7b8a62f](https://github.com/mkuehne-git/necklace-splitting/commit/7b8a62f)
+
+* Fixed: a long text as the necklace made the sphere disappear, and it stayed gone after a reload because the text was remembered. On some phones a few dozen characters were enough. The necklace now takes at most 192 jewels: as many whole characters of the text as fit, and a note below the text field says so.
+
+## v1.7.1 · 2026-09-30 · [4fdf152](https://github.com/mkuehne-git/necklace-splitting/commit/4fdf152)
+
+* No functional change. A new rule for the project: before a major version, the whole code is reviewed and its important issues are fixed.
+
 ## v1.7.0 · 2026-09-29 · [9d08e1e](https://github.com/mkuehne-git/necklace-splitting/commit/9d08e1e)
 
 * Settings whose name does not say it all, such as Discrete, Epsilon or Undivided octants, have a small ⓘ behind them: it opens a short explanation below the setting.
