@@ -1,6 +1,16 @@
 # Changelog
 
-## v1.7.15 · 2026-09-30
+## v2.0.0 · 2026-09-30
+
+Necklace Splitting 2.0 brings together what came since 1.2:
+
+* **Cut the necklace yourself.** Drag two handles along the necklace and give its pieces to the thieves; the marker on the sphere follows. The solutions are hidden meanwhile, so you find a fair split yourself, and the app celebrates it.
+* **Three scenes** in the upper left corner: pointing at the sphere, cutting the necklace, and the Borsuk-Ulam shape.
+* **The sphere morphs into the Borsuk-Ulam shape**, with a slider and player buttons to watch it form, pause it and play it back; lighting makes the shape's facets stand out.
+* **Settings explain themselves**: the ⓘ behind a setting opens a short explanation.
+* Before this version, the whole code was reviewed; the fixes are in v1.7.2 to v1.7.9.
+
+## v1.7.15 · 2026-09-30 · [e0981de](https://github.com/mkuehne-git/necklace-splitting/commit/e0981de)
 
 * No functional change. The description of the automated tests is up to date again.
 
