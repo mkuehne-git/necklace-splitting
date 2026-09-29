@@ -1,5 +1,13 @@
 var e=`# Changelog
 
+## v1.3.0 · 2026-09-29 · [5fe1aa4](https://github.com/mkuehne-git/necklace-splitting/commit/5fe1aa4)
+
+* New setting View › Lighting: a light from the viewer's direction shades the Borsuk-Ulam shape, so its facets and the walls of the discrete shape stand out even without the mesh. Off leaves everything unlit as before, Always shades the sphere too. The colors keep their meaning: the light only dims them a little.
+
+## v1.2.10 · 2026-09-29 · [44fe53f](https://github.com/mkuehne-git/necklace-splitting/commit/44fe53f)
+
+* No functional change. The roadmap plans the next features: lighting, a view switcher with a morph from the sphere into the Borsuk-Ulam shape, and setting the cuts with handles on the necklace.
+
 ## v1.2.9 · 2026-09-29 · [41880f7](https://github.com/mkuehne-git/necklace-splitting/commit/41880f7)
 
 * No functional change. The notes for developers describe how the Firefox tests got to run on GitHub.
