@@ -152,17 +152,15 @@ class Necklace extends NecklaceComponent {
   }
 
   /**
-   * When the handles set the cuts: starts from a first cut if there is none,
-   * or applies the cut again, so the fairness meter follows a changed necklace.
+   * When the handles set the cuts: starts from a first cut if there is none.
+   * The model keeps its cut across necklace changes and applies it again.
    */
   private startCutting(): void {
     this.updateControls();
     if (!cutsFromNecklace() || this.model.size === 0) {
       return;
     }
-    if (this.hasCut) {
-      this.model.applyCut(this.model.cuts!);
-    } else {
+    if (!this.hasCut) {
       const jewels = SETTINGS.necklace.discrete ? this.model.size : 0;
       this.#handles = { a: snap(1 / 3, jewels), b: snap(2 / 3, jewels), signs: DEFAULT_SIGNS.clone() };
       this.applyHandles();

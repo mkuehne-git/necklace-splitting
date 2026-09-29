@@ -53,6 +53,22 @@ class NecklaceModel {
     window.addEventListener(Events.SET_NECKLACE_CONFIGURATION_BY_STRING, () =>
       this.necklaceFromStr(SETTINGS.necklace.string)
     );
+    // Discrete (and the necklace itself, see keepCut) change the shares at the same cut.
+    window.addEventListener(Events.UPDATE_SPHERE_MATERIAL, () => this.reapplyCut());
+  }
+
+  /** Applies the cut again, if there is one: the shares follow a changed necklace or Discrete. */
+  private reapplyCut(): void {
+    if (this.#cuts.lengthSq() > 0.5) {
+      this.applyCut(this.#cuts);
+    }
+  }
+
+  /** A new necklace keeps the cut: it is a point of the sphere, whatever the jewels. */
+  private keepCut(build: () => void): void {
+    const cut = this.#cuts.clone();
+    build();
+    this.#cuts = cut;
   }
 
   get necklace(): number[] {
@@ -66,7 +82,7 @@ class NecklaceModel {
    * @param {number} numberOfJewels the total number of jewels, needed to fill leading zeroes
    */
   private necklaceFromInt(necklaceAsInt: number, numberOfJewels: number): void {
-    this.initializeStatus(numberOfJewels);
+    this.keepCut(() => this.initializeStatus(numberOfJewels));
     const strVector = necklaceAsInt.toString(2);
     if (necklaceAsInt != 0) {
       const maxIndex = strVector.length - 1;
@@ -87,7 +103,7 @@ class NecklaceModel {
   }
 
   private necklaceFromStr(necklaceAsStr: string): void {
-    this.initializeStatus(1);
+    this.keepCut(() => this.initializeStatus(1));
     this.#necklace = necklaceFromText(necklaceAsStr).jewels;
     for (const jewel of this.#necklace) {
       if (jewel === 0.0) {

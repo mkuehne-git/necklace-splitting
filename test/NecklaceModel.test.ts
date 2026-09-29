@@ -240,8 +240,12 @@ describe("necklace splitting theorem", () => {
     SETTINGS.necklace.discrete = true;
     const jewels = 8;
     let checked = 0;
+    // One model, configured again and again, as in the app: every model listens
+    // for the configuration events, so one per configuration would add up.
+    const model = fromNumber(0, jewels);
     for (let configuration = 0; configuration < 2 ** jewels; configuration++) {
-      const model = fromNumber(configuration, jewels);
+      SETTINGS.necklace.configuration = configuration;
+      Events.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
       if (model.count_0 % 2 !== 0 || model.count_1 % 2 !== 0) {
         continue;
       }
@@ -272,5 +276,33 @@ describe("necklaceFromText", () => {
     expect(characters).toBe(Math.floor(MAX_NECKLACE_JEWELS / 7));
     expect(jewels).toHaveLength(characters * 7);
     expect(jewels.length).toBeLessThanOrEqual(MAX_NECKLACE_JEWELS);
+  });
+});
+
+describe("a changed necklace or Discrete", () => {
+  it("keeps the cut and gives the shares for the new necklace", () => {
+    // Four jewels, the first two of the second kind (3 = 0011, lowest bit first); thief A gets the first half.
+    const model = fromNumber(3, 4);
+    // Half a jewel off the gap, so the discrete split is unambiguous.
+    const cut = pointFor([1.5, 0, 2.5], [1, -1, -1]);
+    model.applyCut(cut);
+    expect(model.thief_a).toEqual(new Vector2(0, 2));
+    // Now the last two are of the second kind (12 = 1100): thief A's half holds the first kind.
+    SETTINGS.necklace.configuration = 12;
+    Events.dispatchEvent(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
+    expect(model.cuts!.distanceTo(cut)).toBeLessThan(1e-9);
+    expect(model.thief_a).toEqual(new Vector2(2, 0));
+  });
+
+  it("gives the shares for Discrete as it is now", () => {
+    SETTINGS.necklace.discrete = true;
+    const model = fromNumber(0, 4);
+    // Thief A's piece ends in the middle of the second jewel: Discrete gives it
+    // the whole jewel (a jewel goes with the piece it starts in), otherwise half of it.
+    model.applyCut(pointFor([1.5, 0, 2.5], [1, -1, -1]));
+    expect(model.thief_a.x).toBe(2);
+    SETTINGS.necklace.discrete = false;
+    Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
+    expect(model.thief_a.x).toBeCloseTo(1.5);
   });
 });
