@@ -1,10 +1,11 @@
 var e=`# Changelog
 
-## v1.2.0 · 2026-09-29
+## v1.2.0 · 2026-09-29 · [4c33f81](https://github.com/mkuehne-git/necklace-splitting/commit/4c33f81)
 
 * **Borsuk-Ulam shape:** the shape is now a shape of its own, not a painted-over sphere. The mesh (*Advanced › Mesh*) follows it instead of staying a sphere around it.
 * **Pointing at the Borsuk-Ulam shape:** the white marker and the fairness meter now follow the pointer on the shape. Before, they showed the cut of the hidden sphere behind it.
 * **Discrete necklaces:** with *Discrete*, the shape jumps from value to value; the walls between its steps span these jumps. The explanation (info button) says so and no longer calls the shape a rough first view.
+* **Mesh on the light theme:** *Advanced › Mesh* was white and so invisible on the light theme; it now takes the theme's color.
 * **Faster:** the shape is computed once when the necklace changes, not again for every frame.
 
 ## v1.1.0 · 2026-09-28 · [f3da2a8](https://github.com/mkuehne-git/necklace-splitting/commit/f3da2a8)
