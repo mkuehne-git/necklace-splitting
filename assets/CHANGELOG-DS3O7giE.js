@@ -1,5 +1,35 @@
 var e=`# Changelog
 
+## v2.0.0 · 2026-09-30 · [17936c2](https://github.com/mkuehne-git/necklace-splitting/commit/17936c2)
+
+Necklace Splitting 2.0 brings together what came since 1.2:
+
+* **Cut the necklace yourself.** Drag two handles along the necklace and give its pieces to the thieves; the marker on the sphere follows. The solutions are hidden meanwhile, so you find a fair split yourself, and the app celebrates it.
+* **Three scenes** in the upper left corner: pointing at the sphere, cutting the necklace, and the Borsuk-Ulam shape.
+* **The sphere morphs into the Borsuk-Ulam shape**, with a slider and player buttons to watch it form, pause it and play it back; lighting makes the shape's facets stand out.
+* **Settings explain themselves**: the ⓘ behind a setting opens a short explanation.
+* Before this version, the whole code was reviewed; the fixes are in v1.7.2 to v1.7.9.
+
+## v1.7.15 · 2026-09-30 · [e0981de](https://github.com/mkuehne-git/necklace-splitting/commit/e0981de)
+
+* No functional change. The description of the automated tests is up to date again.
+
+## v1.7.14 · 2026-09-30 · [bc4a583](https://github.com/mkuehne-git/necklace-splitting/commit/bc4a583)
+
+* No functional change. The automatic tests of the morph player get the time they need on slower machines.
+
+## v1.7.13 · 2026-09-30 · [f7d4968](https://github.com/mkuehne-git/necklace-splitting/commit/f7d4968)
+
+* No functional change. The automatic tests of drawing only on change allow a single redraw that a real browser event causes.
+
+## v1.7.12 · 2026-09-30 · [a36923a](https://github.com/mkuehne-git/necklace-splitting/commit/a36923a)
+
+* No functional change. The automatic tests that check the view rests when nothing changes wait for it to settle, also on slower machines.
+
+## v1.7.11 · 2026-09-30 · [bf6bd88](https://github.com/mkuehne-git/necklace-splitting/commit/bf6bd88)
+
+* No functional change. Three automatic tests of the morph failed on GitHub's slower machines; they no longer depend on how fast the machine is.
+
 ## v1.7.10 · 2026-09-30 · [9b3e120](https://github.com/mkuehne-git/necklace-splitting/commit/9b3e120)
 
 * No functional change. Leftover debugging code and unused shader values are gone.
