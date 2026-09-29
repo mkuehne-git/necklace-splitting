@@ -1,5 +1,9 @@
 var e=`# Changelog
 
+## v1.6.0 · 2026-09-29
+
+* Cutting the necklace yourself is now a real puzzle: the solution band and the solution markers are hidden while the handles set the cuts, so you find the fair splits yourself. Necklace › Solution band and › Solutions show them again for this game; your settings stay as they are, and pointing at the sphere shows them as before.
+
 ## v1.5.1 · 2026-09-29 · [67b9c43](https://github.com/mkuehne-git/necklace-splitting/commit/67b9c43)
 
 * The marker on the sphere is now a white ring with a dark outline: the white glow was hard to see on the bright yellow. The color of the point shows inside the ring.
