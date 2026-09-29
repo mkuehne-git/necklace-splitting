@@ -1,5 +1,12 @@
 var e=`# Changelog
 
+## v1.5.1 · 2026-09-29
+
+* The marker on the sphere is now a white ring with a dark outline: the white glow was hard to see on the bright yellow. The color of the point shows inside the ring.
+* When the handles move the marker towards the rim of the sphere, the view turns to it earlier, not only once it is out of sight.
+* The handles reach a little beyond the necklace, so they are easier to see and to grab.
+* The buttons for pointing, cutting and the Borsuk-Ulam shape have moved to the upper left corner, and the fairness meter is centered again on phones.
+
 ## v1.5.0 · 2026-09-29 · [d4ca4b1](https://github.com/mkuehne-git/necklace-splitting/commit/d4ca4b1)
 
 * Cut the necklace yourself: a new button in the lower left corner lets two handles on the necklace set the cuts instead of the pointer on the sphere. Drag a handle along the necklace, tap a piece to give it to the other thief, and watch the marker on the sphere follow; the view turns to the marker when it is out of sight. The app remembers which way you chose.
