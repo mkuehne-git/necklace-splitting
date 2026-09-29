@@ -54,6 +54,20 @@ export const en = {
         /** Follows the browser's language. */
         'settings.languageAuto': 'Automatic',
 
+        /** The explanations behind the ⓘ buttons of the settings, and the buttons' names. */
+        'settings.info': 'About {setting}',
+        'info.configuration': 'The necklace as a number: its binary digits, lowest first, are the jewels - 0 for the first kind, 1 for the second.',
+        'info.text': "The necklace from a text: the binary digits of each character's code, one character after another, are the jewels. The text replaces the configuration.",
+        'info.discrete': 'Cuts fall only between jewels. When off, a cut may split a jewel, and each thief gets a part of it.',
+        'info.solutionBand': 'Marks in orange where both thieves get equally long pieces of the necklace. Every fair split lies on this band.',
+        'info.solutions': 'Marks the fair splits in blue: where thief A gets half of each kind of jewel, up to Epsilon.',
+        'info.epsilon': 'How far from exactly half a split may be and still count as fair for Solutions. Larger values mark more of the sphere.',
+        'info.undividedOctants': 'The two octants where all three pieces go to the same thief, so the necklace stays whole. Hide them to see the others better.',
+        'info.spreadOctants': 'Pulls the eight octants of the sphere apart: one for each way of giving the three pieces to the thieves.',
+        'info.lighting': 'Shades the surface as if lit from the camera: with Shape only the Borsuk-Ulam shape, with Always the sphere too.',
+        'info.rotate': 'Turns the sphere around its axes, at the speeds below in turns per second.',
+        'info.colors': "Scale the sphere's colors: red and green show thief A's share of the first and the second kind, blue marks the solutions. Opacity lets you see through the sphere.",
+
         'button.openSettings': 'Open settings',
         'button.closeSettings': 'Close settings',
         'button.lightTheme': 'Switch to light theme',

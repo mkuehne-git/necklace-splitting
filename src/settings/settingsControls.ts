@@ -3,9 +3,18 @@
  * `<label>`, `<input>` or `<button>`), writes changes through `set`, and
  * `update()` shows the current value again after it changed elsewhere (the
  * Jewels slider clamps the configuration, Reset rotation, a stored value).
+ * A label can come with a short explanation: an ⓘ button behind it opens it
+ * as a call-out below the row.
  */
 
+import { t } from '../i18n';
+
 export type Control = { update(): void };
+
+/** A control's label, with an explanation for labels that do not explain themselves. */
+export type Label = string | { text: string, info: string };
+
+const labelText = (label: Label) => typeof label === 'string' ? label : label.text;
 
 let nextId = 0;
 const uniqueId = (name: string) => `setting-${name}-${++nextId}`;
@@ -30,25 +39,81 @@ export function section(parent: HTMLElement, title: string, options: { open?: bo
     return content;
 }
 
-export function subheading(parent: HTMLElement, text: string): void {
+export function subheading(parent: HTMLElement, text: Label): void {
     const heading = document.createElement('h3');
     heading.className = 'settings-subheading';
-    heading.textContent = text;
+    const [label, callout] = labelWithInfo(parent, text, document.createElement('span'));
+    heading.appendChild(label);
     parent.appendChild(heading);
+    if (callout) {
+        heading.after(callout);
+    }
 }
 
-function row(parent: HTMLElement, text: string, control: HTMLElement, id: string): HTMLElement {
+/**
+ * The label element with the text, and for a label with an explanation the ⓘ
+ * button behind it and the call-out, which goes after the row.
+ */
+function labelWithInfo(parent: HTMLElement, label: Label, element: HTMLElement): [HTMLElement, HTMLElement?] {
+    element.textContent = labelText(label);
+    if (typeof label === 'string') {
+        return [element];
+    }
+    const wrapper = document.createElement('span');
+    wrapper.className = 'settings-label';
+    const callout = document.createElement('p');
+    callout.className = 'settings-callout';
+    callout.id = uniqueId('info');
+    callout.textContent = label.info;
+    callout.hidden = true;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'settings-info';
+    button.textContent = 'i';
+    button.setAttribute('aria-label', t('settings.info', { setting: label.text }));
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-controls', callout.id);
+    button.addEventListener('click', () => toggleCallout(parent, button, callout));
+    wrapper.append(element, button);
+    return [wrapper, callout];
+}
+
+/** A settings row: the label (with its ⓘ button, if any) and the control, and the call-out below. */
+function labeledRow(parent: HTMLElement, text: Label, label: HTMLElement, control: HTMLElement): HTMLElement {
     const div = document.createElement('div');
     div.className = 'settings-row';
-    const label = document.createElement('label');
-    label.htmlFor = id;
-    label.textContent = text;
-    div.append(label, control);
+    const [labelElement, callout] = labelWithInfo(parent, text, label);
+    div.append(labelElement, control);
     parent.appendChild(div);
+    if (callout) {
+        div.after(callout);
+    }
     return div;
 }
 
-export function checkbox(parent: HTMLElement, text: string, get: () => boolean, set: (value: boolean) => void): Control {
+/** Opens a call-out, its arrow under the button, and closes any other one in the panel; or closes it. */
+function toggleCallout(parent: HTMLElement, button: HTMLButtonElement, callout: HTMLElement): void {
+    const open = callout.hidden;
+    const panel = parent.closest('.settings-panel') ?? parent;
+    panel.querySelectorAll<HTMLButtonElement>('.settings-info[aria-expanded="true"]').forEach((other) => {
+        other.setAttribute('aria-expanded', 'false');
+        document.getElementById(other.getAttribute('aria-controls')!)!.hidden = true;
+    });
+    if (open) {
+        callout.hidden = false;
+        button.setAttribute('aria-expanded', 'true');
+        const arrow = button.getBoundingClientRect().left + button.offsetWidth / 2 - callout.getBoundingClientRect().left;
+        callout.style.setProperty('--arrow-left', `${arrow}px`);
+    }
+}
+
+function row(parent: HTMLElement, text: Label, control: HTMLElement, id: string): HTMLElement {
+    const label = document.createElement('label');
+    label.htmlFor = id;
+    return labeledRow(parent, text, label, control);
+}
+
+export function checkbox(parent: HTMLElement, text: Label, get: () => boolean, set: (value: boolean) => void): Control {
     const input = document.createElement('input');
     input.type = 'checkbox';
     input.id = uniqueId('checkbox');
@@ -61,7 +126,7 @@ export function checkbox(parent: HTMLElement, text: string, get: () => boolean, 
 
 export function range(
     parent: HTMLElement,
-    text: string,
+    text: Label,
     limits: { min: number, max: number, step?: number },
     get: () => number,
     set: (value: number) => void,
@@ -100,7 +165,7 @@ export function range(
  */
 export function numberField(
     parent: HTMLElement,
-    text: string,
+    text: Label,
     limits: () => { min: number, max: number },
     get: () => number,
     set: (value: number) => void,
@@ -130,7 +195,7 @@ export function numberField(
 }
 
 /** A text field; the value applies on Enter or when the field is left. */
-export function textField(parent: HTMLElement, text: string, get: () => string, set: (value: string) => void): Control {
+export function textField(parent: HTMLElement, text: Label, get: () => string, set: (value: string) => void): Control {
     const input = document.createElement('input');
     input.type = 'text';
     input.id = uniqueId('text');
@@ -145,7 +210,7 @@ export function textField(parent: HTMLElement, text: string, get: () => string, 
 /** Buttons of which one is pressed, e.g. what to capture; `title` is a longer name, if any. */
 export function segmented<T extends string>(
     parent: HTMLElement,
-    text: string,
+    text: Label,
     options: { value: T, label: string, title?: string }[],
     get: () => T,
     set: (value: T) => void,
@@ -153,7 +218,7 @@ export function segmented<T extends string>(
     const group = document.createElement('div');
     group.className = 'settings-segmented';
     group.setAttribute('role', 'group');
-    group.setAttribute('aria-label', text);
+    group.setAttribute('aria-label', labelText(text));
     const buttons = options.map((option) => {
         const button = document.createElement('button');
         button.type = 'button';
@@ -169,12 +234,7 @@ export function segmented<T extends string>(
         group.appendChild(button);
         return button;
     });
-    const div = document.createElement('div');
-    div.className = 'settings-row';
-    const label = document.createElement('span');
-    label.textContent = text;
-    div.append(label, group);
-    parent.appendChild(div);
+    labeledRow(parent, text, document.createElement('span'), group);
     const update = () => options.forEach((option, index) => buttons[index].setAttribute('aria-pressed', String(option.value === get())));
     update();
     return { update };

@@ -64,7 +64,7 @@ The Borsuk-Ulam button in the upper left corner morphs the sphere into the 3D sh
 
 - **Point, cut or morph**: the three buttons in the upper left corner switch between the app's scenes. The first two choose what sets the cuts. *Point at the sphere* is the view above. *Cut the necklace* turns it around: drag the two handles along the necklace and tap a piece to give it to the other thief. The marker on the sphere follows, the view turns to it when it nears the rim or goes out of sight, and a fair split is celebrated. The solutions are hidden meanwhile, so that you find them yourself; *Necklace › Solution band* and *Necklace › Solutions* show them again for this game, without changing the settings.
 - **Borsuk-Ulam shape**: the third button morphs the sphere into the shape of $g$ (see above); its slider has player buttons to play the morph either way and pause it, and the other two buttons return to the sphere at once.
-- **Settings** (gear button, or `h`): the necklace, what the view shows, a rotation animation and screen captures; *Advanced* holds the sphere's mesh and colors. The app remembers them; *Restore defaults* goes back to the original ones.
+- **Settings** (gear button, or `h`): the necklace, what the view shows, a rotation animation and screen captures; *Advanced* holds the sphere's mesh and colors. The ⓘ behind a setting explains it. The app remembers them; *Restore defaults* goes back to the original ones.
 - **About this app** (info button): the explanation above, in the app.
 - **Language**: the app follows the browser's language (English or German); *Language* at the bottom of the settings chooses one.
 - **Changelog**: the version number in the lower right corner shows what changed; after an update, the app shows once what is new.

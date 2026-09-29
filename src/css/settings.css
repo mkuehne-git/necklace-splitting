@@ -166,6 +166,84 @@
     flex-grow: 1;
 }
 
+/* A label with its ⓘ button (settingsControls.ts, labelWithInfo). */
+.settings-label {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.settings-row .settings-label label {
+    flex-grow: 0;
+}
+
+.settings-subheading .settings-label {
+    display: inline-flex;
+}
+
+.settings-info {
+    position: relative;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: 1.5px solid var(--text-color);
+    border-radius: 50%;
+    font: italic bold 11px/1 Georgia, serif;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text-color);
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+/* A finger needs more than 18 px: the button reacts a little around it. */
+.settings-info::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+}
+
+.settings-info:hover,
+.settings-info:focus-visible,
+.settings-info[aria-expanded="true"] {
+    opacity: 1;
+}
+
+/* The explanation, below its row; the arrow points at the ⓘ button. */
+.settings-callout {
+    position: relative;
+    margin: 4px 0 8px;
+    padding: 8px 10px;
+    border: 1px solid var(--settings-border);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.45;
+    text-transform: none;
+    letter-spacing: normal;
+    opacity: 1;
+}
+
+.settings-callout::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: calc(var(--arrow-left, 16px) - 5px);
+    width: 9px;
+    height: 9px;
+    border-top: 1px solid var(--settings-border);
+    border-left: 1px solid var(--settings-border);
+    background: var(--background-color);
+    transform: rotate(45deg);
+}
+
+.settings-callout[hidden] {
+    display: none;
+}
+
 .settings-panel input[type="checkbox"] {
     appearance: none;
     flex-shrink: 0;

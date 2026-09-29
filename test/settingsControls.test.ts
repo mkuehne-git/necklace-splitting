@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { checkbox, numberField, range, section, segmented, textField } from '../src/settings/settingsControls';
+import { checkbox, numberField, range, section, segmented, subheading, textField } from '../src/settings/settingsControls';
 
 let parent: HTMLElement;
 beforeEach(() => {
@@ -129,5 +129,49 @@ describe('textField', () => {
         value = '';
         control.update();
         expect(input.value).toBe('');
+    });
+});
+
+describe('explanations', () => {
+    const explained = (text: string) => ({ text, info: `What ${text} does.` });
+
+    it('put an ⓘ button behind the label and a hidden call-out below the row', () => {
+        checkbox(parent, explained('Discrete'), () => true, () => { });
+        const row = parent.querySelector('.settings-row')!;
+        const button = row.querySelector<HTMLButtonElement>('.settings-info')!;
+        const callout = row.nextElementSibling as HTMLElement;
+        expect(row.querySelector('label')!.textContent).toBe('Discrete');
+        expect(button.getAttribute('aria-label')).toBe('About Discrete');
+        expect(button.getAttribute('aria-controls')).toBe(callout.id);
+        expect(callout.textContent).toBe('What Discrete does.');
+        expect(callout.hidden).toBe(true);
+        button.click();
+        expect(callout.hidden).toBe(false);
+        expect(button.getAttribute('aria-expanded')).toBe('true');
+        button.click();
+        expect(callout.hidden).toBe(true);
+        expect(button.getAttribute('aria-expanded')).toBe('false');
+    });
+
+    it('open one at a time', () => {
+        range(parent, explained('Epsilon'), { min: 0, max: 1 }, () => 0, () => { });
+        segmented(parent, explained('Lighting'), [{ value: 'Off', label: 'Off' }], () => 'Off', () => { });
+        subheading(parent, explained('Colors'));
+        const [epsilon, lighting, colors] = parent.querySelectorAll<HTMLButtonElement>('.settings-info');
+        epsilon.click();
+        lighting.click();
+        expect(epsilon.getAttribute('aria-expanded')).toBe('false');
+        expect(document.getElementById(epsilon.getAttribute('aria-controls')!)!.hidden).toBe(true);
+        expect(document.getElementById(lighting.getAttribute('aria-controls')!)!.hidden).toBe(false);
+        colors.click();
+        expect(document.getElementById(lighting.getAttribute('aria-controls')!)!.hidden).toBe(true);
+        expect(document.getElementById(colors.getAttribute('aria-controls')!)!.hidden).toBe(false);
+    });
+
+    it('leave plain labels as they were', () => {
+        textField(parent, 'Text', () => '', () => { });
+        numberField(parent, 'Configuration', () => ({ min: 0, max: 9 }), () => 0, () => { });
+        expect(parent.querySelector('.settings-info')).toBeNull();
+        expect(parent.querySelectorAll('.settings-callout')).toHaveLength(0);
     });
 });

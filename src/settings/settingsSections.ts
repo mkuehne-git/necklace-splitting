@@ -1,11 +1,11 @@
 import { Events } from '../Enums';
 import type { SettingsPanel } from './SettingsPanel';
-import { button, checkbox, numberField, range, section, segmented, subheading, textField, type Control } from './settingsControls';
+import { button, checkbox, numberField, range, section, segmented, subheading, textField, type Control, type Label } from './settingsControls';
 import { LIMITS, SETTINGS, maxConfiguration, resetAnimation, setSolutionHint, solutionHintShown, type CaptureTarget, type Lighting, type SolutionHint } from './settingsValues';
 import { collectSettings, persistentState } from './PersistentState';
 import { Imprint } from '../imprint/Imprint';
 import { checkForPwaUpdates, showPwaStatus } from '../ui/PwaUpdate';
-import { LANGUAGE_NAMES, LANGUAGES, formatNumber, t, type Language } from '../i18n';
+import { LANGUAGE_NAMES, LANGUAGES, formatNumber, t, type Language, type MessageKey } from '../i18n';
 
 /**
  * Fills the settings panel: the sections in its body and the app functions in
@@ -26,6 +26,9 @@ export function buildSettingsPanel(panel: SettingsPanel): Control[] {
     return controls;
 }
 
+/** A label with its explanation behind an ⓘ button, for labels that do not explain themselves. */
+const explained = (text: MessageKey, info: MessageKey): Label => ({ text: t(text), info: t(info) });
+
 /** Applies a change: tells the views, and remembers the settings. */
 function changed(event?: Events): void {
     if (event !== undefined) {
@@ -45,10 +48,10 @@ const formatStep = (step: number) => (value: number) => formatNumber(value, deci
 function necklaceSection(body: HTMLElement, refresh: () => void): Control[] {
     const content = section(body, t('settings.necklace'), { open: true });
     const necklace = SETTINGS.necklace;
-    const flag = (text: string, key: 'discrete') =>
+    const flag = (text: Label, key: 'discrete') =>
         checkbox(content, text, () => necklace[key], (value) => { necklace[key] = value; material(); });
     // The game hides the solutions; ticking them during the game shows them for this game only.
-    const hint = (text: string, key: SolutionHint) =>
+    const hint = (text: Label, key: SolutionHint) =>
         checkbox(content, text, () => solutionHintShown(key), (value) => { setSolutionHint(key, value); material(); });
     return [
         range(content, t('settings.jewels'), LIMITS.number_of_jewels, () => necklace.number_of_jewels, (value) => {
@@ -59,20 +62,20 @@ function necklaceSection(body: HTMLElement, refresh: () => void): Control[] {
             changed(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
             refresh();
         }),
-        numberField(content, t('settings.configuration'), () => ({ min: 0, max: maxConfiguration() }), () => necklace.configuration, (value) => {
+        numberField(content, explained('settings.configuration', 'info.configuration'), () => ({ min: 0, max: maxConfiguration() }), () => necklace.configuration, (value) => {
             necklace.configuration = value;
             persistentState.update({ necklaceSource: 'number' });
             changed(Events.SET_NECKLACE_CONFIGURATION_BY_NUMBER);
         }),
-        textField(content, t('settings.text'), () => necklace.string, (value) => {
+        textField(content, explained('settings.text', 'info.text'), () => necklace.string, (value) => {
             necklace.string = value;
             persistentState.update({ necklaceSource: 'string' });
             changed(Events.SET_NECKLACE_CONFIGURATION_BY_STRING);
         }),
-        flag(t('settings.discrete'), 'discrete'),
-        hint(t('settings.solutionBand'), 'show_solution_band'),
-        hint(t('settings.solutions'), 'show_solutions'),
-        range(content, t('settings.epsilon'), LIMITS.epsilon, () => necklace.epsilon,
+        flag(explained('settings.discrete', 'info.discrete'), 'discrete'),
+        hint(explained('settings.solutionBand', 'info.solutionBand'), 'show_solution_band'),
+        hint(explained('settings.solutions', 'info.solutions'), 'show_solutions'),
+        range(content, explained('settings.epsilon', 'info.epsilon'), LIMITS.epsilon, () => necklace.epsilon,
             (value) => { necklace.epsilon = value; material(); }, formatStep(LIMITS.epsilon.step)),
     ];
 }
@@ -84,15 +87,15 @@ function viewSection(body: HTMLElement): Control[] {
     const shown = (text: string, key: 'axes_visible' | 'necklace_visible' | 'gauge_visible') =>
         checkbox(content, text, () => view[key], (value) => { view[key] = value; visibility(); });
     return [
-        checkbox(content, t('settings.undividedOctants'), () => view.show_single_thiefs_region,
+        checkbox(content, explained('settings.undividedOctants', 'info.undividedOctants'), () => view.show_single_thiefs_region,
             (value) => { view.show_single_thiefs_region = value; visibility(); }),
         shown(t('settings.axes'), 'axes_visible'),
         shown(t('settings.necklaceVisible'), 'necklace_visible'),
         shown(t('settings.fairnessMeter'), 'gauge_visible'),
         // Moves the octants' meshes; nothing is rebuilt.
-        range(content, t('settings.spreadOctants'), LIMITS.offset_octant, () => SETTINGS.sphere.offset_octant,
+        range(content, explained('settings.spreadOctants', 'info.spreadOctants'), LIMITS.offset_octant, () => SETTINGS.sphere.offset_octant,
             (value) => { SETTINGS.sphere.offset_octant = value; visibility(); }, formatStep(LIMITS.offset_octant.step)),
-        segmented<Lighting>(content, t('settings.lighting'),
+        segmented<Lighting>(content, explained('settings.lighting', 'info.lighting'),
             [
                 { value: 'Off', label: t('settings.lightingOff') },
                 { value: 'Shape', label: t('settings.lightingShape') },
@@ -111,7 +114,7 @@ function animationSection(body: HTMLElement, refresh: () => void): Control[] {
         range(content, text, LIMITS.rotation, () => animation[key], (value) => { animation[key] = value; changed(); },
             formatStep(LIMITS.rotation.step));
     const controls = [
-        checkbox(content, t('settings.rotate'), () => animation.run, (value) => { animation.run = value; }),
+        checkbox(content, explained('settings.rotate', 'info.rotate'), () => animation.run, (value) => { animation.run = value; }),
         speed(t('settings.rotationX'), 'rotation_x'),
         speed(t('settings.rotationY'), 'rotation_y'),
         speed(t('settings.rotationZ'), 'rotation_z'),
@@ -157,7 +160,7 @@ function advancedSection(body: HTMLElement): Control[] {
         shown(t('settings.faces'), 'faces_visible'),
         shown(t('settings.fpsMonitor'), 'stats_monitor_visible'),
     ];
-    subheading(content, t('settings.colors'));
+    subheading(content, explained('settings.colors', 'info.colors'));
     const color = SETTINGS.color;
     const scale = (text: string, key: 'scale_red' | 'scale_green' | 'scale_blue' | 'alpha', apply: () => void) =>
         range(content, text, LIMITS.scale, () => color[key], (value) => { color[key] = value; apply(); }, formatStep(LIMITS.scale.step));

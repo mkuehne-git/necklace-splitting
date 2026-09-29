@@ -112,6 +112,21 @@ test('the morph slider moves between sphere and shape', async ({ page }) => {
     await expectChanged(sphere(page), shape);
 });
 
+test('an ⓘ button behind a setting explains it in a call-out', async ({ page }) => {
+    await openApp(page);
+    await openSettings(page);
+    const about = panel(page).getByRole('button', { name: 'About Discrete' });
+    const callout = panel(page).getByText('Cuts fall only between jewels.');
+    await expect(callout).toBeHidden();
+    await about.click();
+    await expect(callout).toBeVisible();
+    await expect(about).toHaveAttribute('aria-expanded', 'true');
+    // Another one closes it.
+    await panel(page).getByRole('button', { name: 'About Epsilon' }).click();
+    await expect(callout).toBeHidden();
+    await expect(panel(page).getByText('How far from exactly half')).toBeVisible();
+});
+
 test('Lighting shades the sphere with Always, and only the shape by default', async ({ page }) => {
     await openApp(page);
     await openSettings(page);
