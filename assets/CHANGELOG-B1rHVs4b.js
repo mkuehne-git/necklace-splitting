@@ -1,6 +1,6 @@
 var e=`# Changelog
 
-## v1.5.0 · 2026-09-29
+## v1.5.0 · 2026-09-29 · [d4ca4b1](https://github.com/mkuehne-git/necklace-splitting/commit/d4ca4b1)
 
 * Cut the necklace yourself: a new button in the lower left corner lets two handles on the necklace set the cuts instead of the pointer on the sphere. Drag a handle along the necklace, tap a piece to give it to the other thief, and watch the marker on the sphere follow; the view turns to the marker when it is out of sight. The app remembers which way you chose.
 * A fair split made with the handles is celebrated with a short message.
