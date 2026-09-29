@@ -1,5 +1,41 @@
 var e=`# Changelog
 
+## v1.2.9 · 2026-09-29 · [41880f7](https://github.com/mkuehne-git/necklace-splitting/commit/41880f7)
+
+* No functional change. The notes for developers describe how the Firefox tests got to run on GitHub.
+
+## v1.2.8 · 2026-09-29 · [abe21b6](https://github.com/mkuehne-git/necklace-splitting/commit/abe21b6)
+
+* No functional change. The end-to-end tests in Firefox run on a virtual display on GitHub.
+
+## v1.2.7 · 2026-09-29 · [52145b4](https://github.com/mkuehne-git/necklace-splitting/commit/52145b4)
+
+* No functional change. The end-to-end tests in Firefox get a graphics driver on GitHub.
+
+## v1.2.6 · 2026-09-29 · [cc116c7](https://github.com/mkuehne-git/necklace-splitting/commit/cc116c7)
+
+* No functional change. Fixes for the automatic checks on GitHub: the type check without the private imprint, and the end-to-end tests in Firefox.
+
+## v1.2.5 · 2026-09-29 · [8bcf8de](https://github.com/mkuehne-git/necklace-splitting/commit/8bcf8de)
+
+* No functional change. The end-to-end tests in Chromium and Firefox now also run on GitHub for every change.
+
+## v1.2.4 · 2026-09-29 · [b35bddf](https://github.com/mkuehne-git/necklace-splitting/commit/b35bddf)
+
+* No functional change. A new test checks that the colors of the sphere and the necklace below it split the jewels the same way.
+
+## v1.2.3 · 2026-09-29 · [02f89b7](https://github.com/mkuehne-git/necklace-splitting/commit/02f89b7)
+
+* No functional change. Automatic dependency updates no longer propose Node type definitions for a newer Node version than the one the app is built with.
+
+## v1.2.2 · 2026-09-29 · [01fc082](https://github.com/mkuehne-git/necklace-splitting/commit/01fc082)
+
+* No functional change. The code is now type-checked in strict mode, which catches missing values before they reach the app.
+
+## v1.2.1 · 2026-09-29 · [9ec52fb](https://github.com/mkuehne-git/necklace-splitting/commit/9ec52fb)
+
+* No functional change. The Borsuk-Ulam shape keeps following *Discrete*; the decision is recorded in the notes for developers.
+
 ## v1.2.0 · 2026-09-29 · [4c33f81](https://github.com/mkuehne-git/necklace-splitting/commit/4c33f81)
 
 * **Borsuk-Ulam shape:** the shape is now a shape of its own, not a painted-over sphere. The mesh (*Advanced › Mesh*) follows it instead of staying a sphere around it.
