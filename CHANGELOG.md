@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.2.7 · 2026-09-29
+## v1.2.8 · 2026-09-29
+
+* No functional change. The end-to-end tests in Firefox run on a virtual display on GitHub.
+
+## v1.2.7 · 2026-09-29 · [52145b4](https://github.com/mkuehne-git/necklace-splitting/commit/52145b4)
 
 * No functional change. The end-to-end tests in Firefox get a graphics driver on GitHub.
 

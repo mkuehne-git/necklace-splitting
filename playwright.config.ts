@@ -28,7 +28,10 @@ export default defineConfig({
             name: 'firefox',
             use: {
                 ...devices['Desktop Firefox'],
-                // Without a GPU (GitHub's runners), Firefox blocks WebGL on the software renderer: no sphere, no shader test.
+                // Without a GPU (GitHub's runners), headless Firefox finds no OpenGL driver: no sphere, no shader test.
+                // On CI it runs with a window on the virtual display of xvfb-run (ci.yml), where it
+                // gets Mesa's software renderer, and must not refuse that renderer.
+                headless: !process.env.CI,
                 launchOptions: { firefoxUserPrefs: { 'webgl.force-enabled': true } },
             },
         },
