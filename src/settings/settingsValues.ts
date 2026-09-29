@@ -1,5 +1,6 @@
 /** The end-to-end test build (`VITE_E2E=true`) uses a coarser sphere, so that WebGL in headless browsers stays fast. */
-const E2E_BUILD = import.meta.env.VITE_E2E === 'true';
+// import.meta.env is Vite's; e2e/split.spec.ts loads this module in Node, where it is missing.
+const E2E_BUILD = import.meta.env?.VITE_E2E === 'true';
 
 /** Vectors whose distance is less that EPS are treated equal. */
 const EPS = 0.001;

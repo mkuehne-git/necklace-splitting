@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.2.3 · 2026-09-29
+## v1.2.4 · 2026-09-29
+
+* No functional change. A new test checks that the colors of the sphere and the necklace below it split the jewels the same way.
+
+## v1.2.3 · 2026-09-29 · [02f89b7](https://github.com/mkuehne-git/necklace-splitting/commit/02f89b7)
 
 * No functional change. Automatic dependency updates no longer propose Node type definitions for a newer Node version than the one the app is built with.
 
