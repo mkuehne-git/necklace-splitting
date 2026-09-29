@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.7.5 · 2026-09-30
+## v1.7.6 · 2026-09-30
+
+* No functional change. The smaller findings of the code review that wait for later are listed in the roadmap.
+
+## v1.7.5 · 2026-09-30 · [bf573e3](https://github.com/mkuehne-git/necklace-splitting/commit/bf573e3)
 
 * Fixed: after changing the necklace or Discrete, the fairness meter showed the old split until the pointer moved again; after a new necklace it even contradicted the jewels shown. The cut now stays where it was and the meter follows at once. In the game, the handles no longer jump back to a third and two thirds when the necklace changes.
 

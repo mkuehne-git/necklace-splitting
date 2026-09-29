@@ -7,6 +7,16 @@ What remains after the modernization (`MODERNIZATION.md`, phases 0 to 8, v0.4.14
 - **Node.js 26** becomes the Active LTS in October 2026: update `.nvmrc`, the CI workflow and, if needed, `engines` together (see "Node.js version" in `CLAUDE.md`), and lift the `@types/node` ignore rule in `.github/dependabot.yml`.
 - **Dependabot pull requests** need a version bump and a changelog entry before they are merged (every commit is a version).
 
+### From the code review before 2.0 (2026-09-30)
+
+Minor findings, postponed by the project owner; the important ones were fixed in v1.7.2 to v1.7.5.
+
+- **Theme and the system**: the theme follows the system's only at startup, although the README says "follows the system until you choose one"; listen to `prefers-color-scheme` changes until a theme is chosen. `ThemesSwitcher.initTheme` also runs twice (constructor and `main.ts`).
+- **WebGL context loss**: nothing restores the sphere when the browser takes the GPU context away (phones under memory pressure); handle `webglcontextlost`/`webglcontextrestored`, or at least show a note.
+- **`crypto-js`** is no longer maintained. It only obfuscates the imprint (the key is in the bundle), so Web Crypto or a plain encoding would do.
+- **`APP_VERSION`** comes from `npm_package_version`: a build started without npm shows "vundefined"; read `package.json` in `vite.config.ts` instead.
+- **Two tabs** overwrite each other's stored settings (last write wins); the `storage` event could keep them in step, or it stays as it is.
+
 ## Features
 
 Planned in this order (decided 2026-09-29): lighting (v1.3.0), the view switcher with the morph (v1.4.0), cuts on the necklace (v1.5.0). Lighting makes the morph worth watching; the switcher is needed by both later features; the handles are the largest piece.
