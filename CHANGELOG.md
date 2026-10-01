@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.0.3 · 2026-10-01
+## v2.0.4 · 2026-10-01
+
+* Until you choose a theme with its button, the app now follows your system's light or dark mode also when it changes while the app is open, not only at startup.
+
+## v2.0.3 · 2026-10-01 · [6dc0ce7](https://github.com/mkuehne-git/necklace-splitting/commit/6dc0ce7)
 
 * No functional change. The build takes the app's version from the project itself, so the version shown is right however the build is started.
 

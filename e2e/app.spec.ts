@@ -223,6 +223,34 @@ test('the theme switcher toggles light and dark', async ({ page }) => {
     await expect(body).toHaveClass(/\blight\b/);
 });
 
+test('the theme follows the system until one is chosen', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'light' });
+    await openApp(page);
+    const body = page.locator('body');
+    await expect(body).toHaveClass(/\blight\b/);
+    // The sphere's background follows from the start (a corner of its canvas, where the sphere is not).
+    const corner = () => sphere(page).evaluate((canvas: HTMLCanvasElement) => {
+        const copy = document.createElement('canvas');
+        copy.width = canvas.width;
+        copy.height = canvas.height;
+        const context = copy.getContext('2d')!;
+        context.drawImage(canvas, 0, 0);
+        return [...context.getImageData(2, canvas.height - 3, 1, 1).data.slice(0, 3)];
+    });
+    await expect.poll(corner).toEqual([255, 255, 255]);
+    // The system changes while the app runs: the app follows.
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await expect(body).toHaveClass(/\bdark\b/);
+    await expect(page.getByRole('button', { name: 'Switch to light theme' })).toBeVisible();
+    // Chosen with the button: from now on the choice counts.
+    await page.locator('.toggle-div.themes').click();
+    await expect(body).toHaveClass(/\blight\b/);
+    await page.emulateMedia({ colorScheme: 'light' });
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.waitForTimeout(300);
+    await expect(body).toHaveClass(/\blight\b/);
+});
+
 test('the mesh shows on the light theme (v1.2.0)', async ({ page }) => {
     // The wireframe was white, its default, and vanished on the light background.
     await page.emulateMedia({ colorScheme: 'light' });

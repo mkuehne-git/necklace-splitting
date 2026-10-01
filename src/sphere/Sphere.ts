@@ -185,14 +185,20 @@ class Sphere extends NecklaceComponent {
     this.container.addEventListener(Events.UPDATE_VISIBLE.toString(), () =>
       this.updateVisibility()
     );
-    this.container.addEventListener(Events.THEME_CHANGED.toString(), () =>
-      this.updateVisibility()
-    );
+    // Also at startup (main.ts announces the theme): the background and mesh colors follow it.
+    this.container.addEventListener(Events.THEME_CHANGED.toString(), () => {
+      this.applyThemeColors();
+      this.updateVisibility();
+    });
     return canvas;
   }
 
   onMutation(mutation: MutationRecord): void {
-    // console.log(`onMutation: ${JSON.stringify(this)}`);
+    this.applyThemeColors();
+  }
+
+  /** The scene's background and the wireframe in the theme's colors. */
+  private applyThemeColors(): void {
     const style = window.getComputedStyle(this.container);
     const backgroundColor = style.getPropertyValue("background-color");
     this.#scene.background = new THREE.Color(backgroundColor);

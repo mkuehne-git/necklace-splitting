@@ -9,9 +9,16 @@ import { icon as darkIcon } from "../icons/themes/darkIcon";
 const DARK_THEME = 'dark';
 const LIGHT_THEME = 'light';
 
+/** The system's choice, which the app follows until a theme is chosen with the button. */
+const SYSTEM_DARK = '(prefers-color-scheme: dark)';
+
+/**
+ * The light and dark theme button. The theme is the one chosen last, which is
+ * remembered; until then, the system's, also when it changes while the app runs.
+ */
 class ThemesSwitcher {
-    /** true for the dark theme; set by initTheme. */
-    #theme = false;
+    /** true for the dark theme. */
+    #theme: boolean;
     #button: SVGToggleButton;
 
     constructor(p?: { container: Element }) {
@@ -19,51 +26,45 @@ class ThemesSwitcher {
             container: p?.container || document.body,
             icons: [lightIcon, darkIcon], labels: [t('button.lightTheme'), t('button.darkTheme')], classToken: 'themes', event: Events.CHANGE_THEME.toString()
         });
-        this.initTheme();
-        this.registerOnThemeChange(document.body);
-    }
-
-    /**
-     * Used to initialize theme with system preferred theme.
-     */
-    initTheme() {
         this.#theme = this.preferredTheme();
         document.body.classList.add(this.#theme ? DARK_THEME : LIGHT_THEME);
         this.#button.show(this.#theme ? 0 : 1);
+        // The button: a choice, remembered from now on.
+        document.body.addEventListener(Events.CHANGE_THEME.toString(), () => {
+            this.switchTheme();
+            persistentState.update({ theme: this.#theme ? DARK_THEME : LIGHT_THEME });
+        });
+        // The system: followed as long as no theme was chosen.
+        window.matchMedia(SYSTEM_DARK).addEventListener('change', (event) => {
+            if (persistentState.state.theme === undefined && event.matches !== this.#theme) {
+                this.switchTheme();
+            }
+        });
+    }
 
+    /** Tells the views the theme: those created after the switcher draw with it from the start. */
+    initTheme() {
         Events.dispatchEvent(Events.THEME_CHANGED);
     }
 
-    /**
-     * Determine the system preferred theme.
-     * 
-     * @returns {@code false} is dark mode, {@code true} light mode
-     */
+    /** The theme chosen last, or else the system's. */
     preferredTheme(): boolean {
         const stored = persistentState.state.theme;
         if (stored !== undefined) {
             return stored === DARK_THEME;
         }
-        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+        return window.matchMedia(SYSTEM_DARK).matches;
     }
 
-    registerOnThemeChange(element: HTMLElement) {
-        element.addEventListener(Events.CHANGE_THEME.toString(), () => {
-            this.onThemeChange(element);
-        });
-    }
-
-    private onThemeChange(element: HTMLElement) {
+    private switchTheme() {
+        const element = document.body;
         const oldThemeStyle = this.#theme ? DARK_THEME : LIGHT_THEME;
         const newThemeStyle = this.#theme ? LIGHT_THEME : DARK_THEME;
-        // console.log(`old-theme: ${oldThemeStyle} new-theme: ${newThemeStyle}`);
         if (!element.classList.replace(oldThemeStyle, newThemeStyle)) {
             element.classList.add(newThemeStyle);
         }
         this.#theme = !this.#theme;
         this.#button.toggle();
-        persistentState.update({ theme: newThemeStyle });
-
         Events.dispatchEvent(Events.THEME_CHANGED);
     }
 }
