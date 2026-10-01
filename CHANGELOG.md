@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.0.5 · 2026-10-01
+## v2.0.6 · 2026-10-01
+
+* Fixed: when the browser took the graphics processor away, for example on a phone short of memory, the sphere stayed empty until you touched it. It now comes back by itself, and a message says what happened meanwhile.
+
+## v2.0.5 · 2026-10-01 · [bcb80fe](https://github.com/mkuehne-git/necklace-splitting/commit/bcb80fe)
 
 * No functional change. The imprint no longer needs the outdated crypto-js library, which makes it smaller to load.
 

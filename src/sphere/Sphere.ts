@@ -9,6 +9,8 @@ import { Resizer } from "./Resizer";
 import { persistentState } from "../settings/PersistentState";
 import { showStats, stats } from "./Stats";
 import { createOctantGeometry } from "./octantGeometry";
+import { showPwaStatus } from "../ui/PwaUpdate";
+import { t } from "../i18n";
 
 // The GLSL shaders
 import vertexShader from "./shaders/sphere.vert";
@@ -140,6 +142,18 @@ class Sphere extends NecklaceComponent {
       });
     });
     this.#resizer.onResize = () => this.#needsRender = true;
+    // The browser may take the GPU away (a phone short of memory, a driver
+    // reset). Three.js restores its state when the context comes back; the
+    // view, drawn only on change, then has to be drawn again.
+    canvas.addEventListener("webglcontextlost", () => showPwaStatus(t("sphere.contextLost"), "warning"));
+    canvas.addEventListener("webglcontextrestored", () => {
+      this.#needsRender = true;
+      // Back: the message is out of date.
+      const status = document.getElementById("pwa-status");
+      if (status?.textContent === t("sphere.contextLost")) {
+        status.remove();
+      }
+    });
     this.container.addEventListener(Events.CREATE_SPHERE.toString(), () =>
       this.createSphere()
     );

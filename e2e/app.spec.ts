@@ -200,6 +200,21 @@ test('the solution band shows for a necklace of one kind of jewel too', async ({
     await expectChanged(sphere(page), withBand);
 });
 
+test('the sphere comes back after the browser took the GPU away', async ({ page }) => {
+    await openApp(page);
+    const before = await pixels(sphere(page));
+    // What a phone short of memory does: the WebGL context is lost, and later restored.
+    await sphere(page).evaluate((canvas: HTMLCanvasElement) => {
+        (window as unknown as { loseContext: WEBGL_lose_context }).loseContext = canvas.getContext('webgl2')!.getExtension('WEBGL_lose_context')!;
+        (window as unknown as { loseContext: WEBGL_lose_context }).loseContext.loseContext();
+    });
+    await expect(page.locator('#pwa-status')).toHaveText('The 3D view was interrupted. It returns as soon as the browser allows.');
+    await page.evaluate(() => (window as unknown as { loseContext: WEBGL_lose_context }).loseContext.restoreContext());
+    // Drawn again without anything else happening, and the message is gone.
+    await expect(page.locator('#pwa-status')).toHaveCount(0);
+    await expect.poll(() => pixels(sphere(page))).toEqual(before);
+});
+
 test('Lighting shades the sphere with Always, and only the shape by default', async ({ page }) => {
     await openApp(page);
     await openSettings(page);
