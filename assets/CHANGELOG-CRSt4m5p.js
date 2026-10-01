@@ -1,5 +1,29 @@
 var e=`# Changelog
 
+## v2.0.7 · 2026-10-01 · [de1c753](https://github.com/mkuehne-git/necklace-splitting/commit/de1c753)
+
+* No functional change. The roadmap lists only what is still open.
+
+## v2.0.6 · 2026-10-01 · [19d45d6](https://github.com/mkuehne-git/necklace-splitting/commit/19d45d6)
+
+* Fixed: when the browser took the graphics processor away, for example on a phone short of memory, the sphere stayed empty until you touched it. It now comes back by itself, and a message says what happened meanwhile.
+
+## v2.0.5 · 2026-10-01 · [bcb80fe](https://github.com/mkuehne-git/necklace-splitting/commit/bcb80fe)
+
+* No functional change. The imprint no longer needs the outdated crypto-js library, which makes it smaller to load.
+
+## v2.0.4 · 2026-10-01 · [89479b1](https://github.com/mkuehne-git/necklace-splitting/commit/89479b1)
+
+* Until you choose a theme with its button, the app now follows your system's light or dark mode also when it changes while the app is open, not only at startup.
+
+## v2.0.3 · 2026-10-01 · [6dc0ce7](https://github.com/mkuehne-git/necklace-splitting/commit/6dc0ce7)
+
+* No functional change. The build takes the app's version from the project itself, so the version shown is right however the build is started.
+
+## v2.0.2 · 2026-10-01 · [d5ca448](https://github.com/mkuehne-git/necklace-splitting/commit/d5ca448)
+
+* No functional change. An automatic test of the morph player no longer trips over a slow machine.
+
 ## v2.0.1 · 2026-10-01 · [5f10903](https://github.com/mkuehne-git/necklace-splitting/commit/5f10903)
 
 * Fixed: without Discrete, the necklace drew a jewel that a cut runs through entirely on one side, so it jumped from one row to the other while the cut moved smoothly through it. It is now split at the cut, each thief's part in its row, as the split is computed.
