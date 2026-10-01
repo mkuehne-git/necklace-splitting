@@ -20,7 +20,6 @@ updates:
       runtime-dependencies:
         patterns:
           - "three"
-          - "crypto-js"
           - "html2canvas"
           - "@fontsource/*"
       build-tooling:

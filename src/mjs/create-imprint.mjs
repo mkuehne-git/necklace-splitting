@@ -1,6 +1,15 @@
-import CryptoJS from "crypto-js";
 import fs from 'fs';
 
+/**
+ * Writes src/imprint-gen.js (or `outFile`) from imprint.config.json, whose
+ * `plainText` holds the imprint's HTML lines; without the file, a stub whose
+ * imprintHtml() returns undefined, and the app shows no imprint.
+ *
+ * The text is obfuscated, not encrypted: its UTF-8 bytes are XOR-ed with a key
+ * and Base64-encoded, and the key travels with it. It only keeps the imprint
+ * out of plain sight in the bundle (src/imprint/Imprint.ts shows it as an
+ * image), as the AES of crypto-js did before, with the key in the bundle too.
+ */
 const config = readConfig('./imprint.config.json');
 function readConfig(fname) {
     try {
@@ -13,27 +22,28 @@ function readConfig(fname) {
     }
 }
 
-const content = encrypted() !== undefined ? [
-    'import CryptoJS from "crypto-js";',
-    `const secret = "${secret()}";`,
-    `const encrypted = "${encrypted()}";`,
-    'function decryptedAES() {',
-    '  return `${CryptoJS.AES.decrypt(encrypted, secret).toString(CryptoJS.enc.Utf8)}`;',
-    '}',
-    'export { decryptedAES };'
-] : [
-    'function decryptedAES() {',
-    '  return undefined;',
-    '}',
-    'export { decryptedAES };'
-];
-function secret() {
-    return "secret";
+const KEY = 'necklace-splitting';
+
+function encode(text) {
+    const bytes = Buffer.from(text, 'utf8');
+    const key = Buffer.from(KEY, 'utf8');
+    return Buffer.from(bytes.map((byte, i) => byte ^ key[i % key.length])).toString('base64');
 }
 
-function encrypted() {
-    return config.plainText !== undefined ? CryptoJS.AES.encrypt(config.plainText.join("\n"), secret()) : undefined;
-}
+const content = config.plainText !== undefined ? [
+    `const key = new TextEncoder().encode(${JSON.stringify(KEY)});`,
+    `const encoded = ${JSON.stringify(encode(config.plainText.join("\n")))};`,
+    'function imprintHtml() {',
+    '  const bytes = Uint8Array.from(atob(encoded), (c, i) => c.charCodeAt(0) ^ key[i % key.length]);',
+    '  return new TextDecoder().decode(bytes);',
+    '}',
+    'export { imprintHtml };'
+] : [
+    'function imprintHtml() {',
+    '  return undefined;',
+    '}',
+    'export { imprintHtml };'
+];
 
 fs.writeFile(config.outFile != undefined ? config.outFile : "src/imprint-gen.js", content.join("\n"), err => {
     if (err) {

@@ -12,7 +12,6 @@ What remains after the modernization (`MODERNIZATION.md`, phases 0 to 8, v0.4.14
 Minor findings, postponed by the project owner; the important ones were fixed in v1.7.2 to v1.7.5.
 
 - **WebGL context loss**: nothing restores the sphere when the browser takes the GPU context away (phones under memory pressure); handle `webglcontextlost`/`webglcontextrestored`, or at least show a note.
-- **`crypto-js`** is no longer maintained. It only obfuscates the imprint (the key is in the bundle), so Web Crypto or a plain encoding would do.
 - **Two tabs** overwrite each other's stored settings (last write wins); the `storage` event could keep them in step, or it stays as it is.
 
 ## Features

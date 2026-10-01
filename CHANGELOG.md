@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.0.4 · 2026-10-01
+## v2.0.5 · 2026-10-01
+
+* No functional change. The imprint no longer needs the outdated crypto-js library, which makes it smaller to load.
+
+## v2.0.4 · 2026-10-01 · [89479b1](https://github.com/mkuehne-git/necklace-splitting/commit/89479b1)
 
 * Until you choose a theme with its button, the app now follows your system's light or dark mode also when it changes while the app is open, not only at startup.
 

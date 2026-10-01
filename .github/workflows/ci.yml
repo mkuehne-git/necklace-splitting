@@ -38,7 +38,7 @@ jobs:
       # src/Imprint.ts imports it statically so Vite bundles it. This stub only
       # lets the import resolve; this build is never deployed.
       - name: Stub the private imprint module
-        run: echo 'export const decryptedAES = () => undefined;' > src/imprint-gen.js
+        run: echo 'export const imprintHtml = () => undefined;' > src/imprint-gen.js
 
       - name: Check types
         run: npm run typecheck
@@ -70,7 +70,7 @@ jobs:
 
       # The imprint tests skip themselves with the stub.
       - name: Stub the private imprint module
-        run: echo 'export const decryptedAES = () => undefined;' > src/imprint-gen.js
+        run: echo 'export const imprintHtml = () => undefined;' > src/imprint-gen.js
 
       - name: Install the Playwright browsers
         run: npx playwright install --with-deps chromium firefox

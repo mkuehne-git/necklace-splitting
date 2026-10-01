@@ -2,7 +2,7 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // The real imprint text is private (and gitignored); html2canvas needs a real browser.
-vi.mock('../src/imprint-gen', () => ({ decryptedAES: () => '<h1>Impressum</h1>' }));
+vi.mock('../src/imprint-gen', () => ({ imprintHtml: () => '<h1>Impressum</h1>' }));
 const html2canvas = vi.hoisted(() => vi.fn());
 vi.mock('html2canvas', () => ({ default: html2canvas }));
 

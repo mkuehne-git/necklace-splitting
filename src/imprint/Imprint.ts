@@ -4,7 +4,7 @@ import { OverlayPage } from "../ui/OverlayPage";
 import { loadHtml2canvas } from "../ui/loadHtml2canvas";
 
 /** The private module, or the stub without imprint.config.json (see create-imprint.mjs), whose function returns undefined. */
-type ImprintModule = { decryptedAES: () => string | undefined };
+type ImprintModule = { imprintHtml: () => string | undefined };
 
 const loadModule = async (): Promise<ImprintModule> => {
     return await import("../imprint-gen");
@@ -18,7 +18,7 @@ const trailer = `<hr><p style="opacity: 1.0;">Dieses Impressum wurde erstellt du
  * agents reading the HTML source.
  */
 class Imprint {
-    private decryptedAES: (() => string | undefined) | undefined;
+    private imprintHtml: (() => string | undefined) | undefined;
     private page = new OverlayPage("imprint", Events.HIDE_IMPRINT.toString(),
         () => window.clearTimeout(this.resizeTimer));
     private loading: Promise<boolean> | undefined;
@@ -42,20 +42,20 @@ class Imprint {
     }
 
     async isAvailable(): Promise<boolean> {
-        if (this.decryptedAES !== undefined) {
+        if (this.imprintHtml !== undefined) {
             return true;
         }
         if (this.loading !== undefined) {
             return this.loading;
         }
         this.loading = loadModule().then((m) => {
-            this.decryptedAES = m.decryptedAES;
-            return m.decryptedAES() !== undefined;
+            this.imprintHtml = m.imprintHtml;
+            return m.imprintHtml() !== undefined;
         });
         return this.loading;
     }
     show() {
-        if (this.decryptedAES === undefined) {
+        if (this.imprintHtml === undefined) {
             void this.isAvailable().then((available) => {
                 if (available) {
                     this.show();
@@ -67,7 +67,7 @@ class Imprint {
             // The page's close button is available while html2canvas is still
             // rendering (or if it fails).
             const content = this.page.show();
-            const imprintHTML = this.decryptedAES() ?? "";
+            const imprintHTML = this.imprintHtml() ?? "";
             content.innerHTML = imprintHTML;
             const style = window.getComputedStyle(document.body);
             const width = content.scrollWidth;
