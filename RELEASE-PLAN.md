@@ -11,6 +11,8 @@ Work through the phases in order. Each step is one commit with a version bump an
 
 ## Phase 1: Layout (minor)
 
+> **Done** in v2.1.0: rows 28 px apart, the meter's space 12 px below the handles, the canvas `calc(20% + 16px)`, so the meter keeps its old space and fills 95% of it.
+
 Done first, because the dice needs the room it makes.
 
 1. **Sphere 10% higher.** Shift the projection with `camera.setViewOffset` in `Resizer.ts` (by 10% of the height), not by moving the camera or the orbit's target. The camera stored in the persistent state stays valid, and the raycast and `showCut` keep working, since both go through the camera's projection. Check the necklace mode's `turnCamera` and the capture.

@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.0.8 · 2026-10-01
+## v2.1.0 · 2026-10-01
+
+* A roomier layout: the sphere sits higher, clear of the necklace; the necklace's rows for thief A and thief B stand further apart; and the fairness meter is a little smaller, with more space above it.
+
+## v2.0.8 · 2026-10-01 · [28de4eb](https://github.com/mkuehne-git/necklace-splitting/commit/28de4eb)
 
 * No functional change. A plan for the next features: the necklace's own Discrete switch, a dice for a new necklace, and a roomier layout.
 

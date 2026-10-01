@@ -5,7 +5,8 @@
   bottom: 0%;
 
   width: 100%;
-  height: 20%;
+  /* The 16 px make room for the rows' gap and the meter's distance (Necklace.ts). */
+  height: calc(20% + 16px);
 
   margin-bottom: 2px;
   /* Dragging a handle must not scroll or zoom. */
@@ -18,7 +19,7 @@
   z-index: 5;
   position: absolute;
   left: 50%;
-  bottom: calc(20% + 16px);
+  bottom: calc(20% + 32px);
   transform: translateX(-50%);
   padding: 6px 14px;
   border-radius: 16px;

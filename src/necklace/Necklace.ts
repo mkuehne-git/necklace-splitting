@@ -23,7 +23,7 @@ const SEGMENT_Y_COLOR = "green";
 const SEGMENT_Z_COLOR = "rgb(0,191,255)";
 
 const JEWEL_HEIGHT = 10;
-const Y_GAP_BETWEEN_THIEVES = 20;
+const Y_GAP_BETWEEN_THIEVES = 28;
 const Y_GAP_BETWEEN_LINE_SEGMENTS = 5;
 const Y_GAP_THIEF_LINE_SEGMENT = 7;
 
@@ -33,6 +33,10 @@ const OVERHANG = 6;
 const ROWS_HEIGHT = 2 * JEWEL_HEIGHT + Y_GAP_BETWEEN_THIEVES;
 /** Where the handles are drawn and grabbed, from the top of the canvas. */
 const HANDLES_HEIGHT = ROWS_HEIGHT + 2 * OVERHANG;
+/** Where the fairness meter's space starts: below the handles, with a gap. */
+const GAUGE_TOP = HANDLES_HEIGHT + 12;
+/** The fairness meter's share of its space. */
+const GAUGE_SCALE = 0.95;
 /** How far from a handle, in px, a pointer still grabs it: at least 24 px wide for fingers. */
 const HANDLE_REACH = 14;
 /**
@@ -388,7 +392,7 @@ class Necklace extends NecklaceComponent {
       if (this.model.thief_a !== undefined && this.showGauge) {
         const thief_a = this.model.canonicalThief(this.model.thief_a);
         const thief_b = this.model.canonicalThief(this.model.thief_b);
-        this.drawGauge(ctx, 50 + OVERHANG, thief_a, thief_b);
+        this.drawGauge(ctx, GAUGE_TOP, thief_a, thief_b);
       }
     }
 
@@ -552,7 +556,7 @@ class Necklace extends NecklaceComponent {
     const height = this.height - y0;
     const lineWidth = 3.0;
     const vgap = 2;
-    const radius = height - vgap;
+    const radius = GAUGE_SCALE * (height - vgap);
 
     if (radius >= 10) {
       /** The real circle radius, scaled by sqrt(0.5), because the largest vector can be [1,1]. */

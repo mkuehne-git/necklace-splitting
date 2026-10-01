@@ -176,11 +176,11 @@ test('without Discrete, a cut splits the jewel it falls into between the rows', 
     const rows = await necklace(page).evaluate((canvas: HTMLCanvasElement) => {
         const context = canvas.getContext('2d')!;
         const cut = 0.36 * canvas.width;
-        // The necklace starts 6 px down; a row is 10 px high, the bottom row 30 px below the top one.
+        // The necklace starts 6 px down; a row is 10 px high, the bottom row 38 px below the top one.
         const filled = (x: number, y: number) => context.getImageData(Math.round(x), y, 1, 1).data[3] > 0;
         return {
-            before: { top: filled(cut - 3, 11), bottom: filled(cut - 3, 41) },
-            after: { top: filled(cut + 3, 11), bottom: filled(cut + 3, 41) },
+            before: { top: filled(cut - 3, 11), bottom: filled(cut - 3, 49) },
+            after: { top: filled(cut + 3, 11), bottom: filled(cut + 3, 49) },
         };
     });
     // The first part goes to thief A, the second to thief B (the default thieves +, -, +).

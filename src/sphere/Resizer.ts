@@ -1,5 +1,13 @@
 import type * as THREE from "three";
 
+/**
+ * How far the sphere is drawn above the middle, as a part of the height: the
+ * necklace covers the bottom. Shifts the projection only, so the camera and
+ * the orbit's target (both remembered) stay as they are, and the raycast,
+ * which goes through the projection, follows.
+ */
+const VIEW_SHIFT = 0.1;
+
 class Resizer {
   constructor(
     container: HTMLElement,
@@ -27,7 +35,7 @@ class Resizer {
     // console.log(`setSize width: ${width}, height: ${height}`);
     if (camera !== undefined) {
       camera.aspect = width / height;
-      camera.updateProjectionMatrix();
+      camera.setViewOffset(width, height, 0, VIEW_SHIFT * height, width, height);
     }
 
     if (renderer !== undefined) {
