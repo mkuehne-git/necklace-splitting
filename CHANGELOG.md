@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.0.6 · 2026-10-01
+## v2.0.7 · 2026-10-01
+
+* No functional change. The roadmap lists only what is still open.
+
+## v2.0.6 · 2026-10-01 · [19d45d6](https://github.com/mkuehne-git/necklace-splitting/commit/19d45d6)
 
 * Fixed: when the browser took the graphics processor away, for example on a phone short of memory, the sphere stayed empty until you touched it. It now comes back by itself, and a message says what happened meanwhile.
 
