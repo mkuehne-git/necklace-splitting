@@ -162,3 +162,27 @@ test('the game hides the solutions for itself, without changing the settings', a
     await expect(field(page, 'Solution band')).toBeChecked();
     await expect(field(page, 'Solutions')).toBeChecked();
 });
+
+test('without Discrete, a cut splits the jewel it falls into between the rows', async ({ page }) => {
+    await withStoredState(page, { settings: { 'view.input': 'Necklace', 'necklace.discrete': false } });
+    await openApp(page);
+    // From a third (a gap between jewels) into the middle of the ninth jewel of 24.
+    await cutSlider(page, 'First cut').focus();
+    for (let i = 0; i < 3; i++) {
+        await page.keyboard.press('ArrowRight');
+    }
+    await expectValue(page, 'First cut', 0.36);
+    // Does the jewel's piece on either side of the cut lie in the top row (thief A) or the bottom row (thief B)?
+    const rows = await necklace(page).evaluate((canvas: HTMLCanvasElement) => {
+        const context = canvas.getContext('2d')!;
+        const cut = 0.36 * canvas.width;
+        // The necklace starts 6 px down; a row is 10 px high, the bottom row 30 px below the top one.
+        const filled = (x: number, y: number) => context.getImageData(Math.round(x), y, 1, 1).data[3] > 0;
+        return {
+            before: { top: filled(cut - 3, 11), bottom: filled(cut - 3, 41) },
+            after: { top: filled(cut + 3, 11), bottom: filled(cut + 3, 41) },
+        };
+    });
+    // The first part goes to thief A, the second to thief B (the default thieves +, -, +).
+    expect(rows).toEqual({ before: { top: true, bottom: false }, after: { top: false, bottom: true } });
+});

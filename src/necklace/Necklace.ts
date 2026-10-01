@@ -412,18 +412,28 @@ class Necklace extends NecklaceComponent {
     // Draw jewels for each thief of different horizontal lines.
     const JEWEL_A_COLOR = this.jewel_a_color;
     const JEWEL_B_COLOR = this.jewel_b_color;
-    let jewelStart = x0;
+    // Continuous: a cut splits a jewel, and each thief gets the part on its
+    // side, as in the model. Discrete: a jewel goes whole with the part it starts in.
+    const split = !SETTINGS.necklace.discrete && cuts !== undefined && cuts.lengthSq() > 0.5;
+    const xSq = cuts ? cuts.x * cuts.x : 0;
+    const parts = cuts ? [[0, xSq, cuts.x], [xSq, xSq + cuts.y * cuts.y, cuts.y], [xSq + cuts.y * cuts.y, 1, cuts.z]] : [];
     for (let i = 0; i < this.size; i++) {
-      const v = this.model.necklace[Math.floor(i)];
-      //console.log(`#${i}: ${v}`);
+      const v = this.model.necklace[i];
       ctx.fillStyle = v === 0 ? JEWEL_A_COLOR : JEWEL_B_COLOR;
-      ctx.fillRect(
-        jewelStart,
-        y0 + this.yOffset(cuts, i / this.size, Y_GAP),
-        this.jewelWidth - X_GAP,
-        JEWEL_HEIGHT
-      );
-      jewelStart += this.jewelWidth;
+      const start = x0 + i * this.jewelWidth;
+      // The gap between jewels is taken from each jewel's end.
+      const end = start + this.jewelWidth - X_GAP;
+      if (!split) {
+        ctx.fillRect(start, y0 + this.yOffset(cuts, i / this.size, Y_GAP), end - start, JEWEL_HEIGHT);
+        continue;
+      }
+      for (const [from, to, sign] of parts) {
+        const left = Math.max(start, x0 + from * this.width);
+        const right = Math.min(end, x0 + to * this.width);
+        if (right > left) {
+          ctx.fillRect(left, y0 + (sign < 0 ? Y_GAP : 0), right - left, JEWEL_HEIGHT);
+        }
+      }
     }
   }
 
