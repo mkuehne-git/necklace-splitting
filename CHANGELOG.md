@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.0.1 · 2026-10-01
+## v2.0.2 · 2026-10-01
+
+* No functional change. An automatic test of the morph player no longer trips over a slow machine.
+
+## v2.0.1 · 2026-10-01 · [5f10903](https://github.com/mkuehne-git/necklace-splitting/commit/5f10903)
 
 * Fixed: without Discrete, the necklace drew a jewel that a cut runs through entirely on one side, so it jumped from one row to the other while the cut moved smoothly through it. It is now split at the cut, each thief's part in its row, as the split is computed.
 

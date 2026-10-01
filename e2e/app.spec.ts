@@ -84,7 +84,18 @@ test('the Borsuk-Ulam button morphs the sphere into the shape, hides the necklac
  * draws the morphing sphere (on GitHub, runFor(1100) takes about 10 s).
  */
 async function stopClock(page: Page): Promise<void> {
-    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 50));
+    // pauseAt needs a moment still ahead; on a slow machine the page's time can
+    // pass it before the call arrives, so try again a little further ahead.
+    for (let margin = 50; ; margin *= 4) {
+        try {
+            await page.clock.pauseAt(await page.evaluate(() => Date.now()) + margin);
+            return;
+        } catch (error) {
+            if (margin > 5000 || !String(error).includes('past')) {
+                throw error;
+            }
+        }
+    }
 }
 
 test('the player buttons play the morph either way, pause it and go on', async ({ page }) => {
