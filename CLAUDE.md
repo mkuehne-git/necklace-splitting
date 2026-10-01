@@ -4,7 +4,7 @@
 
 Necklace Splitting is a Vite-powered TypeScript and Three.js web app that visualizes the [necklace splitting problem](https://en.wikipedia.org/wiki/Necklace_splitting_problem) and its connection to the Borsuk-Ulam theorem: every point (x, y, z) on a sphere is a pair of cuts of a two-colored necklace, with segment lengths (x², y², z²) and the signs choosing the thief. A 2D canvas shows the necklace and the current cut. The app can be installed as a PWA and is deployed to GitHub Pages at `/necklace-splitting/`.
 
-Climate Helix (`~/dev/climate-helix`) grew out of this project and shares several UI modules. `MODERNIZATION.md` is the plan for bringing its later improvements over here; work through it in order and keep this file current as each phase lands.
+Climate Helix (`~/dev/climate-helix`) grew out of this project and shares several UI modules. `MODERNIZATION.md` records how its later improvements were brought over here (done in v1.0.0).
 
 ## Development Commands
 
@@ -51,7 +51,7 @@ The `release` skill (`.claude/skills/release/`) covers the full routine: version
 
 ## Git Workflow
 
-The project owner approves commits per phase of `MODERNIZATION.md`: within a phase the owner has approved, commit each step as it is done; at the end of a phase, stop and ask before starting the next one. Outside that plan, ask before every commit. Do not push or deploy unless asked.
+The project owner approves commits per phase of the current plan, `RELEASE-PLAN.md` (earlier `MODERNIZATION.md`): within a phase the owner has approved, commit each step as it is done; at the end of a phase, stop and ask before starting the next one. Outside that plan, ask before every commit. Do not push or deploy unless asked.
 
 Commit messages are `type: summary (vX.Y.Z)` with `type` one of `feat`, `fix`, `test`, `docs`, `refactor`, `chore`, followed by a body that explains what changed and why. Stage files by name, never `src/imprint-gen.js` or `dist/`.
 
@@ -77,7 +77,7 @@ Commit messages are `type: summary (vX.Y.Z)` with `type` one of `feat`, `fix`, `
 
 ## Roadmap
 
-What remains after the modernization, and the decisions still open, is in `ROADMAP.md`; `MODERNIZATION.md` records how the app got here.
+What remains after the modernization, and the decisions still open, is in `ROADMAP.md`; `MODERNIZATION.md` records how the app got here. `RELEASE-PLAN.md` is the plan for the next feature release (the features in `ROADMAP.md`); work through it in order and keep this file current as each phase lands.
 
 ## Implementation Conventions
 

@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.0.7 · 2026-10-01
+## v2.0.8 · 2026-10-01
+
+* No functional change. A plan for the next features: the necklace's own Discrete switch, a dice for a new necklace, and a roomier layout.
+
+## v2.0.7 · 2026-10-01 · [de1c753](https://github.com/mkuehne-git/necklace-splitting/commit/de1c753)
 
 * No functional change. The roadmap lists only what is still open.
 
