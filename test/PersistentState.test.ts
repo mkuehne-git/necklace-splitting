@@ -37,6 +37,7 @@ describe("parseState", () => {
       settings: {
         "necklace.number_of_jewels": 12,
         "necklace.discrete": "yes",
+        "necklace.discrete_necklace": true,
       "necklace.epsilon": 0.5,
         "necklace.string": "AB",
         "sphere.segments": 5000,
@@ -50,7 +51,7 @@ describe("parseState", () => {
       other: true,
     }));
     expect(state).toEqual({
-      settings: { "necklace.number_of_jewels": 12, "necklace.string": "AB", "color.alpha": 0.5 },
+      settings: { "necklace.number_of_jewels": 12, "necklace.discrete_necklace": true, "necklace.string": "AB", "color.alpha": 0.5 },
       theme: "dark",
       camera: { position: [1, 2, 3], target: [0, 0, 0], up: [0, 1, 0] },
     });

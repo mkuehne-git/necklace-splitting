@@ -10,5 +10,4 @@ What is still open after 2.0. Items are ordered by priority within each section;
 
 Planned for the next feature release, in `RELEASE-PLAN.md`:
 
-- The necklace shall have its own discrete configuration switch, which should default to `false` (continuous).
 - A new challenge (new necklace to cut), shall be available through a "roll the dice" (ideally animated) button, which could be placed left to the fairness meter.

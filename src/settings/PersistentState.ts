@@ -50,6 +50,7 @@ const SETTING_FIELDS: Record<string, Validator<number | string | boolean>> = {
   "necklace.configuration": integer(0, 2 ** MAX_JEWELS - 1),
   "necklace.string": string,
   "necklace.discrete": bool,
+  "necklace.discrete_necklace": bool,
   "necklace.show_solution_band": bool,
   "necklace.show_solutions": bool,
   "necklace.epsilon": limited(LIMITS.epsilon),

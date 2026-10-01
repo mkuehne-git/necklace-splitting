@@ -25,7 +25,8 @@
 <p>The fair splits of the current necklace are marked in blue (<em>Necklace › Solutions</em>; <em>Epsilon</em> sets how far from an exact solution
     a split still counts as fair). They can be found in linear time: place the first cut after each jewel in turn; the second cut then follows directly.</p>
 <p>The necklace is set in the settings by a number, whose binary digits are the jewels (lowest digit first), or by a text,
-    whose characters' binary digits are the jewels. <em>Discrete</em> counts whole jewels; without it, a cut can split a jewel.</p>
+    whose characters' binary digits are the jewels. <em>Necklace › Discrete necklace</em> counts whole jewels on the necklace and in the fairness meter,
+    <em>Necklace › Discrete sphere</em> on the sphere; without them, a cut can split a jewel.</p>
 
 <h2>Octants</h2>
 <p>The signs of (x, y, z) divide the sphere into eight octants, numbered by the signs as binary digits. Opposite octants swap the thieves.
@@ -44,7 +45,7 @@
 <p>The Borsuk-Ulam button in the upper left corner morphs the sphere into the 3D shape formed by g(x)
     as the circle moves: each point x of the sphere is drawn at (g(x), z), in the colors of the sphere.
     The slider beside the button moves the view anywhere between sphere and shape, and the player buttons around it play the morph back to the sphere (◀) or into the shape (▶), and pause it (⏸); necklace and fairness meter are hidden meanwhile. The other two buttons return to the sphere at once. Fair splits lie where the shape meets the z axis (<em>View › Axes</em>).
-    With <em>Necklace › Discrete</em>, g jumps from value to value; the walls between the steps span these jumps.
+    With <em>Necklace › Discrete sphere</em>, g jumps from value to value; the walls between the steps span these jumps.
     <em>View › Lighting</em> shades the shape, so that its facets and walls stand out even without the mesh.</p>
 
 <hr>

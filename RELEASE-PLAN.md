@@ -24,6 +24,8 @@ The exact values (28 px, 23%) are starting points; the owner judges them in the 
 
 ## Phase 2: Discrete for the necklace (minor)
 
+> **Done** in v2.2.0: `necklace.discrete_necklace`, labels "Discrete necklace" and "Discrete sphere" ("Halskette diskret", "Kugel diskret"). *Decided 2026-10-01:* the defaults stay apart (necklace off, sphere on), so the discrepancy shows; the owner may revisit this.
+
 1. **Setting.** `SETTINGS.necklace.discrete_necklace` (name open), default `false`, remembered (`SETTING_FIELDS`). The existing `necklace.discrete` keeps its key and default (`true`), so stored settings stay valid. It now means the sphere.
 2. **Model.** `NecklaceModel.applyCut` (the shares of the current cut, behind the gauge and the fair split) uses the necklace's switch. `shares(p, discrete)` keeps its parameter. `octantGeometry.ts` passes the sphere's switch explicitly for the shape, and `Sphere.ts` keeps `u_necklace_discrete` and the geometry key on the sphere's switch. `UPDATE_SPHERE_MATERIAL` re-applying the cut stays, so a change to either switch updates the shares.
 3. **Necklace view.** `Necklace.ts`: the jewel split in `drawNecklace`, `snap` in `startCutting` and dragging, and the sliders' `step` follow the necklace's switch.

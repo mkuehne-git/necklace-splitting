@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.1.0 · 2026-10-01
+## v2.2.0 · 2026-10-01
+
+* The necklace has its own Discrete switch, **Discrete necklace**, and it is off by default: the necklace, its handles and the fairness meter now split jewels at the cuts, while the sphere still counts whole jewels (**Discrete sphere**). Where the two differ, the sphere's solutions are only nearly fair on the necklace - set both alike to see them agree.
+
+## v2.1.0 · 2026-10-01 · [e849438](https://github.com/mkuehne-git/necklace-splitting/commit/e849438)
 
 * A roomier layout: the sphere sits higher, clear of the necklace; the necklace's rows for thief A and thief B stand further apart; and the fairness meter is a little smaller, with more space above it.
 

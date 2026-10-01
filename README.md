@@ -28,11 +28,11 @@ $$\sum_{c \in \lbrace x, y, z \rbrace,\ c > 0} c^2 = \frac{1}{2}.$$
 
 The orange band around the sphere marks these points. Whatever the jewels, every solution lies on the band (*Necklace › Solution band*).
 
-The fair splits of the current necklace are marked in blue (*Necklace › Solutions*; *Epsilon* sets how far from an exact solution a split still counts as fair). They can be found in linear time: place the first cut after each jewel in turn; the second cut then follows directly, since the piece between the cuts must be half the necklace. In the picture at the top, the pointer rests on one of the solutions: the fairness meter shows exactly half of each kind for each thief.
+The fair splits of the current necklace are marked in blue (*Necklace › Solutions*; *Epsilon* sets how far from an exact solution a split still counts as fair). They can be found in linear time: place the first cut after each jewel in turn; the second cut then follows directly, since the piece between the cuts must be half the necklace. In the picture at the top, the pointer rests on one of the solutions. The sphere counts whole jewels there (*Necklace › Discrete sphere*), the necklace does not (*Discrete necklace*), so the fairness meter shows a nearly fair split; with both switches alike, it shows exactly half of each kind for each thief.
 
 ![The solutions, with the Necklace settings](./docs/images/necklace-with-solution.png)
 
-The necklace is set by a number, whose binary digits are the jewels (lowest digit first), or by a text, whose characters' binary digits are the jewels. *Discrete* counts whole jewels; without it, a cut can split a jewel.
+The necklace is set by a number, whose binary digits are the jewels (lowest digit first), or by a text, whose characters' binary digits are the jewels. *Discrete necklace* counts whole jewels on the necklace and in the fairness meter, *Discrete sphere* on the sphere; without them, a cut can split a jewel.
 
 ## Octants
 
@@ -54,7 +54,7 @@ $$g(\mathbf{x}) = f(\mathbf{x}) - f(-\mathbf{x})$$
 
 must have at least one zero. Along a circle around the sphere, $g$ forms a closed loop around the origin, because $g$ is continuous and $g(-\mathbf{x}) = -g(\mathbf{x})$. Moving the circle towards a pole shrinks the loop continuously to a single point, so on the way the loop must cross the origin.
 
-The Borsuk-Ulam button in the upper left corner morphs the sphere into the 3D shape formed by $g(\mathbf{x})$ as the circle moves: each point $\mathbf{x}$ of the sphere is drawn at $(g(\mathbf{x}), z)$, in the colors of the sphere. The slider beside the button moves the view anywhere between sphere and shape, and the player buttons around it play the morph back to the sphere (◀) or into the shape (▶), with a pause (⏸) in between. Fair splits lie where the shape meets the $z$ axis (*View › Axes*). With *Necklace › Discrete*, $g$ jumps from value to value; the walls between the steps span these jumps. *View › Lighting* shades the shape, so that its facets and walls stand out even without the mesh.
+The Borsuk-Ulam button in the upper left corner morphs the sphere into the 3D shape formed by $g(\mathbf{x})$ as the circle moves: each point $\mathbf{x}$ of the sphere is drawn at $(g(\mathbf{x}), z)$, in the colors of the sphere. The slider beside the button moves the view anywhere between sphere and shape, and the player buttons around it play the morph back to the sphere (◀) or into the shape (▶), with a pause (⏸) in between. Fair splits lie where the shape meets the $z$ axis (*View › Axes*). With *Necklace › Discrete sphere*, $g$ jumps from value to value; the walls between the steps span these jumps. *View › Lighting* shades the shape, so that its facets and walls stand out even without the mesh.
 
 ![The Borsuk-Ulam shape, with the view switcher and its slider](./docs/images/necklace-borsuk-ulam.png)
 

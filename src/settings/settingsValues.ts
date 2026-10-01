@@ -52,7 +52,10 @@ const SETTINGS = {
     show_solution_band: true,
     show_solutions: true,
     epsilon: 0.01,
+    /** Whole jewels on the sphere: its colors, solutions and the Borsuk-Ulam shape (the shader and NecklaceModel.shares). */
     discrete: true,
+    /** Whole jewels on the necklace: its drawing, the handles, and the shares of the cut (fairness meter, fair split). */
+    discrete_necklace: false,
   },
   sphere: {
     radius: 15,

@@ -8,9 +8,12 @@ import { expectChanged, field, necklace, openApp, openSection, openSettings, pix
 const inputButton = (page: Page, name: 'Point at the sphere' | 'Cut the necklace') => page.getByRole('button', { name });
 const cutSlider = (page: Page, name: 'First cut' | 'Second cut') => page.getByRole('slider', { name });
 
-/** A slider's value as a number: browsers write it with differing digits. */
-async function expectValue(page: Page, name: 'First cut' | 'Second cut', value: number): Promise<void> {
-    await expect.poll(async () => Number(await cutSlider(page, name).inputValue())).toBeCloseTo(value, 9);
+/**
+ * A slider's value as a number: browsers write it with differing digits.
+ * Without Discrete necklace, the slider shows the handle on its 0.01 steps.
+ */
+async function expectValue(page: Page, name: 'First cut' | 'Second cut', value: number, digits = 9): Promise<void> {
+    await expect.poll(async () => Number(await cutSlider(page, name).inputValue())).toBeCloseTo(value, digits);
 }
 
 /** A point of the necklace canvas: x as a share of its width, y in px from its top. */
@@ -25,15 +28,15 @@ test('the necklace mode starts with handles at a third and two thirds, and is re
     await expect(cutSlider(page, 'First cut')).toBeHidden();
     await inputButton(page, 'Cut the necklace').click();
     await expect(inputButton(page, 'Cut the necklace')).toHaveAttribute('aria-pressed', 'true');
-    // The default necklace has 24 jewels; Discrete snaps the handles to the gaps between them.
-    await expectValue(page, 'First cut', 8 / 24);
-    await expectValue(page, 'Second cut', 16 / 24);
+    // A third and two thirds, on the slider's 0.01 steps: the necklace is continuous by default.
+    await expectValue(page, 'First cut', 1 / 3, 2);
+    await expectValue(page, 'Second cut', 2 / 3, 2);
     await page.reload();
     await expect(inputButton(page, 'Cut the necklace')).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('dragging a handle moves the cut on the necklace and on the sphere', async ({ page }) => {
-    await withStoredState(page, { settings: { 'view.input': 'Necklace' } });
+    await withStoredState(page, { settings: { 'necklace.discrete_necklace': true, 'view.input': 'Necklace' } });
     await openApp(page);
     await expectValue(page, 'First cut', 8 / 24);
     const necklaceBefore = await pixels(necklace(page));
@@ -50,7 +53,7 @@ test('dragging a handle moves the cut on the necklace and on the sphere', async 
 });
 
 test('a handle dragged past the other takes its place', async ({ page }) => {
-    await withStoredState(page, { settings: { 'view.input': 'Necklace' } });
+    await withStoredState(page, { settings: { 'necklace.discrete_necklace': true, 'view.input': 'Necklace' } });
     await openApp(page);
     const from = await necklacePoint(page, 1 / 3, 20);
     const to = await necklacePoint(page, 0.875, 20);
@@ -74,7 +77,7 @@ test('tapping a part gives it to the other thief', async ({ page }) => {
 });
 
 test('the keyboard moves the handles and gives parts away', async ({ page }) => {
-    await withStoredState(page, { settings: { 'view.input': 'Necklace' } });
+    await withStoredState(page, { settings: { 'necklace.discrete_necklace': true, 'view.input': 'Necklace' } });
     await openApp(page);
     await cutSlider(page, 'Second cut').focus();
     await page.keyboard.press('ArrowRight');
@@ -92,7 +95,7 @@ test('the keyboard moves the handles and gives parts away', async ({ page }) => 
 test('a fair split made with the handles is announced', async ({ page }) => {
     // Four jewels: first kind, second, second, first (6, lowest bit first).
     await withStoredState(page, {
-        settings: { 'view.input': 'Necklace', 'necklace.number_of_jewels': 4, 'necklace.configuration': 6 },
+        settings: { 'necklace.discrete_necklace': true, 'view.input': 'Necklace', 'necklace.number_of_jewels': 4, 'necklace.configuration': 6 },
     });
     await openApp(page);
     const message = page.getByRole('status');
@@ -163,8 +166,8 @@ test('the game hides the solutions for itself, without changing the settings', a
     await expect(field(page, 'Solutions')).toBeChecked();
 });
 
-test('without Discrete, a cut splits the jewel it falls into between the rows', async ({ page }) => {
-    await withStoredState(page, { settings: { 'view.input': 'Necklace', 'necklace.discrete': false } });
+test('without Discrete necklace, a cut splits the jewel it falls into between the rows', async ({ page }) => {
+    await withStoredState(page, { settings: { 'view.input': 'Necklace', 'necklace.discrete_necklace': false } });
     await openApp(page);
     // From a third (a gap between jewels) into the middle of the ninth jewel of 24.
     await cutSlider(page, 'First cut').focus();
@@ -185,4 +188,20 @@ test('without Discrete, a cut splits the jewel it falls into between the rows', 
     });
     // The first part goes to thief A, the second to thief B (the default thieves +, -, +).
     expect(rows).toEqual({ before: { top: true, bottom: false }, after: { top: false, bottom: true } });
+});
+
+test('Discrete necklace snaps the handles to the jewels, Discrete sphere does not', async ({ page }) => {
+    await withStoredState(page, { settings: { 'view.input': 'Necklace', 'necklace.discrete': true } });
+    await openApp(page);
+    await cutSlider(page, 'First cut').focus();
+    await page.keyboard.press('ArrowRight');
+    await expectValue(page, 'First cut', 0.34);
+    // The handles' steps follow the switch at once.
+    await openSettings(page);
+    await field(page, 'Discrete necklace').check();
+    await expect(cutSlider(page, 'First cut')).toHaveAttribute('step', String(1 / 24));
+    await field(page, 'Discrete sphere').uncheck();
+    await expect(cutSlider(page, 'First cut')).toHaveAttribute('step', String(1 / 24));
+    await field(page, 'Discrete necklace').uncheck();
+    await expect(cutSlider(page, 'First cut')).toHaveAttribute('step', '0.01');
 });

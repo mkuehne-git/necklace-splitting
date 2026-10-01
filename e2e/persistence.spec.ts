@@ -22,7 +22,8 @@ test('settings and theme survive a reload', async ({ page }) => {
     await openSettings(page);
     await field(page, 'Solution band').uncheck();
     await field(page, 'Jewels').fill('12');
-    await field(page, 'Discrete').uncheck();
+    await field(page, 'Discrete sphere').uncheck();
+    await field(page, 'Discrete necklace').check();
     await page.getByRole('button', { name: 'Switch to dark theme' }).click();
     await expect(page.locator('body')).toHaveClass(/\bdark\b/);
     await saved(page);
@@ -33,7 +34,8 @@ test('settings and theme survive a reload', async ({ page }) => {
     await openSettings(page);
     await expect(field(page, 'Solution band')).not.toBeChecked();
     await expect(field(page, 'Jewels')).toHaveValue('12');
-    await expect(field(page, 'Discrete')).not.toBeChecked();
+    await expect(field(page, 'Discrete sphere')).not.toBeChecked();
+    await expect(field(page, 'Discrete necklace')).toBeChecked();
 });
 
 test('a necklace entered as text is rebuilt from the text after a reload', async ({ page }) => {

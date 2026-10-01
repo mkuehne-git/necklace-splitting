@@ -164,7 +164,7 @@ class Necklace extends NecklaceComponent {
       return;
     }
     if (!this.hasCut) {
-      const jewels = SETTINGS.necklace.discrete ? this.model.size : 0;
+      const jewels = SETTINGS.necklace.discrete_necklace ? this.model.size : 0;
       this.#handles = { a: snap(1 / 3, jewels), b: snap(2 / 3, jewels), signs: DEFAULT_SIGNS.clone() };
       this.applyHandles();
     }
@@ -182,7 +182,7 @@ class Necklace extends NecklaceComponent {
     const enabled = cutsFromNecklace();
     this.#controls.hidden = !enabled;
     this.canvas.style.cursor = "";
-    const step = SETTINGS.necklace.discrete && this.model.size > 0 ? 1 / this.model.size : 0.01;
+    const step = SETTINGS.necklace.discrete_necklace && this.model.size > 0 ? 1 / this.model.size : 0.01;
     this.#sliders.forEach((slider, key) => {
       slider.step = String(step);
       slider.value = String(this.#handles[key]);
@@ -203,7 +203,7 @@ class Necklace extends NecklaceComponent {
 
   /** Moves a handle; one dragged past the other takes its place. Returns the handle moved. */
   private moveHandle(key: HandleKey, position: number, swap = true): HandleKey {
-    const jewels = SETTINGS.necklace.discrete ? this.model.size : 0;
+    const jewels = SETTINGS.necklace.discrete_necklace ? this.model.size : 0;
     const value = snap(Math.min(1, Math.max(0, position)), jewels);
     const handles = this.#handles;
     if (key === "a") {
@@ -418,7 +418,7 @@ class Necklace extends NecklaceComponent {
     const JEWEL_B_COLOR = this.jewel_b_color;
     // Continuous: a cut splits a jewel, and each thief gets the part on its
     // side, as in the model. Discrete: a jewel goes whole with the part it starts in.
-    const split = !SETTINGS.necklace.discrete && cuts !== undefined && cuts.lengthSq() > 0.5;
+    const split = !SETTINGS.necklace.discrete_necklace && cuts !== undefined && cuts.lengthSq() > 0.5;
     const xSq = cuts ? cuts.x * cuts.x : 0;
     const parts = cuts ? [[0, xSq, cuts.x], [xSq, xSq + cuts.y * cuts.y, cuts.y], [xSq + cuts.y * cuts.y, 1, cuts.z]] : [];
     for (let i = 0; i < this.size; i++) {

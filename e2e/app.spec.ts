@@ -177,8 +177,8 @@ test('a text too long for the necklace is cut short, and the sphere is still dra
 test('an ⓘ button behind a setting explains it in a call-out', async ({ page }) => {
     await openApp(page);
     await openSettings(page);
-    const about = panel(page).getByRole('button', { name: 'About Discrete' });
-    const callout = panel(page).getByText('Cuts fall only between jewels.');
+    const about = panel(page).getByRole('button', { name: 'About Discrete sphere' });
+    const callout = panel(page).getByText('On the sphere, its colors');
     await expect(callout).toBeHidden();
     await about.click();
     await expect(callout).toBeVisible();
@@ -385,7 +385,7 @@ test('controls the browser draws follow the app theme, not the system (v0.8.1)',
     await expect(page.locator('body')).toHaveClass(/\blight\b/);
     await openSettings(page);
     await expect(field(page, 'Configuration')).toHaveCSS('color-scheme', 'light');
-    await expect(field(page, 'Discrete')).toHaveCSS('background-color', 'rgb(46, 46, 46)');
+    await expect(field(page, 'Discrete sphere')).toHaveCSS('background-color', 'rgb(46, 46, 46)');
     await page.getByRole('button', { name: 'Switch to dark theme' }).click();
     await expect(field(page, 'Configuration')).toHaveCSS('color-scheme', 'dark');
 });

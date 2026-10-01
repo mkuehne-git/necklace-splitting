@@ -70,7 +70,7 @@ function necklaceSection(body: HTMLElement, refresh: () => void): Control[] {
     const necklace = SETTINGS.necklace;
     // Built right after the text field, below it; the field updates it.
     let textNote: Control | undefined;
-    const flag = (text: Label, key: 'discrete') =>
+    const flag = (text: Label, key: 'discrete' | 'discrete_necklace') =>
         checkbox(content, text, () => necklace[key], (value) => { necklace[key] = value; material(); });
     // The game hides the solutions; ticking them during the game shows them for this game only.
     const hint = (text: Label, key: SolutionHint) =>
@@ -96,7 +96,8 @@ function necklaceSection(body: HTMLElement, refresh: () => void): Control[] {
             textNote?.update();
         }),
         textNote = textLengthNote(content),
-        flag(explained('settings.discrete', 'info.discrete'), 'discrete'),
+        flag(explained('settings.discreteNecklace', 'info.discreteNecklace'), 'discrete_necklace'),
+        flag(explained('settings.discreteSphere', 'info.discreteSphere'), 'discrete'),
         hint(explained('settings.solutionBand', 'info.solutionBand'), 'show_solution_band'),
         hint(explained('settings.solutions', 'info.solutions'), 'show_solutions'),
         range(content, explained('settings.epsilon', 'info.epsilon'), LIMITS.epsilon, () => necklace.epsilon,

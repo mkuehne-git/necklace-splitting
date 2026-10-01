@@ -9,7 +9,7 @@ The README shows seven screenshots in `docs/images/`. `npm run screenshots` reta
 
 | Image | Shows | Viewport |
 | --- | --- | --- |
-| `necklace.png` | The sphere seen from (1, −1, 1), the pointer on a solution: the fairness meter shows a fair split | 1366 x 632 |
+| `necklace.png` | The sphere seen from (1, −1, 1), the pointer on a solution: the fairness meter shows a nearly fair split (the sphere counts whole jewels, the necklace not, by default) | 1366 x 632 |
 | `necklace-with-solution.png` | The same, with the settings open at Necklace | 1366 x 632 |
 | `necklace-octants.png` | Octants spread 1.6, undivided octants hidden, settings open at View | 1366 x 632 |
 | `necklace-borsuk-ulam.png` | The Borsuk-Ulam shape, lit, with the view switcher and its slider | 1366 x 632 |
@@ -33,7 +33,7 @@ The README shows seven screenshots in `docs/images/`. `npm run screenshots` reta
 
 Open every changed image (the Read tool shows images) and check:
 
-- The marker (a white ring with a dark outline) sits on a blue solution marker in `necklace.png` and `necklace-phone.png`, and the fairness meter shows an exactly fair split.
+- The marker (a white ring with a dark outline) sits on a blue solution marker in `necklace.png` and `necklace-phone.png`, and the fairness meter shows a nearly fair split: with the defaults, Discrete sphere on and Discrete necklace off, the two count differently (decided 2026-10-01).
 - The sphere is not cropped (the phone uses the default camera distance, 50).
 - The version label shows the new version.
 

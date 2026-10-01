@@ -129,7 +129,7 @@ class NecklaceModel {
   applyCut(cuts: Vector3): void {
     this.cuts = cuts;
     if (cuts !== undefined) {
-      this.#thief = SETTINGS.necklace.discrete
+      this.#thief = SETTINGS.necklace.discrete_necklace
         ? this.applyCutDiscrete(cuts)
         : this.applyCutContinous(cuts);
     }
@@ -138,7 +138,8 @@ class NecklaceModel {
 
   /**
    * Thief A's share of each kind of jewel (0 to 1) for the cuts at the point p
-   * of the unit sphere, without applying the cut: f(p) of the Borsuk-Ulam view.
+   * of the unit sphere, without applying the cut: f(p) of the Borsuk-Ulam view,
+   * which follows the sphere's Discrete (applyCut follows the necklace's).
    */
   shares(p: Vector3, discrete = SETTINGS.necklace.discrete): Vector2 {
     return this.canonicalThief(discrete ? this.applyCutDiscrete(p) : this.applyCutContinous(p));

@@ -113,7 +113,7 @@ describe("cuts, discrete", () => {
   // [0, 1, 1, 0]: two jewels of each type.
   let model: NecklaceModel;
   beforeEach(() => {
-    SETTINGS.necklace.discrete = true;
+    SETTINGS.necklace.discrete_necklace = true;
     model = fromNumber(6, 4);
   });
 
@@ -146,7 +146,7 @@ describe("cuts, discrete", () => {
 describe("cuts, continuous", () => {
   let model: NecklaceModel;
   beforeEach(() => {
-    SETTINGS.necklace.discrete = false;
+    SETTINGS.necklace.discrete_necklace = false;
     model = fromNumber(6, 4); // [0, 1, 1, 0]
   });
 
@@ -180,7 +180,7 @@ describe.each([
   ["continuous", false],
 ])("symmetry, %s", (_name, discrete) => {
   it("swaps the thieves at the antipodal point", () => {
-    SETTINGS.necklace.discrete = discrete;
+    SETTINGS.necklace.discrete_necklace = discrete;
     const model = fromNumber(defaults.configuration, defaults.number_of_jewels);
     for (const p of randomPoints(100, 7)) {
       model.applyCut(p);
@@ -201,6 +201,7 @@ describe.each([
 ])("shares, %s", (_name, discrete) => {
   it("are thief A's canonical shares, without applying the cut", () => {
     SETTINGS.necklace.discrete = discrete;
+    SETTINGS.necklace.discrete_necklace = discrete;
     const model = fromNumber(defaults.configuration, defaults.number_of_jewels);
     const applied = new Vector3(0, 0, 1);
     model.applyCut(applied);
@@ -237,7 +238,7 @@ describe("necklace splitting theorem", () => {
   }
 
   it("finds a fair split with two cuts for every necklace with even counts", () => {
-    SETTINGS.necklace.discrete = true;
+    SETTINGS.necklace.discrete_necklace = true;
     const jewels = 8;
     let checked = 0;
     // One model, configured again and again, as in the app: every model listens
@@ -281,6 +282,7 @@ describe("necklaceFromText", () => {
 
 describe("a changed necklace or Discrete", () => {
   it("keeps the cut and gives the shares for the new necklace", () => {
+    SETTINGS.necklace.discrete_necklace = true;
     // Four jewels, the first two of the second kind (3 = 0011, lowest bit first); thief A gets the first half.
     const model = fromNumber(3, 4);
     // Half a jewel off the gap, so the discrete split is unambiguous.
@@ -294,15 +296,34 @@ describe("a changed necklace or Discrete", () => {
     expect(model.thief_a).toEqual(new Vector2(2, 0));
   });
 
-  it("gives the shares for Discrete as it is now", () => {
-    SETTINGS.necklace.discrete = true;
+  it("gives the shares for Discrete necklace as it is now", () => {
+    SETTINGS.necklace.discrete_necklace = true;
     const model = fromNumber(0, 4);
     // Thief A's piece ends in the middle of the second jewel: Discrete gives it
     // the whole jewel (a jewel goes with the piece it starts in), otherwise half of it.
     model.applyCut(pointFor([1.5, 0, 2.5], [1, -1, -1]));
     expect(model.thief_a.x).toBe(2);
-    SETTINGS.necklace.discrete = false;
+    SETTINGS.necklace.discrete_necklace = false;
     Events.dispatchEvent(Events.UPDATE_SPHERE_MATERIAL);
     expect(model.thief_a.x).toBeCloseTo(1.5);
+  });
+});
+
+describe("the two Discrete switches", () => {
+  it("apply to the cut (the necklace's) and to shares (the sphere's) each on their own", () => {
+    const model = fromNumber(0, 4);
+    // Thief A's piece ends in the middle of the second jewel, as above.
+    const cut = pointFor([1.5, 0, 2.5], [1, -1, -1]);
+    SETTINGS.necklace.discrete_necklace = false;
+    SETTINGS.necklace.discrete = true;
+    model.applyCut(cut);
+    expect(model.thief_a.x).toBeCloseTo(1.5);
+    // Shares are canonical: 2 of 4 jewels of the first kind.
+    expect(model.shares(cut).x).toBe(0.5);
+    SETTINGS.necklace.discrete_necklace = true;
+    SETTINGS.necklace.discrete = false;
+    model.applyCut(cut);
+    expect(model.thief_a.x).toBe(2);
+    expect(model.shares(cut).x).toBeCloseTo(1.5 / 4);
   });
 });
