@@ -1,5 +1,25 @@
 var e=`# Changelog
 
+## v2.3.1 · 2026-10-01 · [5bbac4a](https://github.com/mkuehne-git/necklace-splitting/commit/5bbac4a)
+
+* No functional change. The plan for this release is marked done.
+
+## v2.3.0 · 2026-10-01 · [739bc80](https://github.com/mkuehne-git/necklace-splitting/commit/739bc80)
+
+* **Roll the dice** for a new necklace to cut: in *Cut the necklace*, the dice left of the fairness meter rolls a new necklace with the number of jewels set, and starts the game over, with the solutions hidden again. When the number of jewels is even, each kind comes in an even number, so a fair split exists even with Discrete necklace.
+
+## v2.2.0 · 2026-10-01 · [5d4b206](https://github.com/mkuehne-git/necklace-splitting/commit/5d4b206)
+
+* The necklace has its own Discrete switch, **Discrete necklace**, and it is off by default: the necklace, its handles and the fairness meter now split jewels at the cuts, while the sphere still counts whole jewels (**Discrete sphere**). Where the two differ, the sphere's solutions are only nearly fair on the necklace - set both alike to see them agree.
+
+## v2.1.0 · 2026-10-01 · [e849438](https://github.com/mkuehne-git/necklace-splitting/commit/e849438)
+
+* A roomier layout: the sphere sits higher, clear of the necklace; the necklace's rows for thief A and thief B stand further apart; and the fairness meter is a little smaller, with more space above it.
+
+## v2.0.8 · 2026-10-01 · [28de4eb](https://github.com/mkuehne-git/necklace-splitting/commit/28de4eb)
+
+* No functional change. A plan for the next features: the necklace's own Discrete switch, a dice for a new necklace, and a roomier layout.
+
 ## v2.0.7 · 2026-10-01 · [de1c753](https://github.com/mkuehne-git/necklace-splitting/commit/de1c753)
 
 * No functional change. The roadmap lists only what is still open.
