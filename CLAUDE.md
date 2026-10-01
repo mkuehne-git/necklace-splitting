@@ -51,7 +51,7 @@ The `release` skill (`.claude/skills/release/`) covers the full routine: version
 
 ## Git Workflow
 
-The project owner approves commits per phase of the current plan, `RELEASE-PLAN.md` (earlier `MODERNIZATION.md`): within a phase the owner has approved, commit each step as it is done; at the end of a phase, stop and ask before starting the next one. Outside that plan, ask before every commit. Do not push or deploy unless asked.
+The project owner approves commits per phase of a plan (the last ones: `RELEASE-PLAN.md`, `MODERNIZATION.md`): within a phase the owner has approved, commit each step as it is done; at the end of a phase, stop and ask before starting the next one. Outside that plan, ask before every commit. Do not push or deploy unless asked.
 
 Commit messages are `type: summary (vX.Y.Z)` with `type` one of `feat`, `fix`, `test`, `docs`, `refactor`, `chore`, followed by a body that explains what changed and why. Stage files by name, never `src/imprint-gen.js` or `dist/`.
 
@@ -77,7 +77,7 @@ Commit messages are `type: summary (vX.Y.Z)` with `type` one of `feat`, `fix`, `
 
 ## Roadmap
 
-What remains after the modernization, and the decisions still open, is in `ROADMAP.md`; `MODERNIZATION.md` records how the app got here. `RELEASE-PLAN.md` is the plan for the next feature release (the features in `ROADMAP.md`); work through it in order and keep this file current as each phase lands.
+What remains after the modernization, and the decisions still open, is in `ROADMAP.md`; `MODERNIZATION.md` records how the app got here. `RELEASE-PLAN.md` records the feature release after 2.0 (v2.1.0 to v2.3.0).
 
 ## Implementation Conventions
 

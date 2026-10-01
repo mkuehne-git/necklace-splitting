@@ -1,6 +1,6 @@
 ---
 name: release
-description: Prepare a Necklace Splitting version for commit - pick the version bump, update package.json and CHANGELOG.md, validate, check the working tree, then commit (within an approved phase of RELEASE-PLAN.md) or ask the project owner first. Use whenever work is ready to be committed, or when asked to "release", "bump the version" or "commit".
+description: Prepare a Necklace Splitting version for commit - pick the version bump, update package.json and CHANGELOG.md, validate, check the working tree, then commit (within an approved phase of the current plan) or ask the project owner first. Use whenever work is ready to be committed, or when asked to "release", "bump the version" or "commit".
 ---
 
 # Release
@@ -45,7 +45,7 @@ Run these in order and report failures with their output - do not commit around 
 
 ## 5. Commit
 
-Within a phase of the current plan (`RELEASE-PLAN.md`) the owner has approved, commit right away and continue with the next step; at the end of the phase, summarize its commits and ask before starting the next phase. Outside that plan, summarize what the commit contains and ask the project owner first.
+Within a phase of the current plan (the last: `RELEASE-PLAN.md`) the owner has approved, commit right away and continue with the next step; at the end of the phase, summarize its commits and ask before starting the next phase. Outside that plan, summarize what the commit contains and ask the project owner first.
 
 - Stage the files by name (no `git add -A`).
 - Message: `type: summary (vX.Y.Z)` with `type` one of `feat`, `fix`, `test`, `docs`, `refactor`, `chore`; then a body explaining what and why; then the co-author trailer from the current session's instructions.

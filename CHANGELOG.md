@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.3.0 · 2026-10-01
+## v2.3.1 · 2026-10-01
+
+* No functional change. The plan for this release is marked done.
+
+## v2.3.0 · 2026-10-01 · [739bc80](https://github.com/mkuehne-git/necklace-splitting/commit/739bc80)
 
 * **Roll the dice** for a new necklace to cut: in *Cut the necklace*, the dice left of the fairness meter rolls a new necklace with the number of jewels set, and starts the game over, with the solutions hidden again. When the number of jewels is even, each kind comes in an even number, so a fair split exists even with Discrete necklace.
 

@@ -1,5 +1,7 @@
 # Feature Release Plan (2.x)
 
+> **Done:** phases 1 to 4 were carried out from v2.0.8 to v2.3.1 (2026-10-01); the GitHub release is v2.3.0. The notes marked *Done*, *Decided*, *Changed* or *Added* below record where the work deviated from the plan.
+
 The plan for the next feature release on GitHub, from v2.0.7: the three features in `ROADMAP.md`. It is not a major version: no full code review, no `x` increase.
 
 Work through the phases in order. Each step is one commit with a version bump and a changelog entry (`release` skill). A step that adds a feature increases `y`; tests, docs and fixes along the way increase `z`. The project owner approves each phase before it starts, as with `MODERNIZATION.md`. Once a step is done, its item leaves `ROADMAP.md` and `CLAUDE.md` describes how it works.
@@ -44,6 +46,8 @@ The exact values (28 px, 23%) are starting points; the owner judges them in the 
 5. **Tests.** Unit: the random configuration (range, not all one color, never the current one). e2e: the button shows only in the game, a roll changes the necklace and the configuration in the settings, the hints are hidden again, a reload keeps the rolled necklace, and it is reachable by keyboard. Then retake the screenshots.
 
 ## Phase 4: Release (patch)
+
+> *Changed:* no closing changelog entry: each feature has its own, which What's new shows, and a summary would be a patch version of its own, while GitHub releases are made for minor versions only. The summary went into the notes of the GitHub release v2.3.0 instead; v2.3.1 only marks this plan done.
 
 1. `CLAUDE.md` and `README.md` (with screenshots) up to date, `TESTING.md` lists the new tests, and `ROADMAP.md` keeps only Node 26 and anything decided to wait.
 2. A closing changelog entry for users, like v2.0.0's, summing up the release.
