@@ -19,6 +19,8 @@ export enum Events {
   INPUT_CHANGED = "input-changed",
   /** A handle was let go or a part given to the other thief: the sphere turns to show the point if it is out of sight. */
   SHOW_CUT = "show-cut",
+  /** The dice next to the fairness meter: a new necklace by number, and a new game (settings/Settings.ts). */
+  ROLL_NECKLACE = "roll-necklace",
   SCREEN_CAPTURE = "screen-capture",
   SHOW_CHANGELOG = "show-changelog",
   HIDE_CHANGELOG = "hide-changelog",

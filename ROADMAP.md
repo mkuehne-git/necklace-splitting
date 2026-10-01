@@ -8,6 +8,4 @@ What is still open after 2.0. Items are ordered by priority within each section;
 
 ## Features
 
-Planned for the next feature release, in `RELEASE-PLAN.md`:
-
-- A new challenge (new necklace to cut), shall be available through a "roll the dice" (ideally animated) button, which could be placed left to the fairness meter.
+The three features planned for this release are done (`RELEASE-PLAN.md`, v2.1.0 to v2.3.0); none are open.

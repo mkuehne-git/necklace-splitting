@@ -91,6 +91,7 @@ export const de: Catalog = {
         'necklace.secondCut': 'Zweiter Schnitt',
         'necklace.part': 'Teil {part} geht an Dieb {thief}',
         'necklace.fair': 'Gerecht geteilt!',
+        'necklace.roll': 'Neue Halskette würfeln',
         'sphere.contextLost': 'Die 3D-Ansicht wurde unterbrochen. Sie kehrt zurück, sobald der Browser es erlaubt.',
 
         'version.title': 'Änderungen anzeigen',

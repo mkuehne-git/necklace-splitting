@@ -6,6 +6,7 @@ import { t } from "../i18n";
 import { NecklaceComponent, ComponentOptions } from "./NecklaceComponent";
 import { NecklaceModel } from "./NecklaceModel";
 import { DEFAULT_SIGNS, cutFromHandles, handlesFromCut, partAt, snap, type Handles } from "./handles";
+import { icon as diceIcon } from "../icons/dice/diceIcon";
 
 const JEWEL_A_COLOR = "--jewel-a-color";
 const JEWEL_B_COLOR = "--jewel-b-color";
@@ -37,6 +38,11 @@ const HANDLES_HEIGHT = ROWS_HEIGHT + 2 * OVERHANG;
 const GAUGE_TOP = HANDLES_HEIGHT + 12;
 /** The fairness meter's share of its space. */
 const GAUGE_SCALE = 0.95;
+/** How far the meter's arc stays above the bottom of the canvas. */
+const GAUGE_BOTTOM_GAP = 2;
+/** The dice's size and its distance from the meter, in px. */
+const DICE_SIZE = 40;
+const DICE_GAP = 12;
 /** How far from a handle, in px, a pointer still grabs it: at least 24 px wide for fingers. */
 const HANDLE_REACH = 14;
 /**
@@ -65,6 +71,7 @@ class Necklace extends NecklaceComponent {
   #partButtons: HTMLButtonElement[] = [];
   #controls!: HTMLElement;
   #fairMessage!: HTMLElement;
+  #dice!: HTMLButtonElement;
   #fairTimer: number | undefined;
   #wasFair = false;
   /** Set while the handles apply their cut: the handles, not the nudged cut, stay as they are. */
@@ -143,9 +150,41 @@ class Necklace extends NecklaceComponent {
     this.#fairMessage = document.createElement("div");
     this.#fairMessage.className = "fair-split";
     this.#fairMessage.setAttribute("role", "status");
-    this.container.append(this.#controls, this.#fairMessage);
+    this.#dice = this.createDice();
+    this.container.append(this.#controls, this.#fairMessage, this.#dice);
     // The rest follows with the necklace (MODEL_CHANGED): the canvas is not set yet.
     this.#controls.hidden = !cutsFromNecklace();
+  }
+
+  /** The dice left of the fairness meter: a new necklace and a new game. Shown in the game only (placeDice). */
+  private createDice(): HTMLButtonElement {
+    const dice = document.createElement("button");
+    dice.type = "button";
+    dice.className = "necklace-dice";
+    dice.setAttribute("aria-label", t("necklace.roll"));
+    dice.title = t("necklace.roll");
+    dice.innerHTML = diceIcon.svg;
+    dice.querySelector("svg")?.setAttribute("aria-hidden", "true");
+    dice.hidden = true;
+    dice.addEventListener("click", () => this.roll());
+    // Tumbles once per roll; a roll during the tumble starts it again.
+    dice.addEventListener("animationend", () => dice.classList.remove("rolling"));
+    return dice;
+  }
+
+  /** Rolls a new necklace (settings/Settings.ts) and starts the game again from the first cut. */
+  private roll(): void {
+    this.#dice.classList.remove("rolling");
+    void this.#dice.offsetWidth;
+    this.#dice.classList.add("rolling");
+    Events.dispatchEvent(Events.ROLL_NECKLACE);
+    clearTimeout(this.#fairTimer);
+    this.#fairMessage.classList.remove("show");
+    this.#fairMessage.textContent = "";
+    this.#wasFair = false;
+    this.startCutting(true);
+    Events.dispatchEvent(Events.SHOW_CUT);
+    this.render();
   }
 
   /** Whether the model holds a cut: a point of the unit sphere. */
@@ -155,15 +194,16 @@ class Necklace extends NecklaceComponent {
   }
 
   /**
-   * When the handles set the cuts: starts from a first cut if there is none.
-   * The model keeps its cut across necklace changes and applies it again.
+   * When the handles set the cuts: starts from a first cut if there is none,
+   * or `again`, for a new game. The model keeps its cut across necklace
+   * changes and applies it again.
    */
-  private startCutting(): void {
+  private startCutting(again = false): void {
     this.updateControls();
     if (!cutsFromNecklace() || this.model.size === 0) {
       return;
     }
-    if (!this.hasCut) {
+    if (!this.hasCut || again) {
       const jewels = SETTINGS.necklace.discrete_necklace ? this.model.size : 0;
       this.#handles = { a: snap(1 / 3, jewels), b: snap(2 / 3, jewels), signs: DEFAULT_SIGNS.clone() };
       this.applyHandles();
@@ -388,11 +428,13 @@ class Necklace extends NecklaceComponent {
         }
       }
 
+      this.placeDice();
+
       // render textual result
       if (this.model.thief_a !== undefined && this.showGauge) {
         const thief_a = this.model.canonicalThief(this.model.thief_a);
         const thief_b = this.model.canonicalThief(this.model.thief_b);
-        this.drawGauge(ctx, GAUGE_TOP, thief_a, thief_b);
+        this.drawGauge(ctx, thief_a, thief_b);
       }
     }
 
@@ -543,20 +585,33 @@ class Necklace extends NecklaceComponent {
    * Draws a little gauge, indicating the progress towards equal distribution of the jewels between the two thiefs.
    *
    * @param {*} ctx canvas context
-   * @param {*} y0 y-value of upper-left corner of drawing area
    * @param {*} thief_aAbs values for thief_a
    * @param {*} thief_bAbs values for thief_b
    */
+  /** The fairness meter's radius, from the space below the handles. */
+  private get gaugeRadius(): number {
+    return GAUGE_SCALE * (this.height - GAUGE_TOP - GAUGE_BOTTOM_GAP);
+  }
+
+  /**
+   * Shows the dice in the game, with the necklace, left of where the meter is
+   * (also when the meter is hidden); disabled with fewer than two jewels.
+   */
+  private placeDice(): void {
+    this.#dice.hidden = !cutsFromNecklace() || !this.showNecklace;
+    this.#dice.disabled = SETTINGS.necklace.number_of_jewels < 2;
+    const left = this.width / 2 - Math.max(this.gaugeRadius, 0) - DICE_GAP - DICE_SIZE;
+    this.#dice.style.left = `${Math.max(4, left)}px`;
+  }
+
   private drawGauge(
     ctx: CanvasRenderingContext2D,
-    y0: number,
     thief_a: THREE.Vector2,
     thief_b: THREE.Vector2
   ): void {
-    const height = this.height - y0;
     const lineWidth = 3.0;
-    const vgap = 2;
-    const radius = GAUGE_SCALE * (height - vgap);
+    const vgap = GAUGE_BOTTOM_GAP;
+    const radius = this.gaugeRadius;
 
     if (radius >= 10) {
       /** The real circle radius, scaled by sqrt(0.5), because the largest vector can be [1,1]. */

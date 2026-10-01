@@ -35,6 +35,8 @@ The exact values (28 px, 23%) are starting points; the owner judges them in the 
 
 ## Phase 3: Roll the dice (minor)
 
+> **Done** in v2.3.0. *Changed:* the dice shows with the necklace also when the meter is hidden, in the meter's place; disabled below two jewels (a single jewel is of one kind only). *Added:* with an even number of jewels, the dice rolls an even number of each kind, so that a fair split of whole jewels exists. The rolling is done by `Settings.ts` on `ROLL_NECKLACE`, which keeps the settings' side in the settings.
+
 1. **Button.** A DOM button with a dice icon (`src/icons/`), left of the fairness meter, in the necklace's container. It is a real button (focusable, `aria-label` in both catalogs), not drawn on the canvas, and it follows the gauge's position and size from `drawGauge`. It is visible only while `cutsFromNecklace()` holds and the gauge shows, and disabled with 0 jewels.
 2. **Roll.** A random configuration in `1 … maxConfiguration() - 1` (both thieves' colors present), different from the current one. Set `necklace.configuration`, `persistentState.update({ necklaceSource: 'number' })`, dispatch `SET_NECKLACE_CONFIGURATION_BY_NUMBER`, and have the settings panel's controls `update()` (number field, text field). Put the pure part (random configuration, given a random source) in its own function, so it can be unit tested.
 3. **New game.** `resetSolutionHints()`, the handles back to their starting cut (1/3, 2/3, default thieves) and the fair split state cleared. The model keeps the cut across necklace changes today, so the dice resets it explicitly.

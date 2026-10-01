@@ -205,3 +205,69 @@ test('Discrete necklace snaps the handles to the jewels, Discrete sphere does no
     await field(page, 'Discrete necklace').uncheck();
     await expect(cutSlider(page, 'First cut')).toHaveAttribute('step', '0.01');
 });
+
+const dice = (page: Page) => page.getByRole('button', { name: 'Roll a new necklace' });
+
+test('the dice shows in the game only', async ({ page }) => {
+    await openApp(page);
+    await expect(dice(page)).toBeHidden();
+    await inputButton(page, 'Cut the necklace').click();
+    await expect(dice(page)).toBeVisible();
+    await shapeButton(page).click();
+    await expect(dice(page)).toBeHidden();
+});
+
+test('the dice rolls a new necklace and starts a new game', async ({ page }) => {
+    // Set up through the app, not withStoredState: that one would store its state again on reload.
+    await openApp(page);
+    await inputButton(page, 'Cut the necklace').click();
+    await openSettings(page);
+    await openSection(page, 'Necklace');
+    await field(page, 'Discrete necklace').check();
+    const configuration = await field(page, 'Configuration').inputValue();
+    // Moved and shown, to see both start over.
+    await cutSlider(page, 'First cut').focus();
+    await page.keyboard.press('ArrowRight');
+    await expectValue(page, 'First cut', 9 / 24);
+    await field(page, 'Solution band').check();
+    const before = await pixels(necklace(page));
+    // By keyboard: Enter on the focused dice.
+    await dice(page).focus();
+    await page.keyboard.press('Enter');
+    await expect(field(page, 'Configuration')).not.toHaveValue(configuration);
+    await expectValue(page, 'First cut', 8 / 24);
+    await expectValue(page, 'Second cut', 16 / 24);
+    await expect(field(page, 'Solution band')).not.toBeChecked();
+    await expectChanged(necklace(page), before);
+    // The rolled necklace is remembered.
+    const rolled = await field(page, 'Configuration').inputValue();
+    await page.reload();
+    await openSettings(page);
+    await openSection(page, 'Necklace');
+    await expect(field(page, 'Configuration')).toHaveValue(rolled);
+});
+
+test('the dice replaces a necklace given by text', async ({ page }) => {
+    await openApp(page);
+    await inputButton(page, 'Cut the necklace').click();
+    await openSettings(page);
+    await openSection(page, 'Necklace');
+    await field(page, 'Text').fill('AB');
+    await field(page, 'Text').press('Enter');
+    await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('necklace-splitting.state')!).necklaceSource)).toBe('string');
+    const before = await pixels(necklace(page));
+    await dice(page).click();
+    await expectChanged(necklace(page), before);
+    await page.reload();
+    await openSettings(page);
+    await openSection(page, 'Necklace');
+    // Rebuilt from the number: 24 jewels, not the 14 of "AB".
+    await expect(field(page, 'Jewels')).toHaveValue('24');
+    await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('necklace-splitting.state')!).necklaceSource)).toBe('number');
+});
+
+test('the dice is disabled with fewer than two jewels', async ({ page }) => {
+    await withStoredState(page, { settings: { 'view.input': 'Necklace', 'necklace.number_of_jewels': 1, 'necklace.configuration': 1 } });
+    await openApp(page);
+    await expect(dice(page)).toBeDisabled();
+});

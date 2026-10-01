@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.2.0 · 2026-10-01
+## v2.3.0 · 2026-10-01
+
+* **Roll the dice** for a new necklace to cut: in *Cut the necklace*, the dice left of the fairness meter rolls a new necklace with the number of jewels set, and starts the game over, with the solutions hidden again. When the number of jewels is even, each kind comes in an even number, so a fair split exists even with Discrete necklace.
+
+## v2.2.0 · 2026-10-01 · [5d4b206](https://github.com/mkuehne-git/necklace-splitting/commit/5d4b206)
 
 * The necklace has its own Discrete switch, **Discrete necklace**, and it is off by default: the necklace, its handles and the fairness meter now split jewels at the cuts, while the sphere still counts whole jewels (**Discrete sphere**). Where the two differ, the sphere's solutions are only nearly fair on the necklace - set both alike to see them agree.
 

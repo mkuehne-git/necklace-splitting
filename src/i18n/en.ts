@@ -95,6 +95,7 @@ export const en = {
         /** A button that gives the part to the other thief. */
         'necklace.part': 'Part {part} goes to thief {thief}',
         'necklace.fair': 'Fair split!',
+        'necklace.roll': 'Roll a new necklace',
         /** When the browser takes the GPU away; the sphere comes back when it returns it. */
         'sphere.contextLost': 'The 3D view was interrupted. It returns as soon as the browser allows.',
 
