@@ -36,6 +36,8 @@ function changelogCommit(): Plugin {
         },
     };
 }
+/** The app's version, from package.json itself: npm's environment has it only when npm starts the build. */
+const appVersion = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')).version as string;
 const isProduction = process.env['NODE_ENV'] === 'production';
 const base = isProduction ? '/necklace-splitting/' : '/';
 // VITE_HTTPS=false (npm run dev:http) serves plain HTTP when the self-signed certificate is rejected.
@@ -94,7 +96,7 @@ export default defineConfig({
     ],
     build: { assetsInlineLimit: 0 },
     define: {
-        APP_VERSION: JSON.stringify(process.env.npm_package_version),
+        APP_VERSION: JSON.stringify(appVersion),
     },
     test: {
         // Playwright's end-to-end tests will live in e2e/ and must not be picked up here.

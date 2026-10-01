@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.0.2 · 2026-10-01
+## v2.0.3 · 2026-10-01
+
+* No functional change. The build takes the app's version from the project itself, so the version shown is right however the build is started.
+
+## v2.0.2 · 2026-10-01 · [d5ca448](https://github.com/mkuehne-git/necklace-splitting/commit/d5ca448)
 
 * No functional change. An automatic test of the morph player no longer trips over a slow machine.
 
