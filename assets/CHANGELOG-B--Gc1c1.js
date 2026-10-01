@@ -1,5 +1,9 @@
 var e=`# Changelog
 
+## v2.0.1 · 2026-10-01 · [5f10903](https://github.com/mkuehne-git/necklace-splitting/commit/5f10903)
+
+* Fixed: without Discrete, the necklace drew a jewel that a cut runs through entirely on one side, so it jumped from one row to the other while the cut moved smoothly through it. It is now split at the cut, each thief's part in its row, as the split is computed.
+
 ## v2.0.0 · 2026-09-30 · [17936c2](https://github.com/mkuehne-git/necklace-splitting/commit/17936c2)
 
 Necklace Splitting 2.0 brings together what came since 1.2:
